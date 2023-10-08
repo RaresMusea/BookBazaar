@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300&display=swap');
-
 :root {
-    --navbarColor: #F6F6E9;
+    --navbarColor: #545454;
     --mainFont: 'Exo 2', sans-serif;
 }
 
@@ -34,10 +32,37 @@ body {
 nav {
     background-color: var(--navbarColor) !important;
     height: 75px !important;
-    font-family: var(--mainFont);
+}
+
+.NavigationLink {
+    transition: .4s ease-in-out !important;
+}
+
+.NavigationLink:hover {
+    color: darkgrey !important;
 }
 
 .LogoImg {
     width: 75px;
     height: 75px;
+}
+
+.LogoText {
+    transition: .4s ease-in-out !important;
+}
+
+.LogoText:hover {
+    letter-spacing: 3px !important;
+    color: darkgray !important;
+}
+
+
+footer {
+    background-color: var(--navbarColor) !important;
+    height: 70px;
+    line-height: normal !important;
+}
+
+footer > div {
+    opacity: 75% !important;
 }

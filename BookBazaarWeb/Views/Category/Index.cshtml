@@ -1,1 +1,19 @@
-﻿<h1>Category List</h1>
+﻿@model List<Category>
+
+<h1>Category List</h1>
+
+<table class="mt-4 table table-bordered table-striped">
+    <thead>
+    <th>Genre</th>
+    <th>Display Priority</th>
+    </thead>
+    <tbody>
+    @foreach (var category in Model)
+    {
+        <tr>
+            <td>@Html.DisplayName(category.Genre)</td>
+            <td>@Html.DisplayName(category.Priority.ToString())</td>
+        </tr>
+    }
+    </tbody>
+</table>
