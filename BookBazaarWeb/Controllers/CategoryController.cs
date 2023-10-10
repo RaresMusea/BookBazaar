@@ -19,4 +19,10 @@ public class CategoryController : Controller
         var categoryList = _context.Categories.ToList();
         return View(categoryList);
     }
+
+    [Route("{controller}/Create")]
+    public IActionResult Create()
+    {
+        return View();
+    }
 }

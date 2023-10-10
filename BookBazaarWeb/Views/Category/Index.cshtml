@@ -1,19 +1,31 @@
 ﻿@model List<Category>
 
-<h1>Category List</h1>
 
-<table class="mt-4 table table-bordered table-striped">
-    <thead>
-    <th>Genre</th>
-    <th>Display Priority</th>
-    </thead>
-    <tbody>
-    @foreach (var category in Model)
-    {
-        <tr>
-            <td>@Html.DisplayName(category.Genre)</td>
-            <td>@Html.DisplayName(category.Priority.ToString())</td>
-        </tr>
-    }
-    </tbody>
-</table>
+<div class="container">
+    <div class="row pt-3">
+        <div class="col-6">
+            <h2>Categories</h2>
+        </div>
+        <div class="col-6 text-end">
+            <button onclick="location.href='@Url.Action("Create", "Category")'" class="button primary AddButton">
+                <i class="bi bi-plus-square-fill"></i>
+                Add category
+            </button>
+        </div>
+    </div>
+    <table class="mt-4 table table-bordered table-striped text-center">
+        <thead class="TableHeading box-shadow">
+        <th>Genre</th>
+        <th>Display Priority</th>
+        </thead>
+        <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@Html.DisplayName(category.Genre)</td>
+                <td>@Html.DisplayName(category.Priority.ToString())</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

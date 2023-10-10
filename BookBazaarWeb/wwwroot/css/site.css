@@ -3,6 +3,12 @@
     --mainFont: 'Exo 2', sans-serif;
 }
 
+*::selection {
+    background-color: var(--navbarColor) !important;
+    opacity: 80%;
+    color: white !important;
+}
+
 html {
     margin: 0 !important;
     padding: 0 !important;
@@ -65,4 +71,60 @@ footer {
 
 footer > div {
     opacity: 75% !important;
+}
+
+
+/*Categories*/
+.TableHeading {
+    text-align: center;
+    font-weight: bolder;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px !important;
+}
+
+.TableHeading th {
+    background-color: #ED5B2D !important;
+    color: white;
+}
+
+tbody {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px !important;
+}
+
+.Icon {
+    font-weight: bold !important;
+    font-size: 1em !important;
+    margin-right: .2em;
+}
+
+.AddButton {
+    transition: .4s ease-in-out;
+    border-radius: 10px !important;
+    font-size: 1em !important;
+    padding: .5em !important;
+    font-weight: bold !important;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px !important;
+}
+
+.AddButton:hover {
+    background-color: #61A6AB !important;
+    color: white !important;
+    border-color: transparent;
+    outline: none;
+}
+
+.CreateCategoryImage {
+    width: 30% !important;
+    height: auto;
+}
+
+/*Forms*/
+.form-control:focus {
+    border-color: var(--navbarColor);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px var(--navbarColor);
+}
+
+/*Shadows*/
+
+.Shadow1 {
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px !important;
 }

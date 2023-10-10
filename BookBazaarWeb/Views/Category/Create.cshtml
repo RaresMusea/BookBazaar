@@ -1,0 +1,18 @@
+﻿@model Category
+
+<form method="post" class="d-flex align-items-center justify-content-around w-100 h-100 mt-5">
+    <div class="border p-3 mt-3 w-50 Shadow1 rounded-2">
+        <h2 class="text-primary">Add a new category</h2>
+        <hr/>
+        <div class="mb-3">
+            <label for="Genre" class="ml-1 mt-2">Genre</label>
+            <input type="text" name="Genre" id="Genre" class="form-control TextInput mt-1">
+        </div>
+        <div class="mb-3">
+            <label for="Priority" class="ml-1 mt-2">Display priority</label>
+            <input type="text" name="Priority" id="Priority" class="form-control TextInput mt-1">
+        </div>
+        <button type="submit" class="button-primary mt-2">Save</button>
+    </div>
+    <img src="/img/undraw_bookshelves_re_lxoy.svg" alt="Books Art" class="CreateCategoryImage w-50"/>
+</form>
