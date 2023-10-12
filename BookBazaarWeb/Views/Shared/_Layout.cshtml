@@ -11,7 +11,7 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 shift">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
         <div class="container-fluid">
             <a class="navbar-brand d-flex flex-row align-items-center" asp-area="" asp-action="Index" asp-controller="Home">
                 <img src="img/BookBazaarLogo.svg" class="LogoImg" alt="Logo"/>
@@ -24,21 +24,21 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-white NavigationLink" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="NavbarLink nav-link text-white NavigationLink" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white NavigationLink" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="NavbarLink nav-link text-white NavigationLink" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white NavigationLink" asp-controller="Category" asp-action="Index">Categories</a>
+                        <a class="NavbarLink nav-link text-white NavigationLink" asp-controller="Category" asp-action="Index">Categories</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
+<div>
+    <main role="main" class="pb-3 h-100">
         @RenderBody()
     </main>
 </div>
@@ -53,6 +53,7 @@
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/NavbarColorizer.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>

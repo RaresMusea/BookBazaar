@@ -37,7 +37,8 @@ body {
 
 nav {
     background-color: var(--navbarColor) !important;
-    height: 75px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .NavigationLink {
@@ -49,8 +50,8 @@ nav {
 }
 
 .LogoImg {
-    width: 75px;
-    height: 75px;
+    width: 75px !important;
+    height: 75px !important;
 }
 
 .LogoText {
@@ -117,6 +118,24 @@ tbody {
     height: auto;
 }
 
+.SubmitNewCategory {
+    background-color: #468B91 !important;
+    transition: .2s ease-in-out;
+    color: white !important;
+    width: 45% !important;
+    font-weight: bolder !important;
+    outline: none !important;
+    border: none !important;
+    display: block !important;
+    margin: 0 auto !important;
+    font-size: 1.2em !important;
+}
+
+.SubmitNewCategory:hover {
+    background-color: #291B25 !important;
+    width: 55% !important;
+}
+
 /*Forms*/
 .form-control:focus {
     border-color: var(--navbarColor);
@@ -127,4 +146,17 @@ tbody {
 
 .Shadow1 {
     box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px !important;
+}
+
+.Shadow2 {
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px !important;
+}
+
+/*Anchors*/
+.Anchor {
+    transition: .2s ease-in-out !important;
+}
+
+.Anchor:hover {
+    text-decoration: underline !important;
 }
