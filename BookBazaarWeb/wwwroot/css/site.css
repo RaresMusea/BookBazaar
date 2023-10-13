@@ -97,7 +97,7 @@ tbody {
     margin-right: .2em;
 }
 
-.AddButton {
+.Button {
     transition: .4s ease-in-out;
     border-radius: 10px !important;
     font-size: 1em !important;
@@ -106,11 +106,36 @@ tbody {
     box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px !important;
 }
 
-.AddButton:hover {
-    background-color: #61A6AB !important;
+.Button:hover {
     color: white !important;
     border-color: transparent;
     outline: none;
+}
+
+.EditButton {
+    background-color: #61A6AB;
+    color: white;
+}
+
+.DeleteButton {
+    background-color: orangered;
+    color: white;
+}
+
+.DeleteButton:hover {
+    background-color: orangered;
+}
+
+.AddButton:hover {
+    background-color: #ED5B2D !important;
+}
+
+.EditButton:hover {
+    background-color: #fd7e14 !important;
+}
+
+.DeleteButton:hover {
+    background-color: red;
 }
 
 .CreateCategoryImage {

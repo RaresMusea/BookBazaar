@@ -37,4 +37,22 @@ public class CategoryController : Controller
 
         return View();
     }
+
+    public async Task<IActionResult> Update(int? id)
+    {
+        if (!id.HasValue)
+        {
+            return NotFound();
+        }
+
+        Category foundCategory = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == id);
+
+        if (foundCategory is null)
+        {
+            return NotFound();
+        }
+
+
+        return PartialView("_Update", foundCategory);
+    }
 }

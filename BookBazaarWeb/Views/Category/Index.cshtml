@@ -1,13 +1,12 @@
 ﻿@model List<Category>
 
-
 <div class="container">
     <div class="row pt-3">
         <div class="col-6">
             <h2>Categories</h2>
         </div>
         <div class="col-6 text-end">
-            <button onclick="location.href='@Url.Action("Create", "Category")'" class="button primary AddButton">
+            <button onclick="location.href='@Url.Action("Create", "Category")'" class="button primary Button AddButton">
                 <i class="bi bi-plus-square-fill"></i>
                 Add category
             </button>
@@ -17,13 +16,26 @@
         <thead class="TableHeading box-shadow">
         <th>Genre</th>
         <th>Display Priority</th>
+        <th></th>
         </thead>
         <tbody>
         @foreach (var category in Model)
         {
-            <tr>
-                <td>@Html.DisplayName(category.Genre)</td>
-                <td>@Html.DisplayName(category.Priority.ToString())</td>
+            <tr class="m-0 p-0">
+                <td class="align-middle">@Html.DisplayName(category.Genre)</td>
+                <td class="align-middle">@Html.DisplayName(category.Priority.ToString())</td>
+                <td class="align-middle">
+                    <div class="btn-group d-flex align-items-center justify-content-evenly" role="group">
+                        <button
+                            data-url="@Url.Action("Update", "Category", new { id = category.Id })"
+                            class="button Button EditButton">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
+                        <button asp-controller="Category" class="button Button DeleteButton">
+                            <i class="bi bi-x-square-fill"></i>
+                        </button>
+                    </div>
+                </td>
             </tr>
         }
         </tbody>

@@ -1,0 +1,21 @@
+﻿@model Category;
+
+<h3>Update category</h3>
+<form method="post" class="w-100 row d-flex align-items-center justify-content-center row m-0 p-1">
+    <div class="mb-2">
+        <label asp-for="Genre" class="ml-1 mt-2 d-block text-left"></label>
+        <span asp-validation-for="Genre" class="ValidationError"></span>
+        <input asp-for="Genre" name="Genre" id="Genre" class="form-control mt-1 w-100 h-25">
+    </div>
+    <div class="mb-2">
+        <label class="ml-1 mt-2 text-left">Display priority</label>
+        <span asp-validation-for="Priority" class="ValidationError"></span>
+        <input asp-for="Priority" name="Priority" id="Priority" class="form-control mt-1 w-100 h-25">
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}
