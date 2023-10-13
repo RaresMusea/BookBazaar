@@ -1,9 +1,10 @@
 ﻿using BookBazaarWeb.DataContext;
+using BookBazaarWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookBazaarWeb.Controllers;
 
-[ApiController]
 public class CategoryController : Controller
 {
     private readonly AppDataContext _context;
@@ -13,16 +14,27 @@ public class CategoryController : Controller
         _context = context;
     }
 
-    [Route("{controller}")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var categoryList = _context.Categories.ToList();
+        var categoryList = await _context.Categories.ToListAsync();
         return View(categoryList);
     }
 
-    [Route("{controller}/Create")]
     public IActionResult Create()
     {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(Category category)
+    {
+        if (ModelState.IsValid)
+        {
+            await _context.Categories.AddAsync(category);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
         return View();
     }
 }

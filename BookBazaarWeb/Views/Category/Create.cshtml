@@ -1,19 +1,21 @@
 ﻿@model Category
 
-<form method="post" class="row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
-    <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3">
+<form method="post" class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
+    <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4">
         <h2 class="text-primary">Add a new category</h2>
         <hr/>
         <div class="mb-3">
-            <label for="Genre" class="ml-1 mt-2">Genre</label>
-            <input type="text" name="Genre" id="Genre" class="form-control TextInput mt-1">
+            <label asp-for="Genre" class="ml-1 mt-2"></label>
+            <span asp-validation-for="Genre" class="ValidationError"></span>
+            <input asp-for="Genre" name="Genre" id="Genre" class="form-control TextInput mt-1">
         </div>
         <div class="mb-3">
             <label for="Priority" class="ml-1 mt-2">Display priority</label>
-            <input type="text" name="Priority" id="Priority" class="form-control TextInput mt-1">
+            <span asp-validation-for="Priority" class="ValidationError"></span>
+            <input asp-for="Priority" name="Priority" id="Priority" class="form-control TextInput mt-1">
         </div>
         <button type="submit" class="button-primary mt-2 SubmitNewCategory Shadow2 rounded-3">Save</button>
         <a asp-controller="Category" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Show catergories list</a>
     </div>
-    <img src="/img/undraw_bookshelves_re_lxoy.svg" alt="Books Art" class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block d-"/>
+    <img src="/img/undraw_bookshelves_re_lxoy.svg" alt="Books Art" class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
 </form>
