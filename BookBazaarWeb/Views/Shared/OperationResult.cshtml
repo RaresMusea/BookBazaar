@@ -1,0 +1,11 @@
+﻿@if (TempData["SuccessfulOperation"] != null)
+{
+    <p data-toast="@TempData["SuccessfulOperation"]" class="d-none Dummy"></p>
+    <script src="js/Toaster.js"></script>
+}
+
+@if (TempData["FailedOperation"] is not null)
+{
+    <p data-toast="@TempData["FailedOperation"]" class="d-none Dummy"></p>
+    <script src="js/Toaster.js"></script>
+}

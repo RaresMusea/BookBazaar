@@ -32,6 +32,7 @@ public class CategoryController : Controller
         {
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
+            TempData["SuccessfulOperation"] = $"{category.Genre} category was created successfully!";
             return RedirectToAction("Index");
         }
 
@@ -65,6 +66,7 @@ public class CategoryController : Controller
 
         _context.Categories.Update(categoryPayload);
         await _context.SaveChangesAsync();
+        TempData["SuccessfulOperation"] = "Category updated successfully!";
         return RedirectToAction("Index");
     }
 
