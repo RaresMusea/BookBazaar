@@ -56,15 +56,40 @@ public class CategoryController : Controller
     }
 
     [HttpPost]
-    public IActionResult Update(Category categorPayload)
+    public async Task<IActionResult> Update(Category categoryPayload)
     {
         if (!ModelState.IsValid)
         {
-            return View("Update", categorPayload);
+            return View("Update", categoryPayload);
         }
 
-        _context.Categories.Update(categorPayload);
-        _context.SaveChangesAsync();
+        _context.Categories.Update(categoryPayload);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id is null || id == 0)
+        {
+            return NotFound();
+        }
+
+        Category? requestedCategory = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == id);
+
+        if (requestedCategory is null)
+        {
+            return NotFound();
+        }
+
+        return PartialView("_Delete", requestedCategory);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public async Task<IActionResult> Delete(Category categoryPayload)
+    {
+        _context.Categories.Remove(categoryPayload);
+        await _context.SaveChangesAsync();
         return RedirectToAction("Index");
     }
 }

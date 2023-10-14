@@ -118,8 +118,14 @@ tbody {
 }
 
 .DeleteButton {
-    background-color: orangered;
+    background-color: red;
     color: white;
+    outline: none !important;
+    transition: .2s ease-in-out;
+}
+
+.CancelButton {
+    outline: none !important;
 }
 
 .UpdateButton {
@@ -132,12 +138,13 @@ tbody {
     margin: 0 auto;
 }
 
+
 .UpdateButton:hover {
     background-color: #fd7e14 !important;
 }
 
 .DeleteButton:hover {
-    background-color: orangered;
+    background-color: var(--navbarColor);
 }
 
 .AddButton:hover {

@@ -33,9 +33,11 @@
                             class="button Button EditButton">
                             <i class="bi bi-pencil-fill"></i>
                         </a>
-                        <a asp-controller="Category" class="button Button DeleteButton">
+                        <button asp-controller="Category"
+                                data-url="@Url.Action("Delete", "Category", new { id = category.Id })"
+                                class="button Button DeleteButton">
                             <i class="bi bi-x-square-fill"></i>
-                        </a>
+                        </button>
                     </div>
                 </td>
             </tr>
@@ -43,3 +45,4 @@
         </tbody>
     </table>
 </div>
+<script src="js/ajax/DeleteCategory.js"></script>
