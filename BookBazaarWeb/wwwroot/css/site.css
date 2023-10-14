@@ -122,6 +122,20 @@ tbody {
     color: white;
 }
 
+.UpdateButton {
+    background-color: var(--navbarColor);
+    color: white;
+    border-color: transparent;
+    outline: none;
+    transition: .2s ease-in-out;
+    display: block;
+    margin: 0 auto;
+}
+
+.UpdateButton:hover {
+    background-color: #fd7e14 !important;
+}
+
 .DeleteButton:hover {
     background-color: orangered;
 }
@@ -193,5 +207,10 @@ tbody {
 .ValidationError {
     color: red !important;
     font-weight: bold !important;
+    display: block !important;
+}
+
+.LabelLeft {
+    text-align: left !important;
     display: block !important;
 }

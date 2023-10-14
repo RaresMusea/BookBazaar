@@ -26,14 +26,16 @@
                 <td class="align-middle">@Html.DisplayName(category.Priority.ToString())</td>
                 <td class="align-middle">
                     <div class="btn-group d-flex align-items-center justify-content-evenly" role="group">
-                        <button
-                            data-url="@Url.Action("Update", "Category", new { id = category.Id })"
+                        <a
+                            asp-controller="Category"
+                            asp-action="Update"
+                            asp-route-id="@category.Id"
                             class="button Button EditButton">
                             <i class="bi bi-pencil-fill"></i>
-                        </button>
-                        <button asp-controller="Category" class="button Button DeleteButton">
+                        </a>
+                        <a asp-controller="Category" class="button Button DeleteButton">
                             <i class="bi bi-x-square-fill"></i>
-                        </button>
+                        </a>
                     </div>
                 </td>
             </tr>

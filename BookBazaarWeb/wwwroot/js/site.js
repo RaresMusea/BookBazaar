@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 
-const buttons = document.querySelectorAll('.EditButton');
+/*const buttons = document.querySelectorAll('.EditButton');
 const urls = [];
 buttons.forEach(button => {
     console.log(button.dataset.url);
@@ -15,17 +15,22 @@ for (let i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', async (e) => {
         fetch(urls[i])
             .then(response => response.text())
-            .then((data) => {
+            .then(data => {
                 console.log(data)
-                setTimeout(() => Swal.fire({
+                Swal.fire({
                     html: data,
                     showCancelButton: true,
-                    confirmButtonText: "Update",
-                    confirmButtonColor: '#468B91'
+                    showConfirmButton: false,
+                    /!*confirmButtonText: "Update",
+                    confirmButtonColor: '#468B91'*!/
                 }).then(result => {
                     if (result.isConfirmed) {
                     }
-                }), 200);
-            });
+                });
+            })
+            .catch(console.log);
     });
-}
+
+    document.querySelector('.UpdateButton').addEventListener('submit', (e) => {
+        e.preventDefault();
+    })*/

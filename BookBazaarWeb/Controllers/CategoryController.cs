@@ -40,19 +40,31 @@ public class CategoryController : Controller
 
     public async Task<IActionResult> Update(int? id)
     {
-        if (!id.HasValue)
+        if (id is null || id == 0)
         {
             return NotFound();
         }
 
-        Category foundCategory = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == id);
+        Category category = (await _context.Categories.FirstOrDefaultAsync(c => c.Id == id));
 
-        if (foundCategory is null)
+        if (category is null)
         {
             return NotFound();
         }
 
+        return View("Update", category);
+    }
 
-        return PartialView("_Update", foundCategory);
+    [HttpPost]
+    public IActionResult Update(Category categorPayload)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View("Update", categorPayload);
+        }
+
+        _context.Categories.Update(categorPayload);
+        _context.SaveChangesAsync();
+        return RedirectToAction("Index");
     }
 }
