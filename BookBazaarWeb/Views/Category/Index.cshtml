@@ -1,4 +1,6 @@
-﻿@model List<Category>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<BookBazaar.Models.CategoryModels.Category>
+
 <partial name="OperationResult"></partial>
 <div class="container">
     <div class="row pt-3">
@@ -45,4 +47,4 @@
         </tbody>
     </table>
 </div>
-<script src="js/ajax/DeleteCategory.js"></script>
+<script src="js/ajax/DeleteCategory.js" type="module"></script>

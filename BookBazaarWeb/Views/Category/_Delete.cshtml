@@ -1,6 +1,16 @@
-﻿@model Category;
+﻿@{
+    JsonSerializer serializer = new JsonSerializer();
+    Category model = Model;
+}
+
+@using Newtonsoft.Json
+@using BookBazaar.Models.CategoryModels
+@model BookBazaar.Models.CategoryModels.Category;
 
 <div class="SwalDelModal">
-    <h5>Are you sure that you want to delete @Model.Genre category?</h5>
+    <h5 class="ModalQuestion"
+        data-payload="@JsonConvert.SerializeObject(model)">
+        Are you sure that you want to delete @Model.Genre category?
+    </h5>
     <h6 class="text-danger">It will be permanently removed and it will cannot be restored!</h6>
 </div>

@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookBazaarWeb", "BookBazaarWeb\BookBazaarWeb.csproj", "{01DBF295-1998-4891-9EA4-8EF3887480BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookBazaar.Data", "BookBazaar.Data\BookBazaar.Data.csproj", "{0D9E5947-1D62-44B8-97AE-4D7D25C3A49C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookBazaar.Models", "BookBazaar.Models\BookBazaar.Models.csproj", "{05578A5B-55A7-41B9-BD02-6DEE7A9546E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookBazaar.Misc", "BookBazaar.Misc\BookBazaar.Misc.csproj", "{C51C4278-D570-4290-BAF4-37AEF2EF0197}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,17 @@ Global
 		{01DBF295-1998-4891-9EA4-8EF3887480BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01DBF295-1998-4891-9EA4-8EF3887480BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01DBF295-1998-4891-9EA4-8EF3887480BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D9E5947-1D62-44B8-97AE-4D7D25C3A49C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D9E5947-1D62-44B8-97AE-4D7D25C3A49C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D9E5947-1D62-44B8-97AE-4D7D25C3A49C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D9E5947-1D62-44B8-97AE-4D7D25C3A49C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05578A5B-55A7-41B9-BD02-6DEE7A9546E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05578A5B-55A7-41B9-BD02-6DEE7A9546E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05578A5B-55A7-41B9-BD02-6DEE7A9546E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05578A5B-55A7-41B9-BD02-6DEE7A9546E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C51C4278-D570-4290-BAF4-37AEF2EF0197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C51C4278-D570-4290-BAF4-37AEF2EF0197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C51C4278-D570-4290-BAF4-37AEF2EF0197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C51C4278-D570-4290-BAF4-37AEF2EF0197}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

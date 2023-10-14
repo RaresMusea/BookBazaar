@@ -1,7 +1,7 @@
-﻿using BookBazaarWeb.Models;
+﻿using BookBazaar.Models.CategoryModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookBazaarWeb.DataContext;
+namespace BookBazaar.Data.DataContext;
 
 public class AppDataContext : DbContext
 {
@@ -9,7 +9,7 @@ public class AppDataContext : DbContext
     {
     }
 
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<Category> Categories { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

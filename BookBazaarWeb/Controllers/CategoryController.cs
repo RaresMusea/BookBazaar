@@ -1,5 +1,5 @@
-﻿using BookBazaarWeb.DataContext;
-using BookBazaarWeb.Models;
+﻿using BookBazaar.Data.DataContext;
+using BookBazaar.Models.CategoryModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,7 +46,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category category = (await _context.Categories.FirstOrDefaultAsync(c => c.Id == id));
+        Category? category = (await _context.Categories.FirstOrDefaultAsync(c => c.Id == id));
 
         if (category is null)
         {
@@ -91,6 +91,21 @@ public class CategoryController : Controller
     public async Task<IActionResult> Delete(Category categoryPayload)
     {
         _context.Categories.Remove(categoryPayload);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Index");
+    }
+
+    [HttpDelete("/Remove{categoryId}")]
+    public async Task<IActionResult> Remove(int? categoryId)
+    {
+        Category? requestedCategory = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == categoryId);
+
+        if (requestedCategory is null)
+        {
+            return NotFound();
+        }
+
+        _context.Remove(requestedCategory);
         await _context.SaveChangesAsync();
         return RedirectToAction("Index");
     }

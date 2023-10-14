@@ -6,6 +6,34 @@ buttons.forEach(button => {
     urls.push(button.dataset.url);
 })
 
+const displaySuccesDialog = (entityName) => {
+    Swal.fire({
+        icon: 'success',
+        html: `<h4>The ${entityName} was deleted successfully!.</h4>`,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#ED5B2D",
+    }).then(result => {
+        if (result.isConfirmed) {
+            location.reload();
+        }
+    })
+}
+
+const displayFailureDialog = (entityName) => {
+    Swal.fire({
+        icon: 'error',
+        html: `<h4>An error occurred while attempting to delete the ${entityName}.</h4>`,
+        showConfirmButton: true,
+        confirmButtonText: "Retry",
+        confirmButtonColor: "#545454",
+    }).then(result => {
+        if (result.isConfirmed) {
+            location.reload();
+        }
+    })
+}
+
 for (let i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', async (e) => {
         fetch(urls[i])
@@ -22,11 +50,14 @@ for (let i = 0; i < buttons.length; i++) {
                     icon: 'question',
                 }).then(result => {
                         if (result.isConfirmed) {
+                            console.log(document.querySelector(".ModalQuestion").dataset.payload);
+                            const payloadJson = JSON.parse(document.querySelector(".ModalQuestion").dataset.payload);
                             $.ajax({
-                                url: e.target.dataset.url,
+                                url: '/Category/Delete',
                                 type: 'POST',
+                                data: payloadJson,
                                 success: () => {
-                                    Swal.fire({
+                                    /*Swal.fire({
                                         icon: 'success',
                                         html: '<h4>The category was deleted successfully!.</h4>',
                                         showConfirmButton: true,
@@ -34,22 +65,13 @@ for (let i = 0; i < buttons.length; i++) {
                                         confirmButtonColor: "#ED5B2D",
                                     }).then(result => {
                                         if (result.isConfirmed) {
-                                            window.location.reload();
+                                            location.reload();
                                         }
-                                    })
+                                    })*/
+                                    displaySuccesDialog('category');
                                 },
                                 error: () => {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        html: '<h4>An error occurred while attempting to delete the entity.</h4>',
-                                        showConfirmButton: true,
-                                        confirmButtonText: "Retry",
-                                        confirmButtonColor: "#545454",
-                                    }).then(result => {
-                                        if (result.isConfirmed) {
-                                            window.location.reload();
-                                        }
-                                    })
+                                    displayFailureDialog('category');
                                 }
                             });
                         }
