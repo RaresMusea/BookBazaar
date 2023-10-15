@@ -17,9 +17,4 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         return _context.Categories.Update(category).Entity;
     }
-
-    public async Task<int> SaveAsync()
-    {
-        return await _context.SaveChangesAsync();
-    }
 }

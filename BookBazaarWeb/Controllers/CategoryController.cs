@@ -6,16 +6,16 @@ namespace BookBazaarWeb.Controllers;
 
 public class CategoryController : Controller
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IWorkUnit _workUnit;
 
-    public CategoryController(ICategoryRepository repository)
+    public CategoryController(IWorkUnit workUnit)
     {
-        _categoryRepository = repository;
+        _workUnit = workUnit;
     }
 
     public async Task<IActionResult> Index()
     {
-        var categories = await _categoryRepository.RetrieveAllAsync();
+        var categories = await _workUnit.CategoryRepo.RetrieveAllAsync();
         return View(categories.ToList());
     }
 
@@ -29,8 +29,8 @@ public class CategoryController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _categoryRepository.CreateAsync(category);
-            int affectedRows = await _categoryRepository.SaveAsync();
+            await _workUnit.CategoryRepo.CreateAsync(category);
+            int affectedRows = await _workUnit.SaveAsync();
             TempData["SuccessfulOperation"] = $"{category.Genre} category was created successfully!";
             return RedirectToAction("Index");
         }
@@ -45,7 +45,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? category = await _categoryRepository.GetAsync(cat => cat.Id == id);
+        Category? category = await _workUnit.CategoryRepo.GetAsync(cat => cat.Id == id);
 
         if (category is null)
         {
@@ -63,8 +63,8 @@ public class CategoryController : Controller
             return View("Update", categoryPayload);
         }
 
-        _categoryRepository.Update(categoryPayload);
-        await _categoryRepository.SaveAsync();
+        _workUnit.CategoryRepo.Update(categoryPayload);
+        await _workUnit.SaveAsync();
         TempData["SuccessfulOperation"] = "Category updated successfully!";
         return RedirectToAction("Index");
     }
@@ -76,7 +76,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? requestedCategory = await _categoryRepository.GetAsync(cat => cat.Id == id);
+        Category? requestedCategory = await _workUnit.CategoryRepo.GetAsync(cat => cat.Id == id);
 
         if (requestedCategory is null)
         {
@@ -89,8 +89,8 @@ public class CategoryController : Controller
     [HttpPost, ActionName("Delete")]
     public async Task<IActionResult> Delete(Category categoryPayload)
     {
-        _categoryRepository.Remove(categoryPayload);
-        await _categoryRepository.SaveAsync();
+        _workUnit.CategoryRepo.Remove(categoryPayload);
+        await _workUnit.SaveAsync();
         return RedirectToAction("Index");
     }
 }
