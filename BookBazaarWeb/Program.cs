@@ -1,4 +1,4 @@
-using BookBazaar.Data.DataContext;
+﻿using BookBazaar.Data.DataContext;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Data.Repo.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +31,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

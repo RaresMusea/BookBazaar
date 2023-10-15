@@ -2,8 +2,9 @@
 using BookBazaar.Models.CategoryModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookBazaarWeb.Controllers;
+namespace BookBazaarWeb.Areas.Admin.Controllers;
 
+[Area("Admin")]
 public class CategoryController : Controller
 {
     private readonly IWorkUnit _workUnit;
@@ -30,7 +31,7 @@ public class CategoryController : Controller
         if (ModelState.IsValid)
         {
             await _workUnit.CategoryRepo.CreateAsync(category);
-            int affectedRows = await _workUnit.SaveAsync();
+            await _workUnit.SaveAsync();
             TempData["SuccessfulOperation"] = $"{category.Genre} category was created successfully!";
             return RedirectToAction("Index");
         }
