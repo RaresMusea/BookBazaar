@@ -31,8 +31,18 @@
                     <li class="nav-item">
                         <a class="NavbarLink nav-link text-white NavigationLink" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="NavbarLink nav-link text-white NavigationLink" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
+                    <li class="nav-item dropdown">
+                        <a class=" NavbarLink text-white nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Management
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li class="nav-item">
+                                <a class="text-dark NavigationLinkDropDown dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

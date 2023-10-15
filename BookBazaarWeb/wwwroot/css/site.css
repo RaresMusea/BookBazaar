@@ -45,6 +45,15 @@ nav {
     transition: .4s ease-in-out !important;
 }
 
+.NavigationLinkDropdown {
+    transition: .4s ease-in-out !important;
+    color: var(--navbarColor) !important;
+}
+
+.NavigationLinkDropdown:hover {
+    opacity: 75% !important;
+}
+
 .NavigationLink:hover {
     color: darkgrey !important;
 }
