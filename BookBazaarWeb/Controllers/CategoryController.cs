@@ -1,23 +1,22 @@
-﻿using BookBazaar.Data.DataContext;
+﻿using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.CategoryModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookBazaarWeb.Controllers;
 
 public class CategoryController : Controller
 {
-    private readonly AppDataContext _context;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public CategoryController(AppDataContext context)
+    public CategoryController(ICategoryRepository repository)
     {
-        _context = context;
+        _categoryRepository = repository;
     }
 
     public async Task<IActionResult> Index()
     {
-        var categoryList = await _context.Categories.ToListAsync();
-        return View(categoryList);
+        var categories = await _categoryRepository.RetrieveAllAsync();
+        return View(categories.ToList());
     }
 
     public IActionResult Create()
@@ -30,8 +29,8 @@ public class CategoryController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _context.Categories.AddAsync(category);
-            await _context.SaveChangesAsync();
+            await _categoryRepository.CreateAsync(category);
+            int affectedRows = await _categoryRepository.SaveAsync();
             TempData["SuccessfulOperation"] = $"{category.Genre} category was created successfully!";
             return RedirectToAction("Index");
         }
@@ -46,7 +45,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? category = (await _context.Categories.FirstOrDefaultAsync(c => c.Id == id));
+        Category? category = await _categoryRepository.GetAsync(cat => cat.Id == id);
 
         if (category is null)
         {
@@ -64,8 +63,8 @@ public class CategoryController : Controller
             return View("Update", categoryPayload);
         }
 
-        _context.Categories.Update(categoryPayload);
-        await _context.SaveChangesAsync();
+        _categoryRepository.Update(categoryPayload);
+        await _categoryRepository.SaveAsync();
         TempData["SuccessfulOperation"] = "Category updated successfully!";
         return RedirectToAction("Index");
     }
@@ -77,7 +76,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? requestedCategory = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == id);
+        Category? requestedCategory = await _categoryRepository.GetAsync(cat => cat.Id == id);
 
         if (requestedCategory is null)
         {
@@ -90,23 +89,8 @@ public class CategoryController : Controller
     [HttpPost, ActionName("Delete")]
     public async Task<IActionResult> Delete(Category categoryPayload)
     {
-        _context.Categories.Remove(categoryPayload);
-        await _context.SaveChangesAsync();
-        return RedirectToAction("Index");
-    }
-
-    [HttpDelete("/Remove{categoryId}")]
-    public async Task<IActionResult> Remove(int? categoryId)
-    {
-        Category? requestedCategory = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == categoryId);
-
-        if (requestedCategory is null)
-        {
-            return NotFound();
-        }
-
-        _context.Remove(requestedCategory);
-        await _context.SaveChangesAsync();
+        _categoryRepository.Remove(categoryPayload);
+        await _categoryRepository.SaveAsync();
         return RedirectToAction("Index");
     }
 }
