@@ -2,7 +2,7 @@
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.CategoryModels;
 
-namespace BookBazaar.Data.Repo;
+namespace BookBazaar.Data.Repo.Impl;
 
 public class CategoryRepository : Repository<Category>, ICategoryRepository
 {
