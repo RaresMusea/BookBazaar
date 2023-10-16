@@ -259,9 +259,20 @@ tbody {
     text-align: left !important;
     white-space: nowrap;
     overflow: scroll !important;
-    /*text-overflow: ellipsis !important;*/
+    text-overflow: ellipsis !important;
+    cursor: pointer;
 }
 
 .TableDefinition::-webkit-scrollbar {
     display: none !important;
+}
+
+.HovarableTableData:hover {
+    text-decoration: underline !important;
+}
+
+.Paragraph {
+    display: block !important;
+    text-align: left !important;
+    margin-top: 1.5em !important;
 }

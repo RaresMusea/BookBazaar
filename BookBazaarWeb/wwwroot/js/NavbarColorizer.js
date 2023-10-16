@@ -1,7 +1,8 @@
 ﻿const currentPage = window.location.href;
 console.log(currentPage);
-const pagesText = ["Home", "Privacy", "Category"];
-const pagesDOM = document.querySelectorAll(".NavbarLink");
+const pagesText = ["Home", "Privacy", "Book", "Category"];
+const pagesDOM = document.querySelectorAll(".NavigationLink");
+console.log(pagesDOM);
 const color = "#ED5B2D";
 
 const revalidateColors = () => {
