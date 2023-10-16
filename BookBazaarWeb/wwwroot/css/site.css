@@ -50,6 +50,10 @@ nav {
     color: var(--navbarColor) !important;
 }
 
+.NavigationLinkDropdown:focus {
+    background-color: lightgray !important;
+}
+
 .NavigationLinkDropdown:hover {
     opacity: 75% !important;
 }
@@ -246,4 +250,18 @@ tbody {
     list-style-type: none !important;
     margin-left: 0 !important;
     text-align: left !important;
+}
+
+/*Tables*/
+.TableDefinition {
+    max-height: 2.5em !important;
+    max-width: 7em !important;
+    text-align: left !important;
+    white-space: nowrap;
+    overflow: scroll !important;
+    /*text-overflow: ellipsis !important;*/
+}
+
+.TableDefinition::-webkit-scrollbar {
+    display: none !important;
 }
