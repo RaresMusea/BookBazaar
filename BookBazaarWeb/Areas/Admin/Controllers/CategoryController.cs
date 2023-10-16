@@ -28,6 +28,12 @@ public class CategoryController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(Category category)
     {
+        if (await _workUnit.CategoryRepo.Exists(category))
+        {
+            ModelState.AddModelError("", $"Unable to create category '{category.Genre}'" +
+                                         $" because another category with the same name already exists!");
+        }
+
         if (ModelState.IsValid)
         {
             await _workUnit.CategoryRepo.CreateAsync(category);
