@@ -1,4 +1,5 @@
 ﻿@using Newtonsoft.Json
+@using System.Globalization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model List<BookBazaar.Models.BookModels.Book>
 
@@ -42,7 +43,7 @@
                 <td class="align-middle">@Html.DisplayName(book.Publisher)</td>
                 <td class="align-middle">@Html.DisplayName(book.Language)</td>
                 <td class="align-middle">@Html.DisplayName(book.DatePublished.ToShortDateString())</td>
-                <td class="align-middle">@Html.DisplayName(book.Price.ToString()) &euro;</td>
+                <td class="align-middle">@Html.DisplayName(book.Price.ToString(new CultureInfo("en-US"))) &euro;</td>
                 <td class="align-middle border-end-0">
                     <div class="d-flex align-items-center justify-content-around w-100" role="group">
                         <a

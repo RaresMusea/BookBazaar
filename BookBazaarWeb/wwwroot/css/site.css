@@ -204,6 +204,18 @@ tbody {
 
 .CreateCategoryForm {
     margin-top: 3em !important;
+    margin-bottom: 3em !important;
+    overflow: scroll !important;
+}
+
+.CreateCategoryForm::-webkit-scrollbar {
+    display: none !important;
+}
+
+@media screen and(min-width: 1370px) {
+    .CreateCategoryForm {
+        margin-top: 3em !important;
+    }
 }
 
 .LabelLeft {

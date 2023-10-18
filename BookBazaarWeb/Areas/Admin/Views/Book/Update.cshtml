@@ -1,1 +1,70 @@
-﻿
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model BookBazaar.Models.BookModels.Book;
+
+<form method="post" class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
+    <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4">
+        <h2 class="text-primary">Edit a book</h2>
+        <hr/>
+        <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Title" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Title" class="ValidationError"></span>
+                <input asp-for="Title" name="Title" class="form-control TextInput mt-">
+            </div>
+            <div class="col-5">
+                <label asp-for="Author" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Author" class="ValidationError"></span>
+                <input asp-for="Author" name="Author" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Publisher" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Publisher" class="ValidationError"></span>
+                <input asp-for="Publisher" name="Publisher" class="form-control TextInput mt-">
+            </div>
+            <div class="col-5">
+                <label asp-for="Isbn" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Isbn" class="ValidationError"></span>
+                <input asp-for="Isbn" name="ISBN" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <div class="col-11">
+                <label asp-for="Description" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Description" class="ValidationError"></span>
+                <input asp-for="Description" name="Description" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Language" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Language" class="ValidationError"></span>
+                <input asp-for="Language" name="Language" class="form-control TextInput mt-">
+            </div>
+            <div class="col-5">
+                <label asp-for="Price" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Price" class="ValidationError"></span>
+                <input asp-for="Price" name="Price" class="form-control TextInput mt-1" value="@Model.Price.ToString(new CultureInfo("en-US"))">
+            </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <div class="col-11">
+                <label asp-for="DatePublished" class="ml-1 mt-2"></label>
+                <span asp-validation-for="DatePublished" class="ValidationError"></span>
+                <input asp-for="DatePublished" name="DatePublished" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <button type="submit" class="button-primary mt-2 w-50 align-center UpdateButton Shadow2 rounded-3">Update changes</button>
+        <a asp-controller="Category" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Show all books</a>
+    </div>
+    <img src="~/img/undraw_notebook_re_id0r.svg" alt="Books Art" class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}

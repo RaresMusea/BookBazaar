@@ -13,7 +13,7 @@ public class Book
 
     [Required] public string Description { get; set; } = string.Empty;
 
-    [Required] public string Isbn { get; set; } = string.Empty;
+    [Required] [DisplayName("ISBN")] public string Isbn { get; set; } = string.Empty;
 
     [Required] public string Publisher { get; set; } = string.Empty;
 
