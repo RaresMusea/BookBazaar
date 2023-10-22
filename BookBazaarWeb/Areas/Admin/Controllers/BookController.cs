@@ -73,7 +73,7 @@ public class BookController : Controller
 
         _workUnit.BookRepo.Update(bookPayload);
         await _workUnit.SaveAsync();
-        TempData["SuccessfulOperation"] = "Category updated successfully!";
+        TempData["SuccessfulOperation"] = "Book updated successfully!";
         return RedirectToAction("Index");
     }
 
