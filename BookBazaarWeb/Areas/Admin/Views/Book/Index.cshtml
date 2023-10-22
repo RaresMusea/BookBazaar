@@ -45,7 +45,7 @@
                 <td class="align-middle">@Html.DisplayName(book.DatePublished.ToShortDateString())</td>
                 <td class="align-middle">@Html.DisplayName(book.Price.ToString(new CultureInfo("en-US"))) &euro;</td>
                 <td class="align-middle border-end-0">
-                    <div class="d-flex align-items-center justify-content-around w-100" role="group">
+                    <div class="d-flex align-items-center justify-content-evenly w-100" role="group">
                         <a
                             asp-controller="Book"
                             asp-action="Update"
@@ -54,7 +54,7 @@
                             <i class="bi bi-pencil-fill"></i>
                         </a>
                         <button asp-controller="Book"
-                                data-url="@Url.Action("Delete", "Category", new { id = book.Id })"
+                                data-url="@Url.Action("Delete", "Book", new { id = book.Id })"
                                 class="button Button DeleteButton">
                             <i class="bi bi-x-square-fill"></i>
                         </button>
@@ -65,4 +65,5 @@
         </tbody>
     </table>
 </div>
-<script src="~/js/BookDescriptionModal.js" type="module"></script>
+<script src="~/js/BookDescriptionModal.js"></script>
+<script src="~/js/ajax/DeleteBook.js"></script>
