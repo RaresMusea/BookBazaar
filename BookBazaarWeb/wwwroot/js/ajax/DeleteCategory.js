@@ -53,21 +53,10 @@ for (let i = 0; i < buttons.length; i++) {
                             console.log(document.querySelector(".ModalQuestion").dataset.payload);
                             const payloadJson = JSON.parse(document.querySelector(".ModalQuestion").dataset.payload);
                             $.ajax({
-                                url: '/Category/Delete',
+                                url: '/Admin/Category/Delete',
                                 type: 'POST',
                                 data: payloadJson,
                                 success: () => {
-                                    /*Swal.fire({
-                                        icon: 'success',
-                                        html: '<h4>The category was deleted successfully!.</h4>',
-                                        showConfirmButton: true,
-                                        confirmButtonText: "OK",
-                                        confirmButtonColor: "#ED5B2D",
-                                    }).then(result => {
-                                        if (result.isConfirmed) {
-                                            location.reload();
-                                        }
-                                    })*/
                                     displaySuccesDialog('category');
                                 },
                                 error: () => {

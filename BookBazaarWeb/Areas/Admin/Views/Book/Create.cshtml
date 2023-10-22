@@ -1,5 +1,4 @@
-﻿@using System.Globalization
-@model BookBazaar.Models.BookModels.Book
+﻿@model BookBazaar.Models.BookModels.Book
 
 <form method="post" class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
     <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4">
@@ -46,7 +45,7 @@
             <div class="col-5">
                 <label asp-for="Price" class="ml-1 mt-2"></label>
                 <span asp-validation-for="Price" class="ValidationError"></span>
-                <input asp-for="Price" name="Price" class="form-control TextInput mt-1" value="@Model.Price.ToString(new CultureInfo("en-US"))">
+                <input asp-for="Price" name="Price" class="form-control TextInput mt-1">
             </div>
         </div>
         <div class="mb-3 d-flex justify-content-center">
