@@ -1,23 +1,23 @@
-﻿using BookBazaar.Data.DataContext;
+﻿using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.CategoryModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace BookBazaarWeb.Controllers;
+namespace BookBazaarWeb.Areas.Admin.Controllers;
 
+[Area("Admin")]
 public class CategoryController : Controller
 {
-    private readonly AppDataContext _context;
+    private readonly IWorkUnit _workUnit;
 
-    public CategoryController(AppDataContext context)
+    public CategoryController(IWorkUnit workUnit)
     {
-        _context = context;
+        _workUnit = workUnit;
     }
 
     public async Task<IActionResult> Index()
     {
-        var categoryList = await _context.Categories.ToListAsync();
-        return View(categoryList);
+        var categories = await _workUnit.CategoryRepo.RetrieveAllAsync();
+        return View(categories.ToList());
     }
 
     public IActionResult Create()
@@ -28,10 +28,16 @@ public class CategoryController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(Category category)
     {
+        if (await _workUnit.CategoryRepo.Exists(category))
+        {
+            ModelState.AddModelError("", $"Unable to create category '{category.Genre}'" +
+                                         $" because another category with the same name already exists!");
+        }
+
         if (ModelState.IsValid)
         {
-            await _context.Categories.AddAsync(category);
-            await _context.SaveChangesAsync();
+            await _workUnit.CategoryRepo.CreateAsync(category);
+            await _workUnit.SaveAsync();
             TempData["SuccessfulOperation"] = $"{category.Genre} category was created successfully!";
             return RedirectToAction("Index");
         }
@@ -46,7 +52,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? category = (await _context.Categories.FirstOrDefaultAsync(c => c.Id == id));
+        Category? category = await _workUnit.CategoryRepo.GetAsync(cat => cat.Id == id);
 
         if (category is null)
         {
@@ -64,8 +70,8 @@ public class CategoryController : Controller
             return View("Update", categoryPayload);
         }
 
-        _context.Categories.Update(categoryPayload);
-        await _context.SaveChangesAsync();
+        _workUnit.CategoryRepo.Update(categoryPayload);
+        await _workUnit.SaveAsync();
         TempData["SuccessfulOperation"] = "Category updated successfully!";
         return RedirectToAction("Index");
     }
@@ -77,7 +83,7 @@ public class CategoryController : Controller
             return NotFound();
         }
 
-        Category? requestedCategory = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == id);
+        Category? requestedCategory = await _workUnit.CategoryRepo.GetAsync(cat => cat.Id == id);
 
         if (requestedCategory is null)
         {
@@ -90,23 +96,8 @@ public class CategoryController : Controller
     [HttpPost, ActionName("Delete")]
     public async Task<IActionResult> Delete(Category categoryPayload)
     {
-        _context.Categories.Remove(categoryPayload);
-        await _context.SaveChangesAsync();
-        return RedirectToAction("Index");
-    }
-
-    [HttpDelete("/Remove{categoryId}")]
-    public async Task<IActionResult> Remove(int? categoryId)
-    {
-        Category? requestedCategory = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == categoryId);
-
-        if (requestedCategory is null)
-        {
-            return NotFound();
-        }
-
-        _context.Remove(requestedCategory);
-        await _context.SaveChangesAsync();
+        _workUnit.CategoryRepo.Remove(categoryPayload);
+        await _workUnit.SaveAsync();
         return RedirectToAction("Index");
     }
 }

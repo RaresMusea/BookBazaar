@@ -1,0 +1,14 @@
+﻿@using Newtonsoft.Json
+@using BookBazaar.Models.BookModels
+@{
+    JsonSerializer serializer = new JsonSerializer();
+    Book model = Model;
+}
+
+<div class="SwalDelModal">
+    <h5 class="ModalQuestion"
+        data-payload="@JsonConvert.SerializeObject(model)">
+        Are you sure that you want to delete the book "@Model.Title" by @Model.Author?
+    </h5>
+    <h6 class="text-danger">It will be permanently removed from the store along with its adjacent inventory entry and it will cannot be restored!</h6>
+</div>

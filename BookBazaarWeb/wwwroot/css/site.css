@@ -45,6 +45,19 @@ nav {
     transition: .4s ease-in-out !important;
 }
 
+.NavigationLinkDropdown {
+    transition: .4s ease-in-out !important;
+    color: var(--navbarColor) !important;
+}
+
+.NavigationLinkDropdown:focus {
+    background-color: lightgray !important;
+}
+
+.NavigationLinkDropdown:hover {
+    opacity: 75% !important;
+}
+
 .NavigationLink:hover {
     color: darkgrey !important;
 }
@@ -122,6 +135,7 @@ tbody {
     color: white;
     outline: none !important;
     transition: .2s ease-in-out;
+    border: transparent !important;
 }
 
 .CancelButton {
@@ -190,6 +204,23 @@ tbody {
 
 .CreateCategoryForm {
     margin-top: 3em !important;
+    margin-bottom: 3em !important;
+    overflow: scroll !important;
+}
+
+.CreateCategoryForm::-webkit-scrollbar {
+    display: none !important;
+}
+
+@media screen and(min-width: 1370px) {
+    .CreateCategoryForm {
+        margin-top: 3em !important;
+    }
+}
+
+.LabelLeft {
+    text-align: left !important;
+    display: block !important;
 }
 
 /*Shadows*/
@@ -217,7 +248,43 @@ tbody {
     display: block !important;
 }
 
-.LabelLeft {
+.ValidationSummary {
+    color: red !important;
+    font-weight: bold !important;
     text-align: left !important;
+}
+
+.ValidationSummary ul {
+    padding-left: 0 !important;
+}
+
+.ValidationSummary ul li {
+    list-style-type: none !important;
+    margin-left: 0 !important;
+    text-align: left !important;
+}
+
+/*Tables*/
+.TableDefinition {
+    max-height: 2.5em !important;
+    max-width: 7em !important;
+    text-align: left !important;
+    white-space: nowrap;
+    overflow: scroll !important;
+    text-overflow: ellipsis !important;
+    cursor: pointer;
+}
+
+.TableDefinition::-webkit-scrollbar {
+    display: none !important;
+}
+
+.HovarableTableData:hover {
+    text-decoration: underline !important;
+}
+
+.Paragraph {
     display: block !important;
+    text-align: left !important;
+    margin-top: 1.5em !important;
 }

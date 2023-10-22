@@ -1,8 +1,7 @@
-﻿const buttons = document.querySelectorAll('.DeleteButton');
+const buttons = document.querySelectorAll('.DeleteButton');
 const urls = [];
 
 buttons.forEach(button => {
-    console.table(button, button.dataset.url);
     urls.push(button.dataset.url);
 })
 
@@ -53,14 +52,14 @@ for (let i = 0; i < buttons.length; i++) {
                             console.log(document.querySelector(".ModalQuestion").dataset.payload);
                             const payloadJson = JSON.parse(document.querySelector(".ModalQuestion").dataset.payload);
                             $.ajax({
-                                url: '/Admin/Category/Delete',
+                                url: '/Admin/Book/Delete',
                                 type: 'POST',
                                 data: payloadJson,
                                 success: () => {
-                                    displaySuccesDialog('category');
+                                    displaySuccesDialog('book');
                                 },
                                 error: () => {
-                                    displayFailureDialog('category');
+                                    displayFailureDialog('book');
                                 }
                             });
                         }
