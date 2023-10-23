@@ -1,6 +1,7 @@
 ﻿using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.BookModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookBazaarWeb.Areas.Admin.Controllers;
 
@@ -20,8 +21,17 @@ public class BookController : Controller
         return View(books.ToList());
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        IEnumerable<SelectListItem> categories = (await _workUnit.CategoryRepo.RetrieveAllAsync())
+            .ToList().Select(
+                elem => new SelectListItem
+                {
+                    Text = elem.Genre,
+                    Value = elem.Id.ToString(),
+                });
+
+        ViewBag.CategoryList = categories;
         return View();
     }
 

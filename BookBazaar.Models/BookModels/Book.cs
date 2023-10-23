@@ -1,11 +1,17 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using BookBazaar.Models.CategoryModels;
 
 namespace BookBazaar.Models.BookModels;
 
 public class Book
 {
     [Key] public int Id { get; set; }
+
+    [DisplayName("Genre")] public int CategoryId { get; set; }
+
+    [ForeignKey("CategoryId")] public Category? Category { get; set; }
 
     [Required] public string Title { get; set; } = string.Empty;
 
@@ -19,7 +25,7 @@ public class Book
 
     [Required] public string Language { get; set; } = string.Empty;
 
-    /*[Required] public byte[]? CoverImage { get; set; }*/
+    public string CoverImageUrl { get; set; } = string.Empty;
 
     [Range(2, 600)] [Required] public double Price { get; set; }
 

@@ -202,6 +202,12 @@ tbody {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px var(--navbarColor);
 }
 
+.form-select:focus {
+    border-color: var(--navbarColor);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px var(--navbarColor);
+
+}
+
 .CreateCategoryForm {
     margin-top: 3em !important;
     margin-bottom: 3em !important;
@@ -287,4 +293,8 @@ tbody {
     display: block !important;
     text-align: left !important;
     margin-top: 1.5em !important;
+}
+
+.ForcedMargin {
+    margin-top: 1em !important;
 }

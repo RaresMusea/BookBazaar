@@ -24,7 +24,7 @@ public class AppDataContext : DbContext
         modelBuilder.Entity<Book>().HasData(
             new Book
             {
-                Id = 1, Title = "How to Win Friends and Influence People", Author = "Dale Carnegie",
+                Id = 1, Title = "How to Win Friends and Influence People", Author = "Dale Carnegie", CategoryId = 5,
                 Description =
                     "Millions of people from all around the world have improved and continue to improve their lives" +
                     " with the help of Dale Carnegie's ideas and techniques. In 'The Secrets of Success: How to Win" +
@@ -35,6 +35,7 @@ public class AppDataContext : DbContext
                     " and become more adept in conversation. You will be able to ignite enthusiasm among your peers." +
                     " The book promises to transform your relationships with all the people in your life.",
                 DatePublished = new DateTime(2004, 4, 15),
+                CoverImageUrl = "",
                 Isbn = "9780091906351",
                 Price = 10.5,
                 Language = "English",
@@ -42,7 +43,7 @@ public class AppDataContext : DbContext
             },
             new Book
             {
-                Id = 2, Title = "Good to Great", Author = "Jim Collins",
+                Id = 2, Title = "Good to Great", Author = "Jim Collins", CategoryId = 3, CoverImageUrl = "",
                 Description =
                     "Following on from 'Built To Last' which was about how to establish a successful business," +
                     " this book looks at how to develop a good company into a great one.",
@@ -54,8 +55,8 @@ public class AppDataContext : DbContext
             },
             new Book
             {
-                Id = 3, Title = "Comunicarea eficienta. Editia a IV-a, revazuta si adaugita",
-                Author = "Ion-Ovidiu Panisoara",
+                Id = 3, Title = "Comunicarea eficienta. Editia a IV-a, revazuta si adaugita", CategoryId = 1,
+                Author = "Ion-Ovidiu Panisoara", CoverImageUrl = "",
                 Description = "„Comunicarea se afla peste tot in jurul nostru. Sintem inconjurati de comunicare," +
                               " de la comunicarea cu propria persoana (care poate sa ne conduca spre o gindire pozitiva," +
                               " spre succes sau poate sa ne arunce in haosul esecului) la comunicarea cu ceilalti. Noi" +
