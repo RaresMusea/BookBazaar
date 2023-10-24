@@ -1,72 +1,83 @@
 ﻿@model BookBazaar.Models.VM.BookViewModel;
 
-<form method="post" asp-action="Create" asp-controller="Book" class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
+<form
+    method="post"
+    asp-action="Create"
+    asp-controller="Book"
+    enctype="multipart/form-data"
+    class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
     <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
-        <h2 class="text-primary text-center">Add a new book</h2>
+        <h2 class="text-primary text-center">Add a new book entry</h2>
         <hr/>
         <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
         <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
             <div class="col-5">
-                <label asp-for="Book.Title" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.Title" class="ValidationError"></span>
-                <input asp-for="Book.Title" class="form-control TextInput mt-">
+                <label asp-for="Book!.Title" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Book!.Title" class="ValidationError"></span>
+                <input asp-for="Book!.Title" class="form-control TextInput mt-">
             </div>
             <div class="col-5">
-                <label asp-for="Book.Author" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.Author" class="ValidationError"></span>
-                <input asp-for="Book.Author" class="form-control TextInput mt-1">
+                <label asp-for="Book!.Author" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Book!.Author" class="ValidationError"></span>
+                <input asp-for="Book!.Author" class="form-control TextInput mt-1">
             </div>
         </div>
         <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
             <div class="col-5">
-                <label asp-for="Book.Publisher" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.Publisher" class="ValidationError"></span>
-                <input asp-for="Book.Publisher" class="form-control TextInput mt-">
+                <label asp-for="Book!.Publisher" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Book!.Publisher" class="ValidationError"></span>
+                <input asp-for="Book!.Publisher" class="form-control TextInput mt-">
             </div>
             <div class="col-5">
-                <label asp-for="Book.Isbn" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.Isbn" class="ValidationError"></span>
-                <input asp-for="Book.Isbn" class="form-control TextInput mt-1">
+                <label asp-for="Book!.Isbn" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Book!.Isbn" class="ValidationError"></span>
+                <input asp-for="Book!.Isbn" class="form-control TextInput mt-1">
             </div>
         </div>
         <div class="mb-3 d-flex justify-content-center">
             <div class="col-11">
-                <label asp-for="Book.Description" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.Description" class="ValidationError"></span>
-                <input asp-for="Book.Description" class="form-control TextInput mt-1">
+                <label asp-for="Book!.Description" class="ml-1 mt-2"></label>
+                <textarea asp-for="Book!.Description" class="form-control PreLine TextInput mt-1"></textarea>
             </div>
         </div>
         <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
             <div class="col-5">
-                <label asp-for="Book.Language" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.Language" class="ValidationError"></span>
-                <input asp-for="Book.Language" class="form-control TextInput mt-">
+                <label asp-for="Book!.Language" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Book!.Language" class="ValidationError"></span>
+                <input asp-for="Book!.Language" class="form-control TextInput mt-">
             </div>
             <div class="col-5">
-                <label asp-for="Book.Price" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.Price" class="ValidationError"></span>
-                <input asp-for="Book.Price" class="form-control TextInput mt-1">
+                <label asp-for="Book!.Price" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Book!.Price" class="ValidationError"></span>
+                <input asp-for="Book!.Price" class="form-control TextInput mt-1">
             </div>
         </div>
         <div class="mb-3 d-flex justify-content-around">
             <div class="col-5">
-                <label asp-for="Book.DatePublished" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.DatePublished" class="ValidationError"></span>
-                <input asp-for="Book.DatePublished" class="form-control TextInput mt-1">
+                <label asp-for="Book!.DatePublished" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Book!.DatePublished" class="ValidationError"></span>
+                <input asp-for="Book!.DatePublished" class="form-control TextInput mt-1">
             </div>
             <div class="col-5">
-                <label asp-for="Book.CategoryId" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.CategoryId" class="ValidationError"></span>
-                <select asp-for="Book.CategoryId" class="form-select TextInput mt-1" asp-items="@Model.CategoriesList">
+                <label asp-for="Book!.CategoryId" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Book!.CategoryId" class="ValidationError"></span>
+                <select asp-for="Book!.CategoryId" class="form-select TextInput mt-1" asp-items="@Model.CategoriesList">
                     <option disabled selected>Select a book genre</option>
                 </select>
             </div>
         </div>
         <div class="mb-3 d-flex justify-content-around">
-            <div class="col-5">
-                <label asp-for="Book.CoverImageUrl" class="ml-1 mt-2"></label>
-                <span asp-validation-for="Book.CoverImageUrl" class="ValidationError"></span>
-                <input asp-for="Book.CoverImageUrl" class="form-control TextInput mt-1">
+            <div class="col-11">
+                <label asp-for="Book!.CoverImageUrl" class="ml-1 mt-2"></label>
+                @*<span asp-validation-for="Book!.CoverImageUrl" class="ValidationError"></span>*@
+                <input type="file" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <div class="col-11">
+                <label asp-for="InventoryItem!.QuantityInStock" class="ml-1 mt-2"></label>
+                <span asp-validation-for="InventoryItem!.QuantityInStock" class="ValidationError"></span>
+                <input asp-for="InventoryItem!.QuantityInStock" class="form-control TextInput mt-1">
             </div>
         </div>
         <button type="submit" class="button-primary mt-4 SubmitNewCategory ForcedMargin Shadow2 rounded-3">Save</button>
@@ -76,6 +87,20 @@
 </form>
 
 @section Scripts{
+    @*<script>
+      tinymce.init({
+        selector: 'textarea',
+        plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+          { value: 'First.Name', title: 'First Name' },
+          { value: 'Email', title: 'Email' },
+        ],
+        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+      });
+    </script>*@
     @{
         <partial name="_ValidationScriptsPartial"></partial>
     }

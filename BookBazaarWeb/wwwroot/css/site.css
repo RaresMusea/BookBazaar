@@ -298,3 +298,7 @@ tbody {
 .ForcedMargin {
     margin-top: 1em !important;
 }
+
+.PreLine {
+    white-space: pre-line !important;
+}

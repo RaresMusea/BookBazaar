@@ -24,14 +24,7 @@ public class BookController : Controller
 
     public async Task<IActionResult> Create()
     {
-        IEnumerable<SelectListItem> categories = (await _workUnit.CategoryRepo.RetrieveAllAsync())
-            .ToList().Select(
-                elem => new SelectListItem
-                {
-                    Text = elem.Genre,
-                    Value = elem.Id.ToString(),
-                });
-
+        IEnumerable<SelectListItem> categories = await GetCategoriesAsListItemAsync();
         BookViewModel viewModel = new()
         {
             CategoriesList = categories,
@@ -42,7 +35,7 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(BookViewModel payload)
+    public async Task<IActionResult> Create(BookViewModel payload, IFormFile? bookCover)
     {
         if (payload.Book != null)
         {
@@ -63,14 +56,7 @@ public class BookController : Controller
             }
         }
 
-        IEnumerable<SelectListItem> categories = (await _workUnit.CategoryRepo.RetrieveAllAsync())
-            .ToList().Select(
-                elem => new SelectListItem
-                {
-                    Text = elem.Genre,
-                    Value = elem.Id.ToString(),
-                });
-
+        IEnumerable<SelectListItem> categories = await GetCategoriesAsListItemAsync();
         payload.CategoriesList = categories;
         return View(payload);
     }
@@ -82,6 +68,7 @@ public class BookController : Controller
             return NotFound();
         }
 
+        IEnumerable<SelectListItem> categories = await GetCategoriesAsListItemAsync();
         Book? book = await _workUnit.BookRepo.GetAsync(b => b.Id == id);
 
         if (book is null)
@@ -89,20 +76,34 @@ public class BookController : Controller
             return NotFound();
         }
 
-        return View("Update", book);
+        BookViewModel viewModel = new()
+        {
+            Book = book,
+            CategoriesList = categories,
+        };
+
+        return View("Update", viewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update(Book bookPayload)
+    public async Task<IActionResult> Update(BookViewModel payload)
     {
         if (!ModelState.IsValid)
         {
-            return View("Update", bookPayload);
+            return View("Update", payload);
         }
 
-        _workUnit.BookRepo.Update(bookPayload);
-        await _workUnit.SaveAsync();
-        TempData["SuccessfulOperation"] = "Book updated successfully!";
+        if (payload.Book is not null)
+        {
+            _workUnit.BookRepo.Update(payload.Book);
+            await _workUnit.SaveAsync();
+            TempData["SuccessfulOperation"] = "Book entry updated successfully!";
+        }
+        else
+        {
+            TempData["FailedOperation"] = "Cannot update book entry because it cannot be found!";
+        }
+
         return RedirectToAction("Index");
     }
 
@@ -129,5 +130,18 @@ public class BookController : Controller
         _workUnit.BookRepo.Remove(bookPayload);
         await _workUnit.SaveAsync();
         return RedirectToAction("Index");
+    }
+
+    private async Task<IEnumerable<SelectListItem>> GetCategoriesAsListItemAsync()
+    {
+        IEnumerable<SelectListItem> categories = (await _workUnit.CategoryRepo.RetrieveAllAsync())
+            .ToList().Select(
+                elem => new SelectListItem
+                {
+                    Text = elem.Genre,
+                    Value = elem.Id.ToString(),
+                });
+
+        return categories;
     }
 }

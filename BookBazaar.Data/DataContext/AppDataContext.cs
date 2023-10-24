@@ -1,5 +1,6 @@
 ﻿using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CategoryModels;
+using BookBazaar.Models.InventoryModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookBazaar.Data.DataContext;
@@ -24,7 +25,7 @@ public class AppDataContext : DbContext
         modelBuilder.Entity<Book>().HasData(
             new Book
             {
-                Id = 1, Title = "How to Win Friends and Influence People", Author = "Dale Carnegie", CategoryId = 5,
+                Id = 1, Title = "How to Win Friends and Influence People", Author = "Dale Carnegie", CategoryId = 1,
                 Description =
                     "Millions of people from all around the world have improved and continue to improve their lives" +
                     " with the help of Dale Carnegie's ideas and techniques. In 'The Secrets of Success: How to Win" +
@@ -55,7 +56,7 @@ public class AppDataContext : DbContext
             },
             new Book
             {
-                Id = 3, Title = "Comunicarea eficienta. Editia a IV-a, revazuta si adaugita", CategoryId = 1,
+                Id = 3, Title = "Comunicarea eficienta. Editia a IV-a, revazuta si adaugita", CategoryId = 2,
                 Author = "Ion-Ovidiu Panisoara", CoverImageUrl = "",
                 Description = "„Comunicarea se afla peste tot in jurul nostru. Sintem inconjurati de comunicare," +
                               " de la comunicarea cu propria persoana (care poate sa ne conduca spre o gindire pozitiva," +
@@ -76,5 +77,19 @@ public class AppDataContext : DbContext
                 Publisher = "Polirom",
             }
         );
+
+        modelBuilder.Entity<InventoryItem>().HasData(
+            new InventoryItem
+            {
+                Id = 1, BookId = 1, DateUpdated = null, DateAdded = DateTime.Now, QuantitySold = 0, QuantityInStock = 40
+            },
+            new InventoryItem
+            {
+                Id = 2, BookId = 2, DateUpdated = null, DateAdded = DateTime.Now, QuantitySold = 0, QuantityInStock = 60
+            },
+            new InventoryItem
+            {
+                Id = 3, BookId = 3, DateUpdated = null, DateAdded = DateTime.Now, QuantitySold = 0, QuantityInStock = 20
+            });
     }
 }
