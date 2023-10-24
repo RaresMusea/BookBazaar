@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using BookBazaar.Models.CategoryModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BookBazaar.Models.BookModels;
 
@@ -11,7 +12,9 @@ public class Book
 
     [DisplayName("Genre")] public int CategoryId { get; set; }
 
-    [ForeignKey("CategoryId")] public Category? Category { get; set; }
+    [ForeignKey("CategoryId")]
+    [ValidateNever]
+    public Category? Category { get; set; }
 
     [Required] public string Title { get; set; } = string.Empty;
 
@@ -25,7 +28,7 @@ public class Book
 
     [Required] public string Language { get; set; } = string.Empty;
 
-    public string CoverImageUrl { get; set; } = string.Empty;
+    [ValidateNever] public string CoverImageUrl { get; set; } = string.Empty;
 
     [Range(2, 600)] [Required] public double Price { get; set; }
 

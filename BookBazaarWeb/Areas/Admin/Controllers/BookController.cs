@@ -1,5 +1,6 @@
 ﻿using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.BookModels;
+using BookBazaar.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -31,29 +32,47 @@ public class BookController : Controller
                     Value = elem.Id.ToString(),
                 });
 
-        ViewBag.CategoryList = categories;
-        return View();
+        BookViewModel viewModel = new()
+        {
+            CategoriesList = categories,
+            Book = new Book()
+        };
+
+        return View(viewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Book book)
+    public async Task<IActionResult> Create(BookViewModel payload)
     {
-        if (await _workUnit.BookRepo.Exists(book))
+        if (payload.Book != null)
         {
-            ModelState.AddModelError("", $"Unable to add book '{book.Title} by {book.Author}, from {book.Publisher}'" +
-                                         $" because another book with the same title, written by the same author and published" +
-                                         $"by the same publisher already exists!");
+            if (await _workUnit.BookRepo.Exists(payload.Book))
+            {
+                ModelState.AddModelError("", $"Unable to add book '{payload.Book.Title} by {payload.Book.Author}," +
+                                             $" from {payload.Book.Publisher}' because another book with the same title," +
+                                             $" written by the same author and published by the same publisher already exists!");
+            }
+
+            if (ModelState.IsValid)
+            {
+                await _workUnit.BookRepo.CreateAsync(payload.Book);
+                await _workUnit.SaveAsync();
+                TempData["SuccessfulOperation"] =
+                    $"{payload.Book.Title} by {payload.Book.Author} was successfully added!";
+                return RedirectToAction("Index");
+            }
         }
 
-        if (ModelState.IsValid)
-        {
-            await _workUnit.BookRepo.CreateAsync(book);
-            await _workUnit.SaveAsync();
-            TempData["SuccessfulOperation"] = $"{book.Title} by {book.Author} was successfully added!";
-            return RedirectToAction("Index");
-        }
+        IEnumerable<SelectListItem> categories = (await _workUnit.CategoryRepo.RetrieveAllAsync())
+            .ToList().Select(
+                elem => new SelectListItem
+                {
+                    Text = elem.Genre,
+                    Value = elem.Id.ToString(),
+                });
 
-        return View();
+        payload.CategoriesList = categories;
+        return View(payload);
     }
 
     public async Task<IActionResult> Update(int? id)
