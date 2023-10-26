@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using AutoMapper;
-using BookBazaar.Data.Repo.Interfaces;
-using BookBazaar.Misc;
+﻿using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
@@ -14,12 +11,10 @@ namespace BookBazaarWeb.Areas.Admin.Controllers;
 public class BookController : Controller
 {
     private readonly IWorkUnit _workUnit;
-    private readonly IMapper _mapper;
 
-    public BookController(IWorkUnit workUnit, IMapper mapper)
+    public BookController(IWorkUnit workUnit)
     {
         _workUnit = workUnit;
-        _mapper = mapper;
     }
 
     public async Task<IActionResult> Index()
@@ -127,20 +122,39 @@ public class BookController : Controller
         }
 
         Book? requestedBook = await _workUnit.BookRepo.GetAsync(book => book.Id == id);
+        InventoryItem? requestedInventoryItem = await _workUnit.InventoryRepo.GetAsync(inv => inv.BookId == id);
 
-        if (requestedBook is null)
+        if (requestedBook is null || requestedInventoryItem is null)
         {
-            return NotFound();
+            TempData["FailedOperation"] = "Failed to delete the book because it cannot be found!";
+            return RedirectToAction("Index", NotFound());
         }
 
-        return PartialView("_Delete", requestedBook);
+        BookDeleteViewModel viewModel = new()
+        {
+            Book = requestedBook,
+            InventoryItem = requestedInventoryItem,
+        };
+
+        return PartialView("_Delete", viewModel);
     }
 
     [HttpPost, ActionName("Delete")]
-    public async Task<IActionResult> Delete(Book bookPayload)
+    public async Task<IActionResult> Delete(BookDeleteViewModel payload)
     {
-        _workUnit.BookRepo.Remove(bookPayload);
-        await _workUnit.SaveAsync();
+        if (ModelState.IsValid)
+        {
+            _workUnit.InventoryRepo.Remove(payload.InventoryItem!);
+            _workUnit.BookRepo.Remove(payload.Book!);
+            await _workUnit.SaveAsync();
+
+            TempData["SuccessfulOperation"] = "Successfully deleted book entry!";
+        }
+        else
+        {
+            TempData["FailedOperation"] = "Deletion failed!";
+        }
+
         return RedirectToAction("Index");
     }
 
@@ -155,21 +169,5 @@ public class BookController : Controller
                 });
 
         return categories;
-    }
-
-    private void UpdateModelState(ref BookViewModel payload, BookViewModel existingResource)
-    {
-        PropertyInfo[] payloadProperties = payload.GetType().GetProperties();
-
-        foreach (PropertyInfo info in payloadProperties)
-        {
-            object? modifiedFieldValue = info.GetValue(payload);
-            object? existingFieldValue = existingResource.GetType().GetProperty(info.Name)!.GetValue(existingResource);
-
-            if (modifiedFieldValue is null && !existingFieldValue!.Equals(modifiedFieldValue))
-            {
-                modifiedFieldValue!.GetType().GetProperty(info.Name)!.SetValue(payload, existingFieldValue);
-            }
-        }
     }
 }
