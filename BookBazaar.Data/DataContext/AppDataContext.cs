@@ -13,7 +13,8 @@ public class AppDataContext : DbContext
 
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Book> Books { get; set; }
-
+    
+    public DbSet<InventoryItem> InventoryItems { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>().HasData(

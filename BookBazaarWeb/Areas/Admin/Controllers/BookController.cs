@@ -1,5 +1,9 @@
-﻿using BookBazaar.Data.Repo.Interfaces;
+﻿using System.Reflection;
+using AutoMapper;
+using BookBazaar.Data.Repo.Interfaces;
+using BookBazaar.Misc;
 using BookBazaar.Models.BookModels;
+using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,10 +14,12 @@ namespace BookBazaarWeb.Areas.Admin.Controllers;
 public class BookController : Controller
 {
     private readonly IWorkUnit _workUnit;
+    private readonly IMapper _mapper;
 
-    public BookController(IWorkUnit workUnit)
+    public BookController(IWorkUnit workUnit, IMapper mapper)
     {
         _workUnit = workUnit;
+        _mapper = mapper;
     }
 
     public async Task<IActionResult> Index()
@@ -49,9 +55,12 @@ public class BookController : Controller
             if (ModelState.IsValid)
             {
                 await _workUnit.BookRepo.CreateAsync(payload.Book);
+                payload.InventoryItem!.DateAdded = DateTime.Now;
+                await _workUnit.InventoryRepo.CreateAsync(payload.InventoryItem!);
                 await _workUnit.SaveAsync();
                 TempData["SuccessfulOperation"] =
                     $"{payload.Book.Title} by {payload.Book.Author} was successfully added!";
+
                 return RedirectToAction("Index");
             }
         }
@@ -70,8 +79,9 @@ public class BookController : Controller
 
         IEnumerable<SelectListItem> categories = await GetCategoriesAsListItemAsync();
         Book? book = await _workUnit.BookRepo.GetAsync(b => b.Id == id);
+        InventoryItem inventoryItem = await _workUnit.InventoryRepo.GetAsync(i => i.BookId == id);
 
-        if (book is null)
+        if (book is null || inventoryItem is null || categories is null)
         {
             return NotFound();
         }
@@ -80,31 +90,33 @@ public class BookController : Controller
         {
             Book = book,
             CategoriesList = categories,
+            InventoryItem = inventoryItem,
         };
 
         return View("Update", viewModel);
     }
 
-    [HttpPost]
+    [HttpPost, ActionName("Update")]
     public async Task<IActionResult> Update(BookViewModel payload)
     {
-        if (!ModelState.IsValid)
+        if (payload.Book is null || payload.InventoryItem is null)
         {
-            return View("Update", payload);
+            TempData["FailedOperation"] = "The book you were trying to update was not found!";
+            return RedirectToAction("Index", NotFound());
         }
 
-        if (payload.Book is not null)
+        if (ModelState.IsValid)
         {
-            _workUnit.BookRepo.Update(payload.Book);
+            payload.InventoryItem!.DateUpdated = DateTime.Now;
+            _workUnit.BookRepo.Update(payload.Book!);
+            _workUnit.InventoryRepo.Update(payload.InventoryItem!);
             await _workUnit.SaveAsync();
             TempData["SuccessfulOperation"] = "Book entry updated successfully!";
-        }
-        else
-        {
-            TempData["FailedOperation"] = "Cannot update book entry because it cannot be found!";
+            return RedirectToAction("Index");
         }
 
-        return RedirectToAction("Index");
+        TempData["FailedOperation"] = "Book entry could not be updated!";
+        return View("Update", payload);
     }
 
     public async Task<IActionResult> Delete(int? id)
@@ -143,5 +155,21 @@ public class BookController : Controller
                 });
 
         return categories;
+    }
+
+    private void UpdateModelState(ref BookViewModel payload, BookViewModel existingResource)
+    {
+        PropertyInfo[] payloadProperties = payload.GetType().GetProperties();
+
+        foreach (PropertyInfo info in payloadProperties)
+        {
+            object? modifiedFieldValue = info.GetValue(payload);
+            object? existingFieldValue = existingResource.GetType().GetProperty(info.Name)!.GetValue(existingResource);
+
+            if (modifiedFieldValue is null && !existingFieldValue!.Equals(modifiedFieldValue))
+            {
+                modifiedFieldValue!.GetType().GetProperty(info.Name)!.SetValue(payload, existingFieldValue);
+            }
+        }
     }
 }

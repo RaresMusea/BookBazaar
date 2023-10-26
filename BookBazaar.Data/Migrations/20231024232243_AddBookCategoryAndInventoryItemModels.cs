@@ -28,7 +28,7 @@ namespace BookBazaar.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InventoryItem",
+                name: "InventoryItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -41,7 +41,7 @@ namespace BookBazaar.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InventoryItem", x => x.Id);
+                    table.PrimaryKey("PK_InventoryItems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,12 +51,12 @@ namespace BookBazaar.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Isbn = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Publisher = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     CoverImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     DatePublished = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -83,13 +83,13 @@ namespace BookBazaar.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "InventoryItem",
+                table: "InventoryItems",
                 columns: new[] { "Id", "BookId", "DateAdded", "DateUpdated", "QuantityInStock", "QuantitySold" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 10, 25, 0, 52, 4, 607, DateTimeKind.Local).AddTicks(245), null, 40, 0 },
-                    { 2, 2, new DateTime(2023, 10, 25, 0, 52, 4, 607, DateTimeKind.Local).AddTicks(285), null, 60, 0 },
-                    { 3, 3, new DateTime(2023, 10, 25, 0, 52, 4, 607, DateTimeKind.Local).AddTicks(287), null, 20, 0 }
+                    { 1, 1, new DateTime(2023, 10, 25, 2, 22, 43, 772, DateTimeKind.Local).AddTicks(8835), null, 40, 0 },
+                    { 2, 2, new DateTime(2023, 10, 25, 2, 22, 43, 772, DateTimeKind.Local).AddTicks(8871), null, 60, 0 },
+                    { 3, 3, new DateTime(2023, 10, 25, 2, 22, 43, 772, DateTimeKind.Local).AddTicks(8874), null, 20, 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -115,7 +115,7 @@ namespace BookBazaar.Data.Migrations
                 name: "Books");
 
             migrationBuilder.DropTable(
-                name: "InventoryItem");
+                name: "InventoryItems");
 
             migrationBuilder.DropTable(
                 name: "Categories");

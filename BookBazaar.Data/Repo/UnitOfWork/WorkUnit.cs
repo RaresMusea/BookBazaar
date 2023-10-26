@@ -9,17 +9,18 @@ public class WorkUnit : IWorkUnit
     private readonly AppDataContext _context;
     public ICategoryRepository CategoryRepo { get; private set; }
     public IBookRepository BookRepo { get; private set; }
-
-
+    public IInventoryItemRepository InventoryRepo { get; private set; }
+    
     public WorkUnit(AppDataContext context)
     {
         _context = context;
         CategoryRepo = new CategoryRepository(_context);
         BookRepo = new BookRepository(_context);
+        InventoryRepo = new InventoryItemRepository(_context);
     }
 
-    public Task<int> SaveAsync()
+    public async Task<int> SaveAsync()
     {
-        return _context.SaveChangesAsync();
+        return await _context.SaveChangesAsync();
     }
 }

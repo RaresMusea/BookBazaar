@@ -32,7 +32,8 @@ namespace BookBazaar.Data.Migrations
 
                     b.Property<string>("Author")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -54,18 +55,21 @@ namespace BookBazaar.Data.Migrations
 
                     b.Property<string>("Language")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
                     b.Property<string>("Publisher")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
@@ -184,14 +188,14 @@ namespace BookBazaar.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InventoryItem");
+                    b.ToTable("InventoryItems");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             BookId = 1,
-                            DateAdded = new DateTime(2023, 10, 25, 0, 52, 4, 607, DateTimeKind.Local).AddTicks(245),
+                            DateAdded = new DateTime(2023, 10, 25, 2, 22, 43, 772, DateTimeKind.Local).AddTicks(8835),
                             QuantityInStock = 40,
                             QuantitySold = 0
                         },
@@ -199,7 +203,7 @@ namespace BookBazaar.Data.Migrations
                         {
                             Id = 2,
                             BookId = 2,
-                            DateAdded = new DateTime(2023, 10, 25, 0, 52, 4, 607, DateTimeKind.Local).AddTicks(285),
+                            DateAdded = new DateTime(2023, 10, 25, 2, 22, 43, 772, DateTimeKind.Local).AddTicks(8871),
                             QuantityInStock = 60,
                             QuantitySold = 0
                         },
@@ -207,7 +211,7 @@ namespace BookBazaar.Data.Migrations
                         {
                             Id = 3,
                             BookId = 3,
-                            DateAdded = new DateTime(2023, 10, 25, 0, 52, 4, 607, DateTimeKind.Local).AddTicks(287),
+                            DateAdded = new DateTime(2023, 10, 25, 2, 22, 43, 772, DateTimeKind.Local).AddTicks(8874),
                             QuantityInStock = 20,
                             QuantitySold = 0
                         });
