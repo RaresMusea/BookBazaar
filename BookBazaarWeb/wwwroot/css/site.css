@@ -302,3 +302,48 @@ tbody {
 .PreLine {
     white-space: pre-line !important;
 }
+
+.dataTables_length {
+    margin-top: 1em;
+    margin-bottom: 1em !important;
+}
+
+.dataTables_filter {
+    margin-top: 1em;
+    margin-bottom: 1em !important;
+}
+
+.dataTables_filter input {
+    outline: none;
+}
+
+.sort-icon {
+    font-size: 0.75rem;
+    margin-left: 5px;
+}
+
+.sort-icon::before {
+    content: "\2191"; /* Up arrow, you can use other icons as needed */
+}
+
+.sort-icon.sort-desc::before {
+    content: "\2193"; /* Down arrow for descending */
+}
+
+.ui-icon {
+    display: block;
+}
+
+.dataTables_info {
+    margin-top: 1em;
+}
+
+.dataTables_paginate {
+    margin-top: 1em;
+}
+
+.current {
+    background-color: #ED5B2D !important;
+    color: white !important;
+    font-weight: bolder !important;
+}

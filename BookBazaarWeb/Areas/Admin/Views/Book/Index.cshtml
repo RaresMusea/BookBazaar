@@ -1,11 +1,11 @@
 ﻿@using Newtonsoft.Json
 @using System.Globalization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model List<BookBazaar.Models.BookModels.Book>
+@model List<BookViewModel>
 
 <partial name="OperationResult"></partial>
 <div class="container">
-    <div class="row pt-3">
+    <div class="row pt-3 mb-3">
         <div class="col-6">
             <h2>Books</h2>
         </div>
@@ -16,45 +16,51 @@
             </button>
         </div>
     </div>
-    <table class="mt-4 table table-bordered table-striped text-center row-cols-6">
+    <table
+        id="BooksTable"
+        class="responsive mt-6 table table-responsive-xl table-bordered table-striped align-middle text-center row-cols-6">
         <thead class="TableHeading box-shadow">
         <th>Title</th>
         <th>Author</th>
         <th>Description</th>
         <th>Isbn</th>
         <th>Publisher</th>
+        <th>Category</th>
         <th>Language</th>
         <th>Date published</th>
         <th>Price</th>
+        <th>Quantity in stock</th>
         <th></th>
         </thead>
         <tbody>
-        @foreach (var book in Model)
+        @foreach (var entity in Model)
         {
             <tr class="m-0 p-0">
-                <td class="align-middle">@Html.DisplayName(book.Title)</td>
-                <td class="align-middle">@Html.DisplayName(book.Author)</td>
+                <td class="align-middle">@Html.DisplayName(entity.Book!.Title)</td>
+                <td class="align-middle">@Html.DisplayName(entity.Book!.Author)</td>
                 <td
-                    data-json="@JsonConvert.SerializeObject(book)"
+                    data-json="@JsonConvert.SerializeObject(entity.Book)"
                     class="align-middle TableDefinition HovarableTableData">
-                    @book.Description
+                    @entity.Book.Description
                 </td>
-                <td class="align-middle">@Html.DisplayName(book.Isbn)</td>
-                <td class="align-middle">@Html.DisplayName(book.Publisher)</td>
-                <td class="align-middle">@Html.DisplayName(book.Language)</td>
-                <td class="align-middle">@Html.DisplayName(book.DatePublished.ToShortDateString())</td>
-                <td class="align-middle">@Html.DisplayName(book.Price.ToString(new CultureInfo("en-US"))) &euro;</td>
+                <td class="align-middle">@Html.DisplayName(entity.Book!.Isbn)</td>
+                <td class="align-middle">@Html.DisplayName(entity.Book!.Publisher)</td>
+                <td class="align-middle">@Html.DisplayName(entity.Book!.Category!.Genre)</td>
+                <td class="align-middle">@Html.DisplayName(entity.Book!.Language)</td>
+                <td class="align-middle">@Html.DisplayName(entity.Book!.DatePublished.ToShortDateString())</td>
+                <td class="align-middle">@entity.Book.Price.ToString(new CultureInfo("en-US")) &euro;</td>
+                <td class="align-middle">@entity!.InventoryItem!.QuantityInStock.ToString()</td>
                 <td class="align-middle border-end-0">
                     <div class="d-flex align-items-center justify-content-evenly w-100" role="group">
                         <a
                             asp-controller="Book"
                             asp-action="Update"
-                            asp-route-id="@book.Id"
+                            asp-route-id="@entity.Book.Id"
                             class="button Button EditButton">
                             <i class="bi bi-pencil-fill"></i>
                         </a>
                         <button asp-controller="Book"
-                                data-url="@Url.Action("Delete", "Book", new { id = book.Id })"
+                                data-url="@Url.Action("Delete", "Book", new { id = entity.Book.Id })"
                                 class="button Button DeleteButton">
                             <i class="bi bi-x-square-fill"></i>
                         </button>
@@ -66,4 +72,5 @@
     </table>
 </div>
 <script src="~/js/BookDescriptionModal.js"></script>
+<script src="~/js/DataTables/BookDataTables.js"></script>
 <script src="~/js/ajax/Book/DeleteBook.js"></script>

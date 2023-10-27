@@ -16,17 +16,37 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet = _context.Set<T>();
     }
 
-    public async Task<ICollection<T>> RetrieveAllAsync()
+    public async Task<ICollection<T>> RetrieveAllAsync(string? includedProperties = null)
     {
         IQueryable<T> queryable = _dbSet;
+
+        if (includedProperties is not null)
+        {
+            foreach (var property in
+                     includedProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                queryable = queryable.Include(property);
+            }
+        }
+
         return await queryable.ToListAsync();
     }
 
-    public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
+    public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string? includedProperties = null)
     {
         IQueryable<T> queryable = _dbSet;
         queryable = queryable.Where(filter);
-        return await queryable.FirstOrDefaultAsync(filter);
+
+        if (includedProperties is not null)
+        {
+            foreach (var property in
+                     includedProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                queryable = queryable.Include(property);
+            }
+        }
+
+        return (await queryable.FirstOrDefaultAsync(filter))!;
     }
 
     public async Task<T> CreateAsync(T entity)

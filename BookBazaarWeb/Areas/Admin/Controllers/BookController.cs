@@ -19,8 +19,24 @@ public class BookController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var books = await _workUnit.BookRepo.RetrieveAllAsync();
-        return View(books.ToList());
+        IEnumerable<Book> books = (await _workUnit.BookRepo.RetrieveAllAsync("Category"));
+
+        if (books is not null)
+        {
+            List<BookViewModel> viewModels = new();
+            foreach (var book in books)
+            {
+                viewModels.Add(new()
+                {
+                    Book = book,
+                    InventoryItem = await _workUnit.InventoryRepo.GetAsync(inv => inv.BookId == book.Id)
+                });
+            }
+
+            return View(viewModels);
+        }
+
+        return NotFound();
     }
 
     public async Task<IActionResult> Create()
