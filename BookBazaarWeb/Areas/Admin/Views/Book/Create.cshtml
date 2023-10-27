@@ -70,11 +70,10 @@
             <div class="col-11">
                 <label asp-for="Book!.CoverImageUrl" class="ml-1 mt-2"></label>
                 @*<span asp-validation-for="Book!.CoverImageUrl" class="ValidationError"></span>*@
-                <input type="file" class="form-control TextInput mt-1">
+                <input type="file" name="bookCoverImage" class="form-control TextInput mt-1">
             </div>
         </div>
         <div class="mb-3 d-flex justify-content-center">
-            <input hidden asp-for="InventoryItem!.BookId"></input>
             <div class="col-11">
                 <label asp-for="InventoryItem!.QuantityInStock" class="ml-1 mt-2"></label>
                 <span asp-validation-for="InventoryItem!.QuantityInStock" class="ValidationError"></span>

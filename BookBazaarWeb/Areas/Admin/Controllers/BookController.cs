@@ -11,10 +11,12 @@ namespace BookBazaarWeb.Areas.Admin.Controllers;
 public class BookController : Controller
 {
     private readonly IWorkUnit _workUnit;
+    private readonly IWebHostEnvironment _hostEnvironment;
 
-    public BookController(IWorkUnit workUnit)
+    public BookController(IWorkUnit workUnit, IWebHostEnvironment hostEnvironment)
     {
         _workUnit = workUnit;
+        _hostEnvironment = hostEnvironment;
     }
 
     public async Task<IActionResult> Index()
@@ -52,7 +54,7 @@ public class BookController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(BookViewModel payload, IFormFile? bookCover)
+    public async Task<IActionResult> Create(BookViewModel payload, IFormFile? bookCoverImage)
     {
         if (payload.Book != null)
         {
@@ -65,8 +67,25 @@ public class BookController : Controller
 
             if (ModelState.IsValid)
             {
+                string rootPath = _hostEnvironment.WebRootPath;
+
+                if (bookCoverImage is not null)
+                {
+                    string bookCoverImageName = Guid.NewGuid() + Path.GetExtension(bookCoverImage.FileName);
+                    string bookCoverImagePath = Path.Combine(rootPath, @"static\images\book");
+
+                    await using (var fileStream = new FileStream(Path.Combine(bookCoverImagePath, bookCoverImageName),
+                                     FileMode.Create))
+                    {
+                        await bookCoverImage.CopyToAsync(fileStream);
+                    }
+
+                    payload.Book.CoverImageUrl = @"\static\images\book\" + bookCoverImageName;
+                }
+
                 await _workUnit.BookRepo.CreateAsync(payload.Book);
                 payload.InventoryItem!.DateAdded = DateTime.Now;
+                payload.InventoryItem!.BookId = payload.Book.Id;
                 await _workUnit.InventoryRepo.CreateAsync(payload.InventoryItem!);
                 await _workUnit.SaveAsync();
                 TempData["SuccessfulOperation"] =

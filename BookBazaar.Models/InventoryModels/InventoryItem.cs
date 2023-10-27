@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BookBazaar.Models.InventoryModels;
 
@@ -7,7 +8,7 @@ public class InventoryItem
 {
     [Key] public int Id { get; set; }
 
-    public int BookId { get; set; }
+    [ValidateNever] public int BookId { get; set; }
 
     [Required]
     [DisplayName("Quantity in stock")]
