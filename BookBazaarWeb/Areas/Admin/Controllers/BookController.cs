@@ -127,7 +127,7 @@ public class BookController : Controller
     }
 
     [HttpPost, ActionName("Update")]
-    public async Task<IActionResult> Update(BookViewModel payload)
+    public async Task<IActionResult> Update(BookViewModel payload, IFormFile? bookCoverImage)
     {
         if (payload.Book is null || payload.InventoryItem is null)
         {
@@ -137,6 +137,32 @@ public class BookController : Controller
 
         if (ModelState.IsValid)
         {
+            string rootPath = _hostEnvironment.WebRootPath;
+
+            if (bookCoverImage is not null)
+            {
+                string bookCoverImageName = Guid.NewGuid() + Path.GetExtension(bookCoverImage.FileName);
+                string bookCoverImagePath = Path.Combine(rootPath, @"static\images\book");
+
+                if (!string.IsNullOrEmpty(payload.Book.CoverImageUrl))
+                {
+                    var oldImagePath = Path.Combine(rootPath, payload.Book.CoverImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+                await using (var fileStream = new FileStream(Path.Combine(bookCoverImagePath, bookCoverImageName),
+                                 FileMode.Create))
+                {
+                    await bookCoverImage.CopyToAsync(fileStream);
+                }
+
+                payload.Book.CoverImageUrl = @"\static\images\book\" + bookCoverImageName;
+            }
+
             payload.InventoryItem!.DateUpdated = DateTime.Now;
             _workUnit.BookRepo.Update(payload.Book!);
             _workUnit.InventoryRepo.Update(payload.InventoryItem!);
@@ -204,5 +230,18 @@ public class BookController : Controller
                 });
 
         return categories;
+    }
+
+    private async Task<string> HandleFileUploadAsync(IFormFile? bookCoverImage, string rootPath)
+    {
+        string bookCoverImageName = Guid.NewGuid() + Path.GetExtension(bookCoverImage.FileName);
+        string bookCoverImagePath = Path.Combine(rootPath, @"static\images\book");
+        string finalPath = Path.Combine(bookCoverImagePath, bookCoverImageName);
+        await using (var fileStream = new FileStream(finalPath, FileMode.Create))
+        {
+            await bookCoverImage.CopyToAsync(fileStream);
+        }
+
+        return bookCoverImageName;
     }
 }

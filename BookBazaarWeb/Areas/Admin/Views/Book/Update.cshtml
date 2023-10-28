@@ -2,12 +2,14 @@
 @model BookBazaar.Models.VM.BookViewModel;
 
 <form method="post"
+      enctype="multipart/form-data"
       class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
     <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4">
-        <h2 class="text-primary">Edit a book</h2>
+        <h2 class="text-primary">Edit a book entry</h2>
         <hr/>
         <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
-        <input hidden asp-for="Book!.Id"></input>
+        <input hidden asp-for="Book!.Id">
+        <input hidden asp-for="Book!.CoverImageUrl">
         <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
             <div class="col-5">
                 <label asp-for="Book!.Title" class="ml-1 mt-2"></label>
@@ -66,14 +68,13 @@
         <div class="mb-3 d-flex justify-content-around">
             <div class="col-11">
                 <label asp-for="Book!.CoverImageUrl" class="ml-1 mt-2"></label>
-                @*<span asp-validation-for="Book!.CoverImageUrl" class="ValidationError"></span>*@
-                <input type="file" name="file" class="form-control TextInput mt-1">
+                <input type="file" name="bookCoverImage" class="form-control TextInput mt-1">
             </div>
         </div>
         <div class="mb-3 d-flex justify-content-center">
-            <input asp-for="InventoryItem!.BookId" hidden></input>
-            <input asp-for="InventoryItem!.DateAdded" hidden></input>
-            <input asp-for="InventoryItem!.Id" hidden></input>
+            <input asp-for="InventoryItem!.BookId" hidden>
+            <input asp-for="InventoryItem!.DateAdded" hidden>
+            <input asp-for="InventoryItem!.Id" hidden>
             <div class="col-11">
                 <label asp-for="InventoryItem!.QuantityInStock" class="ml-1 mt-2"></label>
                 <span asp-validation-for="InventoryItem!.QuantityInStock" class="ValidationError"></span>
@@ -87,7 +88,18 @@
         </button>
         <a asp-controller="Book" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Show all books</a>
     </div>
-    <img src="~/img/undraw_notebook_re_id0r.svg" alt="Books Art" class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
+    @if (string.IsNullOrEmpty(Model!.Book!.CoverImageUrl))
+    {
+        <img src="~/img/undraw_writer_q06d.svg"
+             alt="Books Art"
+             class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
+    }
+    else
+    {
+        <img src="@Model.Book.CoverImageUrl"
+             alt="Book Cover Image"
+             class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
+    }
 </form>
 
 @section Scripts{
