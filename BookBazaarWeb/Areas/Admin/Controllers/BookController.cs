@@ -231,17 +231,4 @@ public class BookController : Controller
 
         return categories;
     }
-
-    private async Task<string> HandleFileUploadAsync(IFormFile? bookCoverImage, string rootPath)
-    {
-        string bookCoverImageName = Guid.NewGuid() + Path.GetExtension(bookCoverImage.FileName);
-        string bookCoverImagePath = Path.Combine(rootPath, @"static\images\book");
-        string finalPath = Path.Combine(bookCoverImagePath, bookCoverImageName);
-        await using (var fileStream = new FileStream(finalPath, FileMode.Create))
-        {
-            await bookCoverImage.CopyToAsync(fileStream);
-        }
-
-        return bookCoverImageName;
-    }
 }

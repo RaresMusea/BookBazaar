@@ -4,7 +4,7 @@
 @model List<BookViewModel>
 
 <partial name="OperationResult"></partial>
-<div class="container">
+<div class="CenteredContainer">
     <div class="row pt-3 mb-3">
         <div class="col-6">
             <h2>Books</h2>
@@ -18,7 +18,7 @@
     </div>
     <table
         id="BooksTable"
-        class="responsive mt-6 table table-responsive-xl table-bordered table-striped align-middle text-center row-cols-6">
+        class="responsive mt-6 table table-bordered table-striped align-middle text-center row-cols-6">
         <thead class="TableHeading box-shadow">
         <th>Title</th>
         <th>Author</th>
@@ -30,6 +30,7 @@
         <th>Date published</th>
         <th>Price</th>
         <th>Quantity in stock</th>
+        <th>Units sold</th>
         <th></th>
         </thead>
         <tbody>
@@ -50,6 +51,7 @@
                 <td class="align-middle">@Html.DisplayName(entity.Book!.DatePublished.ToShortDateString())</td>
                 <td class="align-middle">@entity.Book.Price.ToString(new CultureInfo("en-US")) &euro;</td>
                 <td class="align-middle">@entity!.InventoryItem!.QuantityInStock.ToString()</td>
+                <td class="align-middle">@entity!.InventoryItem!.QuantitySold</td>
                 <td class="align-middle border-end-0">
                     <div class="d-flex align-items-center justify-content-evenly w-100" role="group">
                         <a
@@ -71,6 +73,6 @@
         </tbody>
     </table>
 </div>
-<script src="~/js/BookDescriptionModal.js"></script>
 <script src="~/js/DataTables/BookDataTables.js"></script>
+<script src="~/js/BookDescriptionModal.js"></script>
 <script src="~/js/ajax/Book/DeleteBook.js"></script>

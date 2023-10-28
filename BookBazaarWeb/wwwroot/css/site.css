@@ -347,3 +347,10 @@ tbody {
     color: white !important;
     font-weight: bolder !important;
 }
+
+
+.CenteredContainer {
+    display: block !important;
+    margin: 0 auto !important;
+    width: 95% !important;
+}
