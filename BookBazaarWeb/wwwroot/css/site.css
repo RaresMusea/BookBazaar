@@ -349,3 +349,90 @@ tbody {
     margin: 0 auto !important;
     width: 95% !important;
 }
+
+.Carousel {
+    height: 200px !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.Wall {
+    background-color: var(--navbarColor);
+    opacity: 80%;
+}
+
+.Oranged {
+    background-color: #ED5B2D;
+}
+
+.CarouselWrapper {
+    width: 60% !important;
+    margin: auto !important;
+    overflow: hidden !important;
+}
+
+.Line {
+    width: 25% !important;
+    border: 1px solid #dbdbdb;
+    height: 0;
+    background-color: #dbdbdb !important;
+}
+
+.BooksWrapper {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+    margin-left: 2em !important;
+    margin-right: 2em !important;
+    height: 2000px !important;
+    border-radius: 15px;
+    padding: 2em 1.5em 1em;
+}
+
+.BookCard {
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0 5px 0, rgba(0, 0, 0, 0.1) 0 0 1px 0 !important;
+    border-radius: 15px;
+    padding-bottom: 1.5em;
+}
+
+.BookCard img {
+    display: block !important;
+    margin: 0 auto;
+}
+
+.BookTitle {
+    font-weight: bolder !important;
+    color: #ED5B2D;
+    margin-top: .5em;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+.BookTitle:hover {
+    color: darkorange;
+    text-decoration: underline;
+}
+
+.Ornament {
+    width: 100%;
+    height: 1.5em;
+    text-align: center;
+    margin-bottom: 1em;
+    color: white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.InStock {
+    background-color: #468B91;
+}
+
+.OutOfStock {
+    background-color: red;
+}
+
+.CenteredButton {
+    display: block !important;
+    margin: 0 auto !important;
+    width: 95px;
+}
+
+
