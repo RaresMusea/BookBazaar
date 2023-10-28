@@ -1,4 +1,5 @@
 ﻿using BookBazaar.Data.Repo.Interfaces;
+using BookBazaar.Misc;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
@@ -143,16 +144,7 @@ public class BookController : Controller
             {
                 string bookCoverImageName = Guid.NewGuid() + Path.GetExtension(bookCoverImage.FileName);
                 string bookCoverImagePath = Path.Combine(rootPath, @"static\images\book");
-
-                if (!string.IsNullOrEmpty(payload.Book.CoverImageUrl))
-                {
-                    var oldImagePath = Path.Combine(rootPath, payload.Book.CoverImageUrl.TrimStart('\\'));
-
-                    if (System.IO.File.Exists(oldImagePath))
-                    {
-                        System.IO.File.Delete(oldImagePath);
-                    }
-                }
+                BookControllerUtils.TryDeleteBookCoverImage(payload.Book.CoverImageUrl, rootPath);
 
                 await using (var fileStream = new FileStream(Path.Combine(bookCoverImagePath, bookCoverImageName),
                                  FileMode.Create))
@@ -206,6 +198,7 @@ public class BookController : Controller
         if (ModelState.IsValid)
         {
             _workUnit.InventoryRepo.Remove(payload.InventoryItem!);
+            BookControllerUtils.TryDeleteBookCoverImage(payload.Book!.CoverImageUrl, _hostEnvironment.WebRootPath);
             _workUnit.BookRepo.Remove(payload.Book!);
             await _workUnit.SaveAsync();
 

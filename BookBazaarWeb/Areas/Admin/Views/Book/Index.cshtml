@@ -18,7 +18,7 @@
     </div>
     <table
         id="BooksTable"
-        class="responsive mt-6 table table-bordered table-striped align-middle text-center row-cols-6">
+        class="responsive mt-6 table table-striped align-middle text-center row-cols-6">
         <thead class="TableHeading box-shadow">
         <th>Title</th>
         <th>Author</th>
@@ -31,7 +31,7 @@
         <th>Price</th>
         <th>Quantity in stock</th>
         <th>Units sold</th>
-        <th></th>
+        <th class="last" data-nosorting="true"></th>
         </thead>
         <tbody>
         @foreach (var entity in Model)
@@ -50,8 +50,8 @@
                 <td class="align-middle">@Html.DisplayName(entity.Book!.Language)</td>
                 <td class="align-middle">@Html.DisplayName(entity.Book!.DatePublished.ToShortDateString())</td>
                 <td class="align-middle">@entity.Book.Price.ToString(new CultureInfo("en-US")) &euro;</td>
-                <td class="align-middle">@entity!.InventoryItem!.QuantityInStock.ToString()</td>
-                <td class="align-middle">@entity!.InventoryItem!.QuantitySold</td>
+                <td class="align-middle">@entity.InventoryItem!.QuantityInStock.ToString()</td>
+                <td class="align-middle">@entity.InventoryItem!.QuantitySold</td>
                 <td class="align-middle border-end-0">
                     <div class="d-flex align-items-center justify-content-evenly w-100" role="group">
                         <a

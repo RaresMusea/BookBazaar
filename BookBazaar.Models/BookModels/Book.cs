@@ -27,7 +27,10 @@ public class Book
 
     [Required] [ValidateNever] public string Description { get; set; } = string.Empty;
 
-    [Required] [ValidateNever] [DisplayName("ISBN")] public string Isbn { get; set; } = string.Empty;
+    [Required]
+    [ValidateNever]
+    [DisplayName("ISBN")]
+    public string Isbn { get; set; } = string.Empty;
 
     [Required]
     [MaxLength(60, ErrorMessage = "The publisher name should contain at most 60 characters!")]
@@ -41,7 +44,12 @@ public class Book
     [DisplayName("Book Cover")]
     public string CoverImageUrl { get; set; } = string.Empty;
 
-    [Range(2.00, 600.00)] [Required] public double Price { get; set; } = 0.00;
+    [Range(2.00, 600.00)]
+    [DisplayName("Price (€)")]
+    [Required]
+    public double Price { get; set; } = 0.00;
 
-    [DisplayName("Date published")] [ValidateNever] public DateTime DatePublished { get; set; }
+    [DisplayName("Date published")]
+    [ValidateNever]
+    public DateTime DatePublished { get; set; }
 }

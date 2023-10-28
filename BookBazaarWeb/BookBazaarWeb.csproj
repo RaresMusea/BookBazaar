@@ -21,6 +21,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\BookBazaar.Data\BookBazaar.Data.csproj" />
+        <ProjectReference Include="..\BookBazaar.Misc\BookBazaar.Misc.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

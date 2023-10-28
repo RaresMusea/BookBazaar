@@ -5,7 +5,7 @@
       enctype="multipart/form-data"
       class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
     <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4">
-        <h2 class="text-primary">Edit a book entry</h2>
+        <h2 class="text-primary">Edit book entry</h2>
         <hr/>
         <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
         <input hidden asp-for="Book!.Id">
@@ -88,7 +88,7 @@
         </button>
         <a asp-controller="Book" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Show all books</a>
     </div>
-    @if (string.IsNullOrEmpty(Model!.Book!.CoverImageUrl))
+    @if (string.IsNullOrEmpty(Model.Book!.CoverImageUrl))
     {
         <img src="~/img/undraw_writer_q06d.svg"
              alt="Books Art"

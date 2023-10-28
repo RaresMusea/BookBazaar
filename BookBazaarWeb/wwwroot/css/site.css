@@ -317,17 +317,12 @@ tbody {
     outline: none;
 }
 
-.sort-icon {
-    font-size: 0.75rem;
-    margin-left: 5px;
+.last::before {
+    content: none !important;
 }
 
-.sort-icon::before {
-    content: "\2191"; /* Up arrow, you can use other icons as needed */
-}
-
-.sort-icon.sort-desc::before {
-    content: "\2193"; /* Down arrow for descending */
+.last::after {
+    content: none !important;
 }
 
 .ui-icon {
