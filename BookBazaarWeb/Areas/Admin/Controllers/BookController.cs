@@ -1,6 +1,10 @@
 ﻿using BookBazaar.Data.Repo.Interfaces;
+using BookBazaar.Misc;
 using BookBazaar.Models.BookModels;
+using BookBazaar.Models.InventoryModels;
+using BookBazaar.Models.VM;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookBazaarWeb.Areas.Admin.Controllers;
 
@@ -8,42 +12,93 @@ namespace BookBazaarWeb.Areas.Admin.Controllers;
 public class BookController : Controller
 {
     private readonly IWorkUnit _workUnit;
+    private readonly IWebHostEnvironment _hostEnvironment;
 
-    public BookController(IWorkUnit workUnit)
+    public BookController(IWorkUnit workUnit, IWebHostEnvironment hostEnvironment)
     {
         _workUnit = workUnit;
+        _hostEnvironment = hostEnvironment;
     }
 
     public async Task<IActionResult> Index()
     {
-        var books = await _workUnit.BookRepo.RetrieveAllAsync();
-        return View(books.ToList());
+        IEnumerable<Book> books = (await _workUnit.BookRepo.RetrieveAllAsync("Category"));
+
+        if (books is not null)
+        {
+            List<BookViewModel> viewModels = new();
+            foreach (var book in books)
+            {
+                viewModels.Add(new()
+                {
+                    Book = book,
+                    InventoryItem = await _workUnit.InventoryRepo.GetAsync(inv => inv.BookId == book.Id)
+                });
+            }
+
+            return View(viewModels);
+        }
+
+        return NotFound();
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        IEnumerable<SelectListItem> categories = await GetCategoriesAsListItemAsync();
+        BookViewModel viewModel = new()
+        {
+            CategoriesList = categories,
+            Book = new Book()
+        };
+
+        return View(viewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Book book)
+    public async Task<IActionResult> Create(BookViewModel payload, IFormFile? bookCoverImage)
     {
-        if (await _workUnit.BookRepo.Exists(book))
+        if (payload.Book != null)
         {
-            ModelState.AddModelError("", $"Unable to add book '{book.Title} by {book.Author}, from {book.Publisher}'" +
-                                         $" because another book with the same title, written by the same author and published" +
-                                         $"by the same publisher already exists!");
+            if (await _workUnit.BookRepo.Exists(payload.Book))
+            {
+                ModelState.AddModelError("", $"Unable to add book '{payload.Book.Title} by {payload.Book.Author}," +
+                                             $" from {payload.Book.Publisher}' because another book with the same title," +
+                                             $" written by the same author and published by the same publisher already exists!");
+            }
+
+            if (ModelState.IsValid)
+            {
+                string rootPath = _hostEnvironment.WebRootPath;
+
+                if (bookCoverImage is not null)
+                {
+                    string bookCoverImageName = Guid.NewGuid() + Path.GetExtension(bookCoverImage.FileName);
+                    string bookCoverImagePath = Path.Combine(rootPath, @"static\images\book");
+
+                    await using (var fileStream = new FileStream(Path.Combine(bookCoverImagePath, bookCoverImageName),
+                                     FileMode.Create))
+                    {
+                        await bookCoverImage.CopyToAsync(fileStream);
+                    }
+
+                    payload.Book.CoverImageUrl = @"\static\images\book\" + bookCoverImageName;
+                }
+
+                await _workUnit.BookRepo.CreateAsync(payload.Book);
+                payload.InventoryItem!.DateAdded = DateTime.Now;
+                payload.InventoryItem!.BookId = payload.Book.Id;
+                await _workUnit.InventoryRepo.CreateAsync(payload.InventoryItem!);
+                await _workUnit.SaveAsync();
+                TempData["SuccessfulOperation"] =
+                    $"{payload.Book.Title} by {payload.Book.Author} was successfully added!";
+
+                return RedirectToAction("Index");
+            }
         }
 
-        if (ModelState.IsValid)
-        {
-            await _workUnit.BookRepo.CreateAsync(book);
-            await _workUnit.SaveAsync();
-            TempData["SuccessfulOperation"] = $"{book.Title} by {book.Author} was successfully added!";
-            return RedirectToAction("Index");
-        }
-
-        return View();
+        IEnumerable<SelectListItem> categories = await GetCategoriesAsListItemAsync();
+        payload.CategoriesList = categories;
+        return View(payload);
     }
 
     public async Task<IActionResult> Update(int? id)
@@ -53,28 +108,63 @@ public class BookController : Controller
             return NotFound();
         }
 
+        IEnumerable<SelectListItem> categories = await GetCategoriesAsListItemAsync();
         Book? book = await _workUnit.BookRepo.GetAsync(b => b.Id == id);
+        InventoryItem inventoryItem = await _workUnit.InventoryRepo.GetAsync(i => i.BookId == id);
 
-        if (book is null)
+        if (book is null || inventoryItem is null || categories is null)
         {
             return NotFound();
         }
 
-        return View("Update", book);
+        BookViewModel viewModel = new()
+        {
+            Book = book,
+            CategoriesList = categories,
+            InventoryItem = inventoryItem,
+        };
+
+        return View("Update", viewModel);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Update(Book bookPayload)
+    [HttpPost, ActionName("Update")]
+    public async Task<IActionResult> Update(BookViewModel payload, IFormFile? bookCoverImage)
     {
-        if (!ModelState.IsValid)
+        if (payload.Book is null || payload.InventoryItem is null)
         {
-            return View("Update", bookPayload);
+            TempData["FailedOperation"] = "The book you were trying to update was not found!";
+            return RedirectToAction("Index", NotFound());
         }
 
-        _workUnit.BookRepo.Update(bookPayload);
-        await _workUnit.SaveAsync();
-        TempData["SuccessfulOperation"] = "Book updated successfully!";
-        return RedirectToAction("Index");
+        if (ModelState.IsValid)
+        {
+            string rootPath = _hostEnvironment.WebRootPath;
+
+            if (bookCoverImage is not null)
+            {
+                string bookCoverImageName = Guid.NewGuid() + Path.GetExtension(bookCoverImage.FileName);
+                string bookCoverImagePath = Path.Combine(rootPath, @"static\images\book");
+                BookControllerUtils.TryDeleteBookCoverImage(payload.Book.CoverImageUrl, rootPath);
+
+                await using (var fileStream = new FileStream(Path.Combine(bookCoverImagePath, bookCoverImageName),
+                                 FileMode.Create))
+                {
+                    await bookCoverImage.CopyToAsync(fileStream);
+                }
+
+                payload.Book.CoverImageUrl = @"\static\images\book\" + bookCoverImageName;
+            }
+
+            payload.InventoryItem!.DateUpdated = DateTime.Now;
+            _workUnit.BookRepo.Update(payload.Book!);
+            _workUnit.InventoryRepo.Update(payload.InventoryItem!);
+            await _workUnit.SaveAsync();
+            TempData["SuccessfulOperation"] = "Book entry updated successfully!";
+            return RedirectToAction("Index");
+        }
+
+        TempData["FailedOperation"] = "Book entry could not be updated!";
+        return View("Update", payload);
     }
 
     public async Task<IActionResult> Delete(int? id)
@@ -85,20 +175,53 @@ public class BookController : Controller
         }
 
         Book? requestedBook = await _workUnit.BookRepo.GetAsync(book => book.Id == id);
+        InventoryItem? requestedInventoryItem = await _workUnit.InventoryRepo.GetAsync(inv => inv.BookId == id);
 
-        if (requestedBook is null)
+        if (requestedBook is null || requestedInventoryItem is null)
         {
-            return NotFound();
+            TempData["FailedOperation"] = "Failed to delete the book because it cannot be found!";
+            return RedirectToAction("Index", NotFound());
         }
 
-        return PartialView("_Delete", requestedBook);
+        BookDeleteViewModel viewModel = new()
+        {
+            Book = requestedBook,
+            InventoryItem = requestedInventoryItem,
+        };
+
+        return PartialView("_Delete", viewModel);
     }
 
     [HttpPost, ActionName("Delete")]
-    public async Task<IActionResult> Delete(Book bookPayload)
+    public async Task<IActionResult> Delete(BookDeleteViewModel payload)
     {
-        _workUnit.BookRepo.Remove(bookPayload);
-        await _workUnit.SaveAsync();
+        if (ModelState.IsValid)
+        {
+            _workUnit.InventoryRepo.Remove(payload.InventoryItem!);
+            BookControllerUtils.TryDeleteBookCoverImage(payload.Book!.CoverImageUrl, _hostEnvironment.WebRootPath);
+            _workUnit.BookRepo.Remove(payload.Book!);
+            await _workUnit.SaveAsync();
+
+            TempData["SuccessfulOperation"] = "Successfully deleted book entry!";
+        }
+        else
+        {
+            TempData["FailedOperation"] = "Deletion failed!";
+        }
+
         return RedirectToAction("Index");
+    }
+
+    private async Task<IEnumerable<SelectListItem>> GetCategoriesAsListItemAsync()
+    {
+        IEnumerable<SelectListItem> categories = (await _workUnit.CategoryRepo.RetrieveAllAsync())
+            .ToList().Select(
+                elem => new SelectListItem
+                {
+                    Text = elem.Genre,
+                    Value = elem.Id.ToString(),
+                });
+
+        return categories;
     }
 }

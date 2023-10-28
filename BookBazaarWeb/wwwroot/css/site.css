@@ -202,6 +202,12 @@ tbody {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px var(--navbarColor);
 }
 
+.form-select:focus {
+    border-color: var(--navbarColor);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px var(--navbarColor);
+
+}
+
 .CreateCategoryForm {
     margin-top: 3em !important;
     margin-bottom: 3em !important;
@@ -287,4 +293,59 @@ tbody {
     display: block !important;
     text-align: left !important;
     margin-top: 1.5em !important;
+}
+
+.ForcedMargin {
+    margin-top: 1em !important;
+}
+
+.PreLine {
+    white-space: pre-line !important;
+}
+
+.dataTables_length {
+    margin-top: 1em;
+    margin-bottom: 1em !important;
+}
+
+.dataTables_filter {
+    margin-top: 1em;
+    margin-bottom: 1em !important;
+}
+
+.dataTables_filter input {
+    outline: none;
+}
+
+.last::before {
+    content: none !important;
+}
+
+.last::after {
+    content: none !important;
+}
+
+.ui-icon {
+    display: block;
+}
+
+.dataTables_info {
+    margin-top: 1em;
+}
+
+.dataTables_paginate {
+    margin-top: 1em;
+}
+
+.current {
+    background-color: #ED5B2D !important;
+    color: white !important;
+    font-weight: bolder !important;
+}
+
+
+.CenteredContainer {
+    display: block !important;
+    margin: 0 auto !important;
+    width: 95% !important;
 }
