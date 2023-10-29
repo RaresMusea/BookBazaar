@@ -2,6 +2,7 @@
 using BookBazaar.Data.DataContext;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Data.Repo.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDataContext>();
 
 builder.Services.AddScoped<IWorkUnit, WorkUnit>();
 
