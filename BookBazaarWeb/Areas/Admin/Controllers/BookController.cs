@@ -3,12 +3,14 @@ using BookBazaar.Misc;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookBazaarWeb.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = RoleManager.Administrator)]
 public class BookController : Controller
 {
     private readonly IWorkUnit _workUnit;

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using BookBazaar.Misc
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Syncfusion.EJ2
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -32,22 +35,25 @@
                     <li class="nav-item">
                         <a class="NavigationLink nav-link text-white NavbarLink" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="NavbarLink NavigationLink DropdownParent text-white nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Management
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li class="nav-item">
-                                <a class="text-dark NavigationLinkDropDown dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="text-dark NavigationLinkDropDown dropdown-item" asp-area="Admin" asp-controller="Book" asp-action="Index">Books</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                        </ul>
-                    </li>
+                    @if (User.IsInRole(RoleManager.Administrator))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="NavbarLink NavigationLink DropdownParent text-white nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Management
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li class="nav-item">
+                                    <a class="text-dark NavigationLinkDropDown dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="text-dark NavigationLinkDropDown dropdown-item" asp-area="Admin" asp-controller="Book" asp-action="Index">Books</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
                 <partial name="_LoginPartial"></partial>
             </div>
