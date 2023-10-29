@@ -382,9 +382,9 @@ tbody {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
     margin-left: 2em !important;
     margin-right: 2em !important;
-    height: 2000px !important;
     border-radius: 15px;
     padding: 2em 1.5em 1em;
+    margin-bottom: 3em !important;
 }
 
 .BookCard {
@@ -392,6 +392,31 @@ tbody {
     border-radius: 15px;
     padding-bottom: 1.5em;
 }
+
+@media screen and (min-width: 1367px) {
+    .BookCard {
+        width: 20% !important;
+    }
+}
+
+@media screen and (max-width: 1366px) {
+    .BookCard {
+        width: 25% !important;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .BookCard {
+        width: 40% !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .BookCard {
+        width: 75% !important;
+    }
+}
+
 
 .BookCard img {
     display: block !important;
@@ -433,6 +458,59 @@ tbody {
     display: block !important;
     margin: 0 auto !important;
     width: 95px;
+}
+
+@media screen and (max-width: 575px) {
+    .BookDetailsWrapper {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+
+    .BookDetailsWrapper div img {
+        width: 75% !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+
+    .BookDetailsWrapper .Details {
+        margin: 0 auto !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .BookDetailsWrapper .Details {
+        margin: 0 auto !important;
+    }
+}
+
+.BookDetailsWrapper div img {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.CategoryCircle {
+    background-color: #ED5B2D;
+    width: 70px;
+    text-align: center;
+    color: white;
+    font-weight: bolder;
+    padding: .3em;
+    border-radius: 30px
+}
+
+.StockCircle {
+    display: inline-block;
+    border-radius: 50%;
+    width: 1em;
+    height: 1em;
+}
+
+.PriceHeading {
+    font-size: 2em !important;
+}
+
+.CountButton {
+    background-color: #ED5B2D !important;
 }
 
 

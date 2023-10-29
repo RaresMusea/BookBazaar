@@ -67,6 +67,7 @@ public class CategoryController : Controller
     {
         if (!ModelState.IsValid)
         {
+            TempData["FailedOperation"] = "The category could not be updated";
             return View("Update", categoryPayload);
         }
 

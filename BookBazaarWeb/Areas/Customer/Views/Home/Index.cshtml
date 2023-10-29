@@ -36,21 +36,35 @@
 </div>
 
 <div class="BooksWrapper mt-5 mx-5 h-75">
-    <div class="d-flex gap-5 align-items-stretch">
+    <div class="d-flex gap-5 align-items-strech justify-content-center flex-wrap">
         @foreach (var viewModel in viewModels)
         {
-            <div class="w-25 BookCard">
+            <div class="BookCard">
                 <div
                     class="Ornament
                    @(viewModel.InventoryItem!.QuantityInStock > 0 ? "InStock" : "OutOfStock")">
                     @(viewModel.InventoryItem!.QuantityInStock > 0 ? "Available" : "Sold out")
                 </div>
                 <img src="@viewModel.Book.CoverImageUrl" class="w-50" alt="Book image cover">
-                <span class="text-center BookTitle d-block px-1">@viewModel.Book!.Title</span>
-                <span class="text-center d-block px-1">by @viewModel.Book!.Author</span>
+                <a
+                    asp-controller="Home"
+                    asp-action="Details"
+                    asp-route-id="@viewModel.Book.Id"
+                    class="text-center BookTitle d-block px-1">
+                    @viewModel.Book!.Title
+                </a>
+                <span class="text-center d-block px-1">
+                    by @(viewModel.Book!.Author.Contains(',') ?
+                           viewModel.Book!.Author.Split(",")[0] + " et al." :
+                           viewModel.Book!.Author)
+                </span>
                 <span class="text-center d-block px-1">Publisher: @viewModel.Book!.Publisher</span>
                 <h4 class="text-center mt-3 px-1">@viewModel.Book!.Price &euro;</h4>
-                <button class="button primary Button AddButton CenteredButton">View</button>
+                <button
+                    onclick="location.href='@Url.Action("Details", "Home", new { id = viewModel.Book.Id })'"
+                    class="button primary Button AddButton CenteredButton">
+                    View
+                </button>
             </div>
         }
     </div>

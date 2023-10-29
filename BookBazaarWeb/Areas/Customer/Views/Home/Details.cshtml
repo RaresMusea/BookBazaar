@@ -1,0 +1,124 @@
+﻿@model BookBazaar.Models.VM.BookDetailsViewModel;
+
+<div class="container">
+    <div class="mt-5 d-flex justify-content-center flex-sm-column flex-md-row flex-lg-row flex-row gap-5 BookDetailsWrapper">
+        <div class="ImageWrapper">
+            <img src="@Model.Book!.CoverImageUrl" alt="Book cover image">
+        </div>
+        <div class="Details w-75">
+            <h1>@Model.Book!.Title</h1>
+            <h3>by @Model.Book!.Author</h3>
+            <div class="accordion mt-3" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header AccordionHeader" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Description
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            @Model.Book.Description
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item mt-2">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+                            About
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="mb-2">
+                                <div class="d-flex align-items-center justify-content-center justify-content-md-start justify-content-lg-start">
+                                    <span class="fw-bold">Availability:&nbsp;</span>
+                                    <span class="StockCircle fw-bolder"
+                                          style="background-color:@(Model.InventoryItem!.QuantityInStock > 0 ? "#468B91" : "red")">
+                                    </span>
+                                    <span style="color:@(Model.InventoryItem!.QuantityInStock > 0 ? "#468B91" : "red")">
+                                        &nbsp;@(Model.InventoryItem!.QuantityInStock > 0 ? "In stock" : "Sold out")
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="fw-bold mt-2">Category:&nbsp;</span><span class="CategoryCircle">@Model.Book.Category!.Genre</span>
+                            <div class="mt-2">
+                                <span class="fw-bold">ISBN:&nbsp;</span>
+                                <span>@Model.Book!.Isbn</span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="fw-bold">Publisher:&nbsp;</span>
+                                <span>@Model.Book!.Publisher</span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="fw-bold">Language:&nbsp;</span>
+                                <span>@Model.Book!.Language</span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="fw-bold">Date published:&nbsp;</span>
+                                <span>@Model.Book!.DatePublished.ToShortDateString()</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="mt-3 mb-3 fw-bolder PriceHeading">@Model.Book!.Price &euro;</h3>
+            <div class="Pricing mt-3">
+                <div class="row pl-2 mb-3">
+                    <div class="col-md-4">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-primary CountButton text-white border-0 fw-semibold"
+                                  id="inputGroup-sizing-default">
+                                Count
+                            </span>
+                            <input type="number" value="1" class="form-control text-end"
+                                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6 pb-1">
+                        <button type="submit" disabled
+                                class="w-100 py-2 fw-bolder primary Button AddButton">
+                            <i class="bi bi-cart-plus"></i>
+                            &nbsp;Add to Cart (Comming Soon...)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-around align-items-center mt-5 mb-5 flex-row">
+    <span class="Line"></span>
+    <h3 mx-2>You may also like</h3>
+    <span class="Line"></span>
+</div>
+<div class="BooksWrapper mt-5 mx-5 h-75">
+    <div class="d-flex gap-5 align-items-strech justify-content-center flex-wrap">
+        @foreach (var suggestion in @Model.SimilarSuggestions)
+        {
+            <div class="BookCard mt-2">
+                <img src="@suggestion.CoverImageUrl" class="w-50 mt-2" alt="Book image cover">
+                <a
+                    asp-controller="Home"
+                    asp-action="Details"
+                    asp-route-id="@suggestion.Id"
+                    class="text-center BookTitle d-block px-1">
+                    @suggestion.Title
+                </a>
+                <span class="text-center d-block px-1">
+                    by @(suggestion.Author.Contains(',') ?
+                           suggestion.Author.Split(",")[0] + " et al." :
+                           suggestion.Author)
+                </span>
+                <span class="text-center d-block px-1">Publisher: @suggestion.Publisher</span>
+                <h4 class="text-center mt-3 px-1">@suggestion.Price &euro;</h4>
+                <button
+                    onclick="location.href='@Url.Action("Details", "Home", new { id = suggestion.Id })'"
+                    class="button primary Button AddButton CenteredButton">
+                    View
+                </button>
+            </div>
+        }
+    </div>
+</div>

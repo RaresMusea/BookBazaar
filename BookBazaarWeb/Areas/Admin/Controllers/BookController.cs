@@ -22,7 +22,7 @@ public class BookController : Controller
 
     public async Task<IActionResult> Index()
     {
-        IEnumerable<Book> books = (await _workUnit.BookRepo.RetrieveAllAsync("Category"));
+        IEnumerable<Book> books = (await _workUnit.BookRepo.RetrieveAllAsync(includedProperties: "Category"));
 
         if (books is not null)
         {
