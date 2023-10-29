@@ -2,7 +2,9 @@
 using BookBazaar.Data.DataContext;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Data.Repo.UnitOfWork;
+using BookBazaar.Misc.Email;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +33,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IWorkUnit, WorkUnit>();
+builder.Services.AddScoped<IEmailSender, EmailEmitter>();
 
 var app = builder.Build();
 
