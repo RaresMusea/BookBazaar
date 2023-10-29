@@ -28,6 +28,7 @@ builder.Services.AddDbContext<AppDataContext>(options =>
 
 builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<AppDataContext>();
+builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IWorkUnit, WorkUnit>();
 
@@ -47,6 +48,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
