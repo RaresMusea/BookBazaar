@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using BookBazaar.Misc
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Syncfusion.EJ2
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -14,7 +17,7 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow">
         <div class="container-fluid">
             <a class="navbar-brand d-flex flex-row align-items-center" asp-area="" asp-action="Index" asp-controller="Home">
                 <img src="~/img/BookBazaarLogo.svg" class="LogoImg" alt="Logo"/>
@@ -25,30 +28,43 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="NavigationLink nav-link text-white NavbarLink" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="NavigationLink nav-link text-white NavbarLink" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="NavbarLink NavigationLink DropdownParent text-white nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Management
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li class="nav-item">
-                                <a class="text-dark NavigationLinkDropDown dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="text-dark NavigationLinkDropDown dropdown-item" asp-area="Admin" asp-controller="Book" asp-action="Index">Books</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                        </ul>
-                    </li>
+                    @if (User.IsInRole(RoleManager.Administrator))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="NavbarLink NavigationLink DropdownParent text-white nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Management
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li class="nav-item">
+                                    <a class="text-dark NavigationLinkDropDown dropdown-item" asp-area="Admin"
+                                       asp-controller="Category"
+                                       asp-action="Index">
+                                        Categories
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="text-dark NavigationLinkDropDown dropdown-item"
+                                       asp-area="Admin"
+                                       asp-controller="Book"
+                                       asp-action="Index">
+                                        Books
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
+                <partial name="_LoginPartial"></partial>
             </div>
         </div>
     </nav>

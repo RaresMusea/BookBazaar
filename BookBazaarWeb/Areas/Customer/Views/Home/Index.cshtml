@@ -1,8 +1,71 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<BookBazaar.Models.VM.BookViewModel>
+
+@{
+    ViewData["Title"] = "Home";
+    var viewModels = Model;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="h-50 CarouselWrapper">
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/img/Slide1_portable.png" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="~/img/Silde2.svg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="~/img/Slide3.svg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<div class="d-flex justify-content-around align-items-center mt-5 mb-5 flex-row">
+    <span class="Line"></span>
+    <h3 mx-2>All books</h3>
+    <span class="Line"></span>
+</div>
+
+<div class="BooksWrapper mt-5 mx-5 h-75">
+    <div class="d-flex gap-5 align-items-strech justify-content-center flex-wrap">
+        @foreach (var viewModel in viewModels)
+        {
+            <div class="BookCard">
+                <div
+                    class="Ornament
+                   @(viewModel.InventoryItem!.QuantityInStock > 0 ? "InStock" : "OutOfStock")">
+                    @(viewModel.InventoryItem!.QuantityInStock > 0 ? "Available" : "Sold out")
+                </div>
+                <img src="@viewModel.Book.CoverImageUrl" class="w-50" alt="Book image cover">
+                <a
+                    asp-controller="Home"
+                    asp-action="Details"
+                    asp-route-id="@viewModel.Book.Id"
+                    class="text-center BookTitle d-block px-1">
+                    @viewModel.Book!.Title
+                </a>
+                <span class="text-center d-block px-1">
+                    by @(viewModel.Book!.Author.Contains(',') ?
+                           viewModel.Book!.Author.Split(",")[0] + " et al." :
+                           viewModel.Book!.Author)
+                </span>
+                <span class="text-center d-block px-1">Publisher: @viewModel.Book!.Publisher</span>
+                <h4 class="text-center mt-3 px-1">@viewModel.Book!.Price &euro;</h4>
+                <button
+                    onclick="location.href='@Url.Action("Details", "Home", new { id = viewModel.Book.Id })'"
+                    class="button primary Button AddButton CenteredButton">
+                    View
+                </button>
+            </div>
+        }
+    </div>
 </div>

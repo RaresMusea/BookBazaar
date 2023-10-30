@@ -16,7 +16,8 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet = _context.Set<T>();
     }
 
-    public async Task<ICollection<T>> RetrieveAllAsync(string? includedProperties = null)
+    public async Task<ICollection<T>> RetrieveAllAsync(Expression<Func<T, bool>>? filter = null,
+        string? includedProperties = null)
     {
         IQueryable<T> queryable = _dbSet;
 
@@ -29,7 +30,12 @@ public class Repository<T> : IRepository<T> where T : class
             }
         }
 
-        return await queryable.ToListAsync();
+        if (filter is null)
+        {
+            return await queryable.ToListAsync();
+        }
+
+        return await queryable.Where(filter).ToListAsync();
     }
 
     public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string? includedProperties = null)

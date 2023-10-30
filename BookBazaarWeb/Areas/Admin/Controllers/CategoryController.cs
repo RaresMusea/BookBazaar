@@ -1,10 +1,13 @@
 ﻿using BookBazaar.Data.Repo.Interfaces;
+using BookBazaar.Misc;
 using BookBazaar.Models.CategoryModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookBazaarWeb.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = RoleManager.Administrator)]
 public class CategoryController : Controller
 {
     private readonly IWorkUnit _workUnit;
@@ -67,6 +70,7 @@ public class CategoryController : Controller
     {
         if (!ModelState.IsValid)
         {
+            TempData["FailedOperation"] = "The category could not be updated";
             return View("Update", categoryPayload);
         }
 

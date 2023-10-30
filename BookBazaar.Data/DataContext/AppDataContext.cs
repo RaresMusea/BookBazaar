@@ -1,22 +1,28 @@
-﻿using BookBazaar.Models.BookModels;
+﻿using BookBazaar.Models;
+using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CategoryModels;
 using BookBazaar.Models.InventoryModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookBazaar.Data.DataContext;
 
-public class AppDataContext : DbContext
+public class AppDataContext : IdentityDbContext<IdentityUser>
 {
     public AppDataContext(DbContextOptions<AppDataContext> options) : base(options)
     {
     }
 
     public DbSet<Category> Categories { get; set; } = null!;
-    public DbSet<Book> Books { get; set; }
-    
-    public DbSet<InventoryItem> InventoryItems { get; set; }
+    public DbSet<Book> Books { get; set; } = null!;
+    public DbSet<InventoryItem> InventoryItems { get; set; } = null!;
+    public DbSet<AppUser> AppUsers { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Category>().HasData(
             new Category { Id = 1, Genre = "Adventure", Priority = 1 },
             new Category { Id = 2, Genre = "Science-Fiction", Priority = 1 },

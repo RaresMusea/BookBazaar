@@ -1,0 +1,193 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+@*<div class="row">
+    <div class="col-md-12">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2>Create a new account.</h2>
+            <hr/>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
+                <label asp-for="Input.Email">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password"/>
+                <label asp-for="Input.Password">Password</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password"/>
+                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="Input.Role" class="form-select" asp-items="@Model.Input.Roles">
+                    <option dislabed selected value="Select a role from the list below"></option>
+                </select>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to register.</h3>
+            <hr/>
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See this
+                            <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                article
+                                about setting up this ASP.NET application to support logging in via external services
+                            </a>.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>*@
+
+@*<div class="d-flex justify-content-around align-items-flex-start mt-5">
+    <div class="FormWrapper w-50">
+        <a class="navbar-brand d-flex flex-row align-items-center justify-content-start" asp-area="" asp-action="Index" asp-controller="Home">
+            <img src="~/img/BookBazaarWhiteTransparent.svg" class="LogoImgAuth" alt="Logo"/>
+            <div class="d-flex flex-column">
+                <h2 class="fw-bold nav-link LogoText">BOOK BAZAAR</h2>
+                <h3>Where every book holds an universe.</h3>
+                <h5 class="RegisterActionHeading">Create a new account</h5>
+            </div>
+        </a>
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" id="registerForm" class="p-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="col-10">
+                    <label asp-for="Input.Email">Email</label>
+                    <input asp-for="Input.Email" class="form-control col-7" autocomplete="username" aria-required="true" placeholder="name@domain.com"/>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+        </form>
+    </div>
+    <div>
+        <img src="~/img/undraw_profile_re_4a55.svg" alt="Register form illustration">
+    </div>
+</div>*@
+
+<form
+    method="post"
+    id="registerForm"
+    asp-route-returnUrl="@Model.ReturnUrl"
+    class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
+    <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
+        <div class="w-100 d-flex flex-row align-items-center justify-content-start mb-0">
+            <img src="~/img/BookBazaarWhiteTransparent.svg" class="LogoImgAuth" alt="Logo"/>
+            <div class="d-flex flex-column">
+                <h2 class="fw-bold nav-link LogoText">BOOK BAZAAR</h2>
+                <h3 >Where every book holds an universe.</h3>
+                <h5 class="RegisterActionHeading">Create a new account</h5>
+            </div>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
+        <div class="mb-3 d-flex flex-row justify-content-center align-items-center">
+            <div class="col-11">
+                <label asp-for="Input.Name" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Name" class="ValidationError"></span>
+                <input asp-for="Input.Name" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-center align-items-center">
+            <div class="col-11">
+                <label asp-for="Input.Email" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Email" class="ValidationError"></span>
+                <input asp-for="Input.Email" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Input.Country" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Country" class="ValidationError"></span>
+                <input asp-for="Input.Country" class="form-control TextInput">
+            </div>
+            <div class="col-5">
+                <label asp-for="Input.City" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.City" class="ValidationError"></span>
+                <input asp-for="Input.City" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Input.Address" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Address" class="ValidationError"></span>
+                <input asp-for="Input.Address" class="form-control TextInput">
+            </div>
+            <div class="col-5">
+                <label asp-for="Input.PhoneNumber" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="ValidationError"></span>
+                <input asp-for="Input.PhoneNumber" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Input.Password" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Password" class="ValidationError"></span>
+                <input asp-for="Input.Password" class="form-control TextInput">
+            </div>
+            <div class="col-5">
+                <label asp-for="Input.ConfirmPassword" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.ConfirmPassword" class="ValidationError"></span>
+                <input asp-for="Input.ConfirmPassword" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <div class="col-11">
+                <label asp-for="Input.Role" class="ml-1 mt-2"></label>
+                <select asp-for="Input.Role" class="form-select TextInput" asp-items="@Model.Input.Roles">
+                    <option dislabed selected>Select a role from the list below</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit"
+                id="registerSubmit"
+                class="button-primary mt-4 SubmitNewCategory ForcedMargin Shadow2 rounded-3">
+            Register
+        </button>
+        <a href="/Identity/Account/Login"
+           class="mt-2 nav-link link-underline text-center Anchor">
+            Have an account already? <b class="fw-bolder">Log in now.</b>
+        </a>
+        <div class="col-md-12 mt-2">
+            <section class="Divider">
+                <p class="divider-text d-flex">OR</p>
+            </section>
+        </div>
+    </div>
+    <img src="~/img/undraw_profile_re_4a55.svg"
+         alt="Books Art"
+         class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}
