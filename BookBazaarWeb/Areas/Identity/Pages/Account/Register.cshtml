@@ -4,10 +4,9 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
+@*<div class="row">
+    <div class="col-md-12">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
             <hr/>
@@ -68,7 +67,89 @@
             }
         </section>
     </div>
-</div>
+</div>*@
+
+@*<div class="d-flex justify-content-around align-items-flex-start mt-5">
+    <div class="FormWrapper w-50">
+        <a class="navbar-brand d-flex flex-row align-items-center justify-content-start" asp-area="" asp-action="Index" asp-controller="Home">
+            <img src="~/img/BookBazaarWhiteTransparent.svg" class="LogoImgAuth" alt="Logo"/>
+            <div class="d-flex flex-column">
+                <h2 class="fw-bold nav-link LogoText">BOOK BAZAAR</h2>
+                <h3>Where every book holds an universe.</h3>
+                <h5 class="RegisterActionHeading">Create a new account</h5>
+            </div>
+        </a>
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" id="registerForm" class="p-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="col-10">
+                    <label asp-for="Input.Email">Email</label>
+                    <input asp-for="Input.Email" class="form-control col-7" autocomplete="username" aria-required="true" placeholder="name@domain.com"/>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+        </form>
+    </div>
+    <div>
+        <img src="~/img/undraw_profile_re_4a55.svg" alt="Register form illustration">
+    </div>
+</div>*@
+
+<form
+    method="post"
+    asp-action="Create"
+    asp-controller="Book"
+    enctype="multipart/form-data"
+    class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
+    <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
+        <div class="w-100 d-flex flex-row align-items-center justify-content-start mb-0">
+            <img src="~/img/BookBazaarWhiteTransparent.svg" class="LogoImgAuth" alt="Logo"/>
+            <div class="d-flex flex-column">
+                <h2 class="fw-bold nav-link LogoText">BOOK BAZAAR</h2>
+                <h3 >Where every book holds an universe.</h3>
+                <h5 class="RegisterActionHeading">Create a new account</h5>
+            </div>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
+        <div class="mb-3 d-flex flex-row justify-content-center align-items-center">
+            <div class="col-11">
+                <label asp-for="Input.Email" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Email" class="ValidationError"></span>
+                <input asp-for="Input.Email" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Input.Password" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Password" class="ValidationError"></span>
+                <input asp-for="Input.Password" class="form-control TextInput">
+            </div>
+            <div class="col-5">
+                <label asp-for="Input.ConfirmPassword" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.ConfirmPassword" class="ValidationError"></span>
+                <input asp-for="Input.ConfirmPassword" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <div class="col-11">
+                <label asp-for="Input.Role" class="ml-1 mt-2"></label>
+                <select asp-for="Input.Role" class="form-select TextInput" asp-items="@Model.Input.Roles">
+                    <option dislabed selected>Select a role from the list below</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" id="registerSubmit" class="button-primary mt-4 SubmitNewCategory ForcedMargin Shadow2 rounded-3">Register</button>
+        <a href="/Identity/Account/Login" class="mt-2 nav-link link-underline text-center Anchor">Have an account already? <b>Log in</b></a>
+        <div class="col-md-12 mt-2">
+            <section class="Divider">
+                <p class="divider-text d-flex">OR</p>
+            </section>
+        </div>
+    </div>
+    <img src="~/img/undraw_profile_re_4a55.svg"
+         alt="Books Art"
+         class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
+</form>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>

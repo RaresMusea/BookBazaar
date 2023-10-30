@@ -513,4 +513,40 @@ tbody {
     background-color: #ED5B2D !important;
 }
 
+.LogoImgAuth {
+    width: 150px;
+    height: 150px;
+}
+
+.FormWrapper {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+}
+
+.RegisterActionHeading {
+    color: #ED5B2D;
+    font-weight: bolder;
+    font-size: 1.4em;
+    text-transform: lowercase !important;
+}
+
+.divider-text:before,
+.divider-text:after {
+    color: white;
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #555;
+    margin: auto 0.25rem;
+    box-shadow: 0 -2px;
+    opacity: 70%;
+}
+
+.divider-text {
+    opacity: 70%;
+}
+
+.Divider {
+    display: block;
+    margin: 0 auto;
+    width: 60%;
+}
 
