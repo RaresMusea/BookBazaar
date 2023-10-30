@@ -111,9 +111,40 @@
         <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
         <div class="mb-3 d-flex flex-row justify-content-center align-items-center">
             <div class="col-11">
+                <label asp-for="Input.Name" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Name" class="ValidationError"></span>
+                <input asp-for="Input.Name" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-center align-items-center">
+            <div class="col-11">
                 <label asp-for="Input.Email" class="ml-1 mt-2"></label>
                 <span asp-validation-for="Input.Email" class="ValidationError"></span>
                 <input asp-for="Input.Email" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Input.Country" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Country" class="ValidationError"></span>
+                <input asp-for="Input.Country" class="form-control TextInput">
+            </div>
+            <div class="col-5">
+                <label asp-for="Input.City" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.City" class="ValidationError"></span>
+                <input asp-for="Input.City" class="form-control TextInput">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Input.Address" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.Address" class="ValidationError"></span>
+                <input asp-for="Input.Address" class="form-control TextInput">
+            </div>
+            <div class="col-5">
+                <label asp-for="Input.PhoneNumber" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="ValidationError"></span>
+                <input asp-for="Input.PhoneNumber" class="form-control TextInput">
             </div>
         </div>
         <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
