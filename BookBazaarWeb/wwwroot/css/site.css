@@ -547,6 +547,15 @@ tbody {
 .Divider {
     display: block;
     margin: 0 auto;
-    width: 60%;
+    width: 92%;
+}
+
+.LoginAction {
+    text-decoration: none;
+}
+
+.LoginAction:hover {
+    color: #ED5B2D;
+    text-decoration: underline;
 }
 

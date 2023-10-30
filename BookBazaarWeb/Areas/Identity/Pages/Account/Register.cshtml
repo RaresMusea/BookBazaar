@@ -95,9 +95,8 @@
 
 <form
     method="post"
-    asp-action="Create"
-    asp-controller="Book"
-    enctype="multipart/form-data"
+    id="registerForm"
+    asp-route-returnUrl="@Model.ReturnUrl"
     class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
     <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
         <div class="w-100 d-flex flex-row align-items-center justify-content-start mb-0">
@@ -137,8 +136,15 @@
                 </select>
             </div>
         </div>
-        <button type="submit" id="registerSubmit" class="button-primary mt-4 SubmitNewCategory ForcedMargin Shadow2 rounded-3">Register</button>
-        <a href="/Identity/Account/Login" class="mt-2 nav-link link-underline text-center Anchor">Have an account already? <b>Log in</b></a>
+        <button type="submit"
+                id="registerSubmit"
+                class="button-primary mt-4 SubmitNewCategory ForcedMargin Shadow2 rounded-3">
+            Register
+        </button>
+        <a href="/Identity/Account/Login"
+           class="mt-2 nav-link link-underline text-center Anchor">
+            Have an account already? <b>Log in now.</b>
+        </a>
         <div class="col-md-12 mt-2">
             <section class="Divider">
                 <p class="divider-text d-flex">OR</p>
