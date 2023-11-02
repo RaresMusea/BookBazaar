@@ -559,3 +559,7 @@ tbody {
     text-decoration: underline;
 }
 
+#CompaniesTable {
+    margin-top: .5em !important;
+}
+

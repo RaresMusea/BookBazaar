@@ -22,4 +22,9 @@ public class CompanyController : Controller
         IEnumerable<Company> companies = await _workUnit.CompanyRepo.RetrieveAllAsync();
         return View(companies);
     }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
 }
