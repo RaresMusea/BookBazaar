@@ -8,6 +8,7 @@ public class Company
     [Key] public int Id { get; set; }
 
     [DisplayName("Company name")]
+    [MaxLength(35)]
     [Required]
     public string Name { get; set; } = string.Empty;
 
@@ -25,5 +26,5 @@ public class Company
 
     [DisplayName("Phone number")] public string Phone { get; set; } = string.Empty;
 
-    [DisplayName("Date founded")] public DateOnly IncorporationDate { get; set; }
+    [DisplayName("Date founded")] public DateTime IncorporationDate { get; set; }
 }
