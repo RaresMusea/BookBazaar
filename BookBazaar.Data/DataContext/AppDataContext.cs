@@ -1,6 +1,7 @@
 ﻿using BookBazaar.Models;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CategoryModels;
+using BookBazaar.Models.CompanyModels;
 using BookBazaar.Models.InventoryModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -17,7 +18,9 @@ public class AppDataContext : IdentityDbContext<IdentityUser>
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Book> Books { get; set; } = null!;
     public DbSet<InventoryItem> InventoryItems { get; set; } = null!;
+    public DbSet<Company> Companies { get; set; } = null!;
     public DbSet<AppUser> AppUsers { get; set; } = null!;
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
