@@ -46,14 +46,14 @@
                 <td class="align-middle">
                     <div class="btn-group d-flex align-items-center justify-content-evenly" role="group">
                         <a
-                            asp-controller="Category"
+                            asp-controller="Company"
                             asp-action="Update"
                             asp-route-id="@company.Id"
                             class="button Button EditButton">
                             <i class="bi bi-pencil-fill"></i>
                         </a>
-                        <button asp-controller="Category"
-                                data-url="@Url.Action("Delete", "Category", new { id = company.Id })"
+                        <button asp-controller="Company"
+                                data-url="@Url.Action("Delete", "Company", new { id = company.Id })"
                                 class="button Button DeleteButton">
                             <i class="bi bi-x-square-fill"></i>
                         </button>
@@ -68,4 +68,5 @@
 @section Scripts
 {
     <script src="~/js/DataTables/CompanyDataTables.js"></script>
+    <script src="~/js/ajax/Company/DeleteCompany.js"></script>
 }
