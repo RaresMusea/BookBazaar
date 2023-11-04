@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Misc;
 using BookBazaar.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -30,6 +31,7 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWorkUnit _workUnit;
 
         public RegisterModel(
             RoleManager<IdentityRole> roleManager,
@@ -37,7 +39,8 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IWorkUnit workUnit)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -46,6 +49,7 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _workUnit = workUnit;
         }
 
         /// <summary>
@@ -119,6 +123,10 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
             public string Country { get; set; }
 
             [DisplayName("Phone number")] public string PhoneNumber { get; set; }
+
+            public int? CompanyId { get; set; }
+
+            [DisplayName("Company")] public IEnumerable<SelectListItem> Companies { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -137,7 +145,12 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
                 {
                     Text = i,
                     Value = i
-                }).ToListAsync()
+                }).ToListAsync(),
+                Companies = (await _workUnit.CompanyRepo.RetrieveAllAsync()).Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString(),
+                })
             };
 
             ReturnUrl = returnUrl;
