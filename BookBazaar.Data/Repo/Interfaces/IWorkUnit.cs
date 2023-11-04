@@ -6,6 +6,7 @@ public interface IWorkUnit
     IBookRepository BookRepo { get; }
     IInventoryItemRepository InventoryRepo { get; }
     ICompanyRepository CompanyRepo { get; }
+    IOrderBasketRepository OrderBasketRepo { get; }
 
     Task<int> SaveAsync();
 }
