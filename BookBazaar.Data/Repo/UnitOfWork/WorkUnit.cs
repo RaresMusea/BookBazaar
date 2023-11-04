@@ -12,6 +12,7 @@ public class WorkUnit : IWorkUnit
     public IInventoryItemRepository InventoryRepo { get; private set; }
     public ICompanyRepository CompanyRepo { get; private set; }
     public IOrderBasketRepository OrderBasketRepo { get; private set; }
+    public IAppUserRepository UserRepo { get; private set; }
 
     public WorkUnit(AppDataContext context)
     {
@@ -20,6 +21,7 @@ public class WorkUnit : IWorkUnit
         BookRepo = new BookRepository(_context);
         InventoryRepo = new InventoryItemRepository(_context);
         CompanyRepo = new CompanyRepository(_context);
+        UserRepo = new AppUserRepository(_context);
         OrderBasketRepo = new OrderBasketRepository(_context);
     }
 
