@@ -3,7 +3,7 @@
 
 @{
     var book = @Model.OrderBasket!.Book;
-    var inventoryItem = @Model.OrderBasket!.InventoryEntry;
+    var inventoryItem = @Model.OrderBasket!.InventoryItem;
 }
 
 <div class="container">
@@ -83,45 +83,49 @@
                     </div>
                 </div>
             </div>
-            <div style="@(inventoryItem.QuantityInStock > 0 ? "display:block" : "display:none")">
-                <h3
-                    id="InitialPrice"
-                    data-unitaryprice="@book.Price"
-                    class="mt-3 mb-3 fw-bolder PriceHeading">
-                    @book.Price &euro;
-                </h3>
-                <h3 class="Invisible DiscountAmount"></h3>
-                <h2 class="Discount PriceHeading Invisible"></h2>
-                <div class="Pricing mt-3">
-                    <div class="row pl-2 mb-3">
-                        <span asp-validation-for="OrderBasket!.Items"
-                              id="ItemSelectorValidation"
-                              class="ValidationError mb-3">
-                        </span>
-                        <div class="col-md-4">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text bg-primary CountButton text-white border-0 fw-semibold"
-                                      id="inputGroup-sizing-default">
-                                    Count
-                                </span>
-                                <input asp-for="OrderBasket!.Items" max="@inventoryItem.QuantityInStock"
-                                       data-maxvalue="@inventoryItem.QuantityInStock"
-                                       class="form-control text-end QuantitySelector"
-                                       aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+            <form method="post">
+                <div style="@(inventoryItem.QuantityInStock > 0 ? "display:block" : "display:none")">
+                    <h3
+                        id="InitialPrice"
+                        data-unitaryprice="@book.Price"
+                        class="mt-3 mb-3 fw-bolder PriceHeading">
+                        @book.Price &euro;
+                    </h3>
+                    <h3 class="Invisible DiscountAmount"></h3>
+                    <h2 class="Discount PriceHeading Invisible"></h2>
+                    <div class="Pricing mt-3">
+                        <div class="row pl-2 mb-3">
+                            <span asp-validation-for="OrderBasket!.Items"
+                                  id="ItemSelectorValidation"
+                                  class="ValidationError mb-3">
+                            </span>
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-primary CountButton text-white border-0 fw-semibold"
+                                          id="inputGroup-sizing-default">
+                                        Count
+                                    </span>
+                                    <input asp-for="OrderBasket!.Items" max="@inventoryItem.QuantityInStock"
+                                           data-maxvalue="@inventoryItem.QuantityInStock"
+                                           class="form-control text-end QuantitySelector"
+                                           aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6 pb-1">
+                                <input hidden asp-for="OrderBasket!.BookId">
+                                <input hidden asp-for="OrderBasket!.InventoryItemId">
+                                <button type="submit"
+                                        class="w-100 py-2 fw-bolder primary Button AddButton">
+                                    <i class="bi bi-cart-plus"></i>
+                                    &nbsp;Add to Cart
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 col-md-6 pb-1">
-                            <button type="submit"
-                                    class="w-100 py-2 fw-bolder primary Button AddButton">
-                                <i class="bi bi-cart-plus"></i>
-                                &nbsp;Add to Cart
-                            </button>
-                        </div>
-                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

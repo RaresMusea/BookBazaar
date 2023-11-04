@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CartModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
 using BookBazaarWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookBazaarWeb.Areas.Customer.Controllers;
@@ -44,7 +46,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        if (id == null || id == 0)
+        if (id <= 0)
         {
             return NotFound();
         }
@@ -64,7 +66,7 @@ public class HomeController : Controller
         OrderBasket basket = new()
         {
             Book = book,
-            InventoryEntry = inventoryItem,
+            InventoryItem = inventoryItem,
             InventoryItemId = inventoryItem.Id,
             Items = 1,
             BookId = id,
@@ -77,6 +79,33 @@ public class HomeController : Controller
         };
 
         return View(viewModel);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Details(OrderBasketViewModel viewModel)
+    {
+        ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity!;
+        string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        viewModel.OrderBasket!.UserId = userId;
+        OrderBasket basket = viewModel.OrderBasket;
+
+        OrderBasket existingBasket = await _workUnit.OrderBasketRepo.GetAsync(b => b.UserId == basket.UserId
+            && b.BookId == basket.BookId && b.InventoryItemId == basket.InventoryItemId);
+
+        if (existingBasket is null)
+        {
+            await _workUnit.OrderBasketRepo.CreateAsync(basket);
+        }
+        else
+        {
+            existingBasket.Items += basket.Items;
+            _workUnit.OrderBasketRepo.Update(existingBasket);
+        }
+
+        await _workUnit.SaveAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Privacy()
