@@ -1,5 +1,6 @@
 ﻿using BookBazaar.Models;
 using BookBazaar.Models.BookModels;
+using BookBazaar.Models.CartModels;
 using BookBazaar.Models.CategoryModels;
 using BookBazaar.Models.CompanyModels;
 using BookBazaar.Models.InventoryModels;
@@ -20,6 +21,7 @@ public class AppDataContext : IdentityDbContext<IdentityUser>
     public DbSet<InventoryItem> InventoryItems { get; set; } = null!;
     public DbSet<Company> Companies { get; set; } = null!;
     public DbSet<AppUser> AppUsers { get; set; } = null!;
+    public DbSet<OrderBasket> OrderBaskets { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

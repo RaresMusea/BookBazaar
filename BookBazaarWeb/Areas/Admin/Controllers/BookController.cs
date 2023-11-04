@@ -38,9 +38,7 @@ public class BookController : Controller
                 });
             }
 
-            var result = viewModels.OrderByDescending(o => o.InventoryItem!.QuantityInStock).ToList();
-
-            return View(result);
+            return View(viewModels);
         }
 
         return NotFound();
