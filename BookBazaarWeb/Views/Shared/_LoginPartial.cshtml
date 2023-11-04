@@ -33,4 +33,14 @@
             <a class="NavigationLink nav-link text-white NavbarLink" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
+    <li class="nav-item">
+        <a class="NavigationLink nav-link text-white NavbarLink"
+           id="cart"
+           asp-area="Customer"
+           asp-controller="OrderBasket"
+           asp-action="Index">
+            <i class="bi bi-basket text-center Basket"></i>
+            My basket (0)
+        </a>
+    </li>
 </ul>

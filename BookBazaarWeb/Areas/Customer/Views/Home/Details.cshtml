@@ -4,6 +4,7 @@
 @{
     var book = @Model.OrderBasket!.Book;
     var inventoryItem = @Model.OrderBasket!.InventoryItem;
+    ViewData["Title"] = $"{book.Title} by {book.Author} - Book Bazaar";
 }
 
 <div class="container">
@@ -84,6 +85,7 @@
                 </div>
             </div>
             <form method="post">
+                <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
                 <div style="@(inventoryItem.QuantityInStock > 0 ? "display:block" : "display:none")">
                     <h3
                         id="InitialPrice"

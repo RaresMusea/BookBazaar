@@ -85,11 +85,26 @@ public class HomeController : Controller
     [Authorize]
     public async Task<IActionResult> Details(OrderBasketViewModel viewModel)
     {
+        if (!ModelState.IsValid)
+        {
+            TempData["FailedOperation"] = "An error occurred while processing your request. Please try again later.";
+            return RedirectToAction(nameof(Index));
+        }
+
         ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity!;
         string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
         viewModel.OrderBasket!.UserId = userId;
         OrderBasket basket = viewModel.OrderBasket;
+
+        InventoryItem inventoryItem =
+            await _workUnit.InventoryRepo.GetAsync(i => i.Id == basket.InventoryItemId && i.BookId == basket.BookId);
+
+        if (basket.Items > inventoryItem.QuantityInStock)
+        {
+            ModelState.AddModelError(string.Empty,
+                "The selected amount of books exceeds the quantity available in stock for that product!");
+        }
 
         OrderBasket existingBasket = await _workUnit.OrderBasketRepo.GetAsync(b => b.UserId == basket.UserId
             && b.BookId == basket.BookId && b.InventoryItemId == basket.InventoryItemId);
@@ -105,6 +120,7 @@ public class HomeController : Controller
         }
 
         await _workUnit.SaveAsync();
+        TempData["SuccessfulOperation"] = "Your cart was successfully updated!";
         return RedirectToAction(nameof(Index));
     }
 
