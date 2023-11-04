@@ -580,3 +580,11 @@ tbody {
     filter: grayscale(0);
 }
 
+.Discount {
+    color: #ED5B2D !important;
+}
+
+.VisibleBlock {
+    display: block !important;
+}
+

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.BookModels;
+using BookBazaar.Models.CartModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
 using BookBazaarWeb.Models;
@@ -41,7 +42,7 @@ public class HomeController : Controller
         return NotFound();
     }
 
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int id)
     {
         if (id == null || id == 0)
         {
@@ -60,10 +61,18 @@ public class HomeController : Controller
             b => b.CategoryId == book.CategoryId && b.Id != book.Id,
             "Category");
 
-        BookDetailsViewModel viewModel = new()
+        OrderBasket basket = new()
         {
             Book = book,
-            InventoryItem = inventoryItem,
+            InventoryEntry = inventoryItem,
+            InventoryItemId = inventoryItem.Id,
+            Items = 1,
+            BookId = id,
+        };
+
+        OrderBasketViewModel viewModel = new()
+        {
+            OrderBasket = basket,
             SimilarSuggestions = similarBooks,
         };
 

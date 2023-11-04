@@ -1,87 +1,124 @@
-﻿@model BookBazaar.Models.VM.BookDetailsViewModel;
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model BookBazaar.Models.VM.OrderBasketViewModel
+
+@{
+    var book = @Model.OrderBasket!.Book;
+    var inventoryItem = @Model.OrderBasket!.InventoryEntry;
+}
 
 <div class="container">
     <div class="mt-5 d-flex justify-content-center flex-sm-column flex-md-row flex-lg-row flex-row gap-5 BookDetailsWrapper">
         <div class="ImageWrapper">
-            <img src="@Model.Book!.CoverImageUrl" alt="Book cover image">
+            <img src="@book.CoverImageUrl" alt="Book cover image">
         </div>
         <div class="Details w-75">
-            <h1>@Model.Book!.Title</h1>
-            <h3>by @Model.Book!.Author</h3>
+            <h1>@book.Title</h1>
+            <h3>by @book.Author</h3>
             <div class="accordion mt-3" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header AccordionHeader" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <button class="accordion-button"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne"
+                                aria-expanded="true"
+                                aria-controls="collapseOne">
                             Description
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div id="collapseOne"
+                         class="accordion-collapse collapse show"
+                         aria-labelledby="headingOne"
+                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            @Model.Book.Description
+                            @book.Description
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item mt-2">
                     <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+                        <button class="accordion-button"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo"
+                                aria-expanded="true"
+                                aria-controls="collapseOne">
                             About
                         </button>
                     </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div id="collapseTwo"
+                         class="accordion-collapse collapse show"
+                         aria-labelledby="headingOne"
+                         data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <div class="mb-2">
                                 <div class="d-flex align-items-center justify-content-center justify-content-md-start justify-content-lg-start">
                                     <span class="fw-bold">Availability:&nbsp;</span>
                                     <span class="StockCircle fw-bolder"
-                                          style="background-color:@(Model.InventoryItem!.QuantityInStock > 0 ? "#468B91" : "red")">
+                                          style="background-color:@(inventoryItem!.QuantityInStock > 0 ? "#468B91" : "red")">
                                     </span>
-                                    <span style="color:@(Model.InventoryItem!.QuantityInStock > 0 ? "#468B91" : "red")">
-                                        &nbsp;@(Model.InventoryItem!.QuantityInStock > 0 ? "In stock" : "Sold out")
+                                    <span style="color:@(inventoryItem!.QuantityInStock > 0 ? "#468B91" : "red")">
+                                        &nbsp;@(inventoryItem!.QuantityInStock > 0 ? "In stock" : "Sold out")
                                     </span>
                                 </div>
                             </div>
-                            <span class="fw-bold mt-2">Category:&nbsp;</span><span class="CategoryCircle">@Model.Book.Category!.Genre</span>
+                            <span class="fw-bold mt-2">Category:&nbsp;</span><span class="CategoryCircle">@book.Category!.Genre</span>
                             <div class="mt-2">
                                 <span class="fw-bold">ISBN:&nbsp;</span>
-                                <span>@Model.Book!.Isbn</span>
+                                <span>@book.Isbn</span>
                             </div>
                             <div class="mt-2">
                                 <span class="fw-bold">Publisher:&nbsp;</span>
-                                <span>@Model.Book!.Publisher</span>
+                                <span>@book!.Publisher</span>
                             </div>
                             <div class="mt-2">
                                 <span class="fw-bold">Language:&nbsp;</span>
-                                <span>@Model.Book!.Language</span>
+                                <span>@book!.Language</span>
                             </div>
                             <div class="mt-2">
                                 <span class="fw-bold">Date published:&nbsp;</span>
-                                <span>@Model.Book!.DatePublished.ToShortDateString()</span>
+                                <span>@book.DatePublished.ToShortDateString()</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <h3 class="mt-3 mb-3 fw-bolder PriceHeading">@Model.Book!.Price &euro;</h3>
-            <div class="Pricing mt-3">
-                <div class="row pl-2 mb-3">
-                    <div class="col-md-4">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text bg-primary CountButton text-white border-0 fw-semibold"
-                                  id="inputGroup-sizing-default">
-                                Count
-                            </span>
-                            <input type="number" value="1" class="form-control text-end"
-                                   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+            <div style="@(inventoryItem.QuantityInStock > 0 ? "display:block" : "display:none")">
+                <h3
+                    id="InitialPrice"
+                    data-unitaryprice="@book.Price"
+                    class="mt-3 mb-3 fw-bolder PriceHeading">
+                    @book.Price &euro;
+                </h3>
+                <h3 class="Invisible DiscountAmount"></h3>
+                <h2 class="Discount PriceHeading Invisible"></h2>
+                <div class="Pricing mt-3">
+                    <div class="row pl-2 mb-3">
+                        <span asp-validation-for="OrderBasket!.Items"
+                              id="ItemSelectorValidation"
+                              class="ValidationError mb-3">
+                        </span>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary CountButton text-white border-0 fw-semibold"
+                                      id="inputGroup-sizing-default">
+                                    Count
+                                </span>
+                                <input asp-for="OrderBasket!.Items" max="@inventoryItem.QuantityInStock"
+                                       data-maxvalue="@inventoryItem.QuantityInStock"
+                                       class="form-control text-end QuantitySelector"
+                                       aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-md-6 pb-1">
-                        <button type="submit" disabled
-                                class="w-100 py-2 fw-bolder primary Button AddButton">
-                            <i class="bi bi-cart-plus"></i>
-                            &nbsp;Add to Cart (Comming Soon...)
-                        </button>
+                    <div class="row">
+                        <div class="col-12 col-md-6 pb-1">
+                            <button type="submit"
+                                    class="w-100 py-2 fw-bolder primary Button AddButton">
+                                <i class="bi bi-cart-plus"></i>
+                                &nbsp;Add to Cart
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,3 +159,10 @@
         }
     </div>
 </div>
+
+@section Scripts{
+    @{
+        <script src="~/js/PriceUpdater.js"></script>
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}
