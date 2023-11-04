@@ -172,6 +172,12 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
                 user.Address = Input.Address;
                 user.Country = Input.Country;
                 user.City = Input.City;
+
+                if (Input.Role == RoleManager.Company)
+                {
+                    user.CompanyId = Input.CompanyId;
+                }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

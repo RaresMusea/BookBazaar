@@ -168,7 +168,7 @@
             </div>
         </div>
         <div class="mb-3 d-flex justify-content-center">
-            <div class="col-11">
+            <div class="CompanyWrapper col-11 Invisible">
                 <label asp-for="Input.Companies" class="ml-1 mt-2"></label>
                 <select asp-for="Input.CompanyId" class="form-select TextInput" asp-items="@Model.Input.Companies">
                     <option dislabed selected>Select an associated company from the list below</option>
@@ -198,4 +198,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>
+    <script src="~/js/ToggleCompanyDropDownList.js"></script>
+
 }
