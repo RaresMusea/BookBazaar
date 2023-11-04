@@ -571,3 +571,12 @@ tbody {
     display: block !important;
 }
 
+.GrayScaled {
+    filter: grayscale(85%);
+    transition: .4s ease-in-out;
+}
+
+.GrayScaled:hover {
+    filter: grayscale(0);
+}
+

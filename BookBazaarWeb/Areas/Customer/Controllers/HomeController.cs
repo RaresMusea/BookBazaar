@@ -35,7 +35,7 @@ public class HomeController : Controller
                 });
             }
 
-            return View(viewModels);
+            return View(viewModels.OrderByDescending(o => o.InventoryItem!.QuantityInStock).ToList());
         }
 
         return NotFound();

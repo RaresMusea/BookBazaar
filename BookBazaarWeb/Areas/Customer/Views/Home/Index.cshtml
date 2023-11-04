@@ -45,7 +45,8 @@
                    @(viewModel.InventoryItem!.QuantityInStock > 0 ? "InStock" : "OutOfStock")">
                     @(viewModel.InventoryItem!.QuantityInStock > 0 ? "Available" : "Sold out")
                 </div>
-                <img src="@viewModel.Book.CoverImageUrl" class="w-50" alt="Book image cover">
+                <img src="@viewModel.Book.CoverImageUrl"
+                     class="w-50 @(viewModel.InventoryItem.QuantityInStock == 0 ? "GrayScaled" : "")" alt="Book image cover">
                 <a
                     asp-controller="Home"
                     asp-action="Details"
