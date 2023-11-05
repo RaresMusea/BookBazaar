@@ -615,7 +615,6 @@ tbody {
     border-radius: 15px;
     padding: 2em 1.5em 1em;
     margin-bottom: 3em !important;
-    width: 30%;
 }
 
 @media screen and(max-width: 1400px) {

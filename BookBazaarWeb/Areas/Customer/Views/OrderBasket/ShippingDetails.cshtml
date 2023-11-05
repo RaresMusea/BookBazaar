@@ -1,7 +1,13 @@
-﻿<div class="mt-3">
+﻿@model DetailedOrderBasketViewModel;
+
+@{
+    ViewData["Title"] = "Shipping Details";
+}
+
+<div class="mt-3">
     <div class="container">
         <h1>Shipping details</h1>
-        <div class=" mt-2 d-flex ShippingContainer align-items-center justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-bewteen justify-content-xl-between">
+        <div class=" mt-2 d-flex flex-column-reverse flex-sm-column-reverse flex-md-column-reverse flex-lg-row flex-xl-row ShippingContainer align-items-center align-items-sm-center align-items-md-center align-items-lg-start align-items-xl-start justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-evenly justify-content-xl-evenly">
             <form
                 method="post"
                 class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
@@ -9,65 +15,85 @@
                 <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
                 <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
                     <div class="col-11">
-                        <label class="ml-1 mt-2">Name</label>
-                        <span class="ValidationError"></span>
-                        <input type="text" class="form-control TextInput mt-">
+                        <label asp-for="Order.Name" class="ml-1 mt-2"></label>
+                        <span asp-validation-for="Order.Name" class="ValidationError"></span>
+                        <input asp-for="Order.Name" class="form-control TextInput mt-">
                     </div>
                 </div>
 
                 <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
                     <div class="col-11">
-                        <label class="ml-1 mt-2">Phone Number</label>
-                        <span class="ValidationError"></span>
-                        <input type="text" class="form-control TextInput mt-">
+                        <label asp-for="Order.PhoneNumber" class="ml-1 mt-2"></label>
+                        <span asp-validation-for="Order.PhoneNumber" class="ValidationError"></span>
+                        <input asp-for="Order.PhoneNumber" class="form-control TextInput mt-">
                     </div>
                 </div>
 
                 <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
                     <div class="col-11">
-                        <label class="ml-1 mt-2">Street Address</label>
-                        <span class="ValidationError"></span>
-                        <input type="text" class="form-control TextInput mt-">
+                        <label asp-for="Order.Address" class="ml-1 mt-2"></label>
+                        <span asp-validation-for="Order.Address" class="ValidationError"></span>
+                        <input asp-for="Order.Address" class="form-control TextInput mt-">
                     </div>
                 </div>
 
                 <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
                     <div class="col-11">
-                        <label class="ml-1 mt-2">City</label>
-                        <span class="ValidationError"></span>
-                        <input type="text" class="form-control TextInput mt-">
+                        <label asp-for="Order.City" class="ml-1 mt-2"></label>
+                        <span asp-validation-for="Order.City" class="ValidationError"></span>
+                        <input asp-for="Order.City" class="form-control TextInput mt-">
                     </div>
                 </div>
 
                 <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
                     <div class="col-11">
-                        <label class="ml-1 mt-2">Country</label>
-                        <span class="ValidationError"></span>
-                        <input type="text" class="form-control TextInput mt-">
+                        <label asp-for="Order.Country" class="ml-1 mt-2"></label>
+                        <span asp-validation-for="Order.Country" class="ValidationError"></span>
+                        <input asp-for="Order.Country" class="form-control TextInput mt-">
                     </div>
                 </div>
                 <button type="submit" class="button-primary mt-4 SubmitNewCategory ForcedMargin Shadow2 rounded-3">To checkout</button>
-                <div class="text-center">Payment processing powered by <img src="~/img/stripe.svg" width="50" height="50" alt="Stripe logo"></div>
-                <a asp-controller="Category" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Back to your order basket</a>
+                <div class="text-center">
+                    Payment processing powered by
+                    <img src="~/img/stripe.svg" width="50" height="50" alt="Stripe logo">
+                </div>
+                <a asp-controller="OrderBasket" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Back to your order basket</a>
             </form>
 
-            <div class="col-12 col-lg-5 offset-lg-1">
+            <div class="col-12 col-lg-5 offset-lg-1 mt-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-info OrderInfo">Your order</span>
                 </h4>
                 <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between">
-                        <div>
-                            <h6 class="my-0">Title</h6>
-                            <small class="text-muted">Quantity: Count</small>
-                        </div>
-                        <span class="text-muted">Price * Count </span>
-                    </li>
-
-
+                    @foreach (var orderItem in @Model.OrderBasketList)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="w-75">
+                                <h6 class="my-0">@orderItem.Book.Title</h6>
+                                <span class="d-block">
+                                    <small class="text-muted">Amount: @orderItem.Items</small>
+                                </span>
+                                <span class="d-block">
+                                    <small class="text-muted">Discount: @(Model.BookDiscounts[@orderItem.BookId] == 0.00 ? "No" : (Model.BookDiscounts[orderItem.BookId] * 100) + "%") </small>
+                                </span>
+                                <span class="d-flex align-items-center justify-content-start gap-2">
+                                    <small class="text-muted">Price/Unit:</small>
+                                    <span class="@(Model.BookDiscounts[orderItem.BookId] != 0.00 ? "text-decoration-line-through" : "")">
+                                        @orderItem.Book.Price.ToString("0.00") &euro;
+                                    </span>
+                                    <span class="Discount @(Model.BookDiscounts[orderItem.BookId] != 0.00 ? "d-block" : "d-none")">
+                                        @(orderItem.Book.Price - Model.BookDiscounts[orderItem.BookId] * orderItem.Book.Price) &euro;
+                                    </span>
+                                </span>
+                            </div>
+                            <span class="text-muted">
+                                @orderItem.Items X @(orderItem.Book.Price - Model.BookDiscounts[orderItem.BookId] * orderItem.Book.Price) &euro;
+                            </span>
+                        </li>
+                    }
                     <li class="list-group-item d-flex justify-content-between bg-light">
-                        <small class="text-info">Total (USD)</small>
-                        <strong class="text-info">$$</strong>
+                        <div class="Discount fw-bolder">TOTAL</div>
+                        <strong style="color:#468B91">@Model.Order.GrandTotal &euro;</strong>
                     </li>
                 </ul>
             </div>
