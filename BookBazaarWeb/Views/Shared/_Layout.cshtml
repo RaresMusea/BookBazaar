@@ -17,6 +17,7 @@
 </head>
 <body>
 <header>
+    <partial name="OperationResult"></partial>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow">
         <div class="container-fluid">
             <a class="navbar-brand d-flex flex-row align-items-center" asp-area="" asp-action="Index" asp-controller="Home">
@@ -55,6 +56,14 @@
                                        asp-controller="Book"
                                        asp-action="Index">
                                         Books
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="text-dark NavigationLinkDropDown dropdown-item"
+                                       asp-area="Admin"
+                                       asp-controller="Company"
+                                       asp-action="Index">
+                                        Companies
                                     </a>
                                 </li>
                                 <li>

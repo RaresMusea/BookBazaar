@@ -1,7 +1,10 @@
 ﻿using BookBazaar.Models;
 using BookBazaar.Models.BookModels;
+using BookBazaar.Models.CartModels;
 using BookBazaar.Models.CategoryModels;
+using BookBazaar.Models.CompanyModels;
 using BookBazaar.Models.InventoryModels;
+using BookBazaar.Models.OrderModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +20,12 @@ public class AppDataContext : IdentityDbContext<IdentityUser>
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Book> Books { get; set; } = null!;
     public DbSet<InventoryItem> InventoryItems { get; set; } = null!;
+    public DbSet<Company> Companies { get; set; } = null!;
     public DbSet<AppUser> AppUsers { get; set; } = null!;
+    public DbSet<OrderBasket> OrderBaskets { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderInfo> OrderInfos { get; set; } = null!;
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -98,5 +106,44 @@ public class AppDataContext : IdentityDbContext<IdentityUser>
             {
                 Id = 3, BookId = 3, DateUpdated = null, DateAdded = DateTime.Now, QuantitySold = 0, QuantityInStock = 20
             });
+
+        modelBuilder.Entity<Company>().HasData(
+            new Company
+            {
+                Id = 1,
+                Name = "Libris Romania",
+                City = "Brasov",
+                Country = "Romania",
+                Email = "contact@libris_bookstore.ro",
+                HeadquartersAddress = "123 Strada Florilor",
+                IncorporationDate = new DateTime(2019, 4, 5),
+                NumberOfEmployees = 45,
+                Phone = "+40 783 214 903"
+            },
+            new Company()
+            {
+                Id = 2,
+                Name = "Bibliophilic Haven",
+                City = "Frankfurt",
+                Country = "Germany",
+                Email = "kontact@bibliophilic-heaven.de",
+                HeadquartersAddress = "45 Musterstraße",
+                IncorporationDate = new DateTime(1999, 11, 26),
+                NumberOfEmployees = 200,
+                Phone = "+49 789 214 981"
+            },
+            new Company()
+            {
+                Id = 3,
+                Name = "Wordsmith's Retreat Library",
+                City = "Belfast",
+                Country = "UK",
+                Email = "wordsmiths_retreat_library@gmail.com",
+                HeadquartersAddress = "42 Larkspur Crescent",
+                IncorporationDate = new DateTime(2010, 1, 21),
+                NumberOfEmployees = 10,
+                Phone = "+44 20 1234 5678"
+            }
+        );
     }
 }

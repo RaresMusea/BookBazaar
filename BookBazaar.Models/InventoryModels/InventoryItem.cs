@@ -12,7 +12,7 @@ public class InventoryItem
 
     [Required]
     [DisplayName("Quantity in stock")]
-    [Range(1, 900, ErrorMessage = "The quantity should be an integer value, from 1 to 900!")]
+    /*[Range(1, 900, ErrorMessage = "The quantity should be an integer value, from 1 to 900!")]*/
     public int QuantityInStock { get; set; }
 
     [Required] public int QuantitySold { get; set; }

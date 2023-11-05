@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
@@ -11,7 +12,8 @@
                asp-area="Identity"
                asp-page="/Account/Manage/Index"
                title="Manage">
-                Hello @UserManager.GetUserName(User)!
+                <i class="bi bi-person"></i>
+                @User.FindFirst(ClaimTypes.Name)?.Value
             </a>
         </li>
         <li class="nav-item">
@@ -33,4 +35,14 @@
             <a class="NavigationLink nav-link text-white NavbarLink" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
+    <li class="nav-item">
+        <a class="NavigationLink nav-link text-white NavbarLink"
+           id="cart"
+           asp-area="Customer"
+           asp-controller="OrderBasket"
+           asp-action="Index">
+            <i class="bi bi-basket text-center Basket"></i>
+            (0)
+        </a>
+    </li>
 </ul>

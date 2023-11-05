@@ -4,6 +4,7 @@ using BookBazaar.Data.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookBazaar.Data.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20231103235754_AddedRelationshipBetweenAppUserAndCompany")]
+    partial class AddedRelationshipBetweenAppUserAndCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,38 +123,6 @@ namespace BookBazaar.Data.Migrations
                             Publisher = "Polirom",
                             Title = "Comunicarea eficienta. Editia a IV-a, revazuta si adaugita"
                         });
-                });
-
-            modelBuilder.Entity("BookBazaar.Models.CartModels.OrderBasket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InventoryItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Items")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("InventoryItemId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("OrderBaskets");
                 });
 
             modelBuilder.Entity("BookBazaar.Models.CategoryModels.Category", b =>
@@ -311,7 +282,7 @@ namespace BookBazaar.Data.Migrations
                         {
                             Id = 1,
                             BookId = 1,
-                            DateAdded = new DateTime(2023, 11, 5, 22, 34, 12, 178, DateTimeKind.Local).AddTicks(211),
+                            DateAdded = new DateTime(2023, 11, 4, 1, 57, 54, 457, DateTimeKind.Local).AddTicks(4081),
                             QuantityInStock = 40,
                             QuantitySold = 0
                         },
@@ -319,7 +290,7 @@ namespace BookBazaar.Data.Migrations
                         {
                             Id = 2,
                             BookId = 2,
-                            DateAdded = new DateTime(2023, 11, 5, 22, 34, 12, 178, DateTimeKind.Local).AddTicks(257),
+                            DateAdded = new DateTime(2023, 11, 4, 1, 57, 54, 457, DateTimeKind.Local).AddTicks(4123),
                             QuantityInStock = 60,
                             QuantitySold = 0
                         },
@@ -327,116 +298,10 @@ namespace BookBazaar.Data.Migrations
                         {
                             Id = 3,
                             BookId = 3,
-                            DateAdded = new DateTime(2023, 11, 5, 22, 34, 12, 178, DateTimeKind.Local).AddTicks(259),
+                            DateAdded = new DateTime(2023, 11, 4, 1, 57, 54, 457, DateTimeKind.Local).AddTicks(4125),
                             QuantityInStock = 20,
                             QuantitySold = 0
                         });
-                });
-
-            modelBuilder.Entity("BookBazaar.Models.OrderModels.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Awb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DeliveryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("GrandTotal")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("PaymentDueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShippingProvider")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TransactionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TransactionState")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("BookBazaar.Models.OrderModels.OrderInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
-
-                    b.Property<int>("InventoryItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("InventoryItemId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderInfos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -680,71 +545,6 @@ namespace BookBazaar.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("BookBazaar.Models.CartModels.OrderBasket", b =>
-                {
-                    b.HasOne("BookBazaar.Models.BookModels.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookBazaar.Models.InventoryModels.InventoryItem", "InventoryItem")
-                        .WithMany()
-                        .HasForeignKey("InventoryItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookBazaar.Models.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("InventoryItem");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BookBazaar.Models.OrderModels.Order", b =>
-                {
-                    b.HasOne("BookBazaar.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("BookBazaar.Models.OrderModels.OrderInfo", b =>
-                {
-                    b.HasOne("BookBazaar.Models.BookModels.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookBazaar.Models.InventoryModels.InventoryItem", "InventoryItem")
-                        .WithMany()
-                        .HasForeignKey("InventoryItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookBazaar.Models.OrderModels.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("InventoryItem");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

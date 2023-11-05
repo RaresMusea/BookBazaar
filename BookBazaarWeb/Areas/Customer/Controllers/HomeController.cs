@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Security.Claims;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.BookModels;
+using BookBazaar.Models.CartModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
 using BookBazaarWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookBazaarWeb.Areas.Customer.Controllers;
@@ -35,15 +38,15 @@ public class HomeController : Controller
                 });
             }
 
-            return View(viewModels);
+            return View(viewModels.OrderByDescending(o => o.InventoryItem!.QuantityInStock).ToList());
         }
 
         return NotFound();
     }
 
-    public async Task<IActionResult> Details(int? id)
+    public async Task<IActionResult> Details(int id)
     {
-        if (id == null || id == 0)
+        if (id <= 0)
         {
             return NotFound();
         }
@@ -60,14 +63,65 @@ public class HomeController : Controller
             b => b.CategoryId == book.CategoryId && b.Id != book.Id,
             "Category");
 
-        BookDetailsViewModel viewModel = new()
+        OrderBasket basket = new()
         {
             Book = book,
             InventoryItem = inventoryItem,
+            InventoryItemId = inventoryItem.Id,
+            Items = 1,
+            BookId = id,
+        };
+
+        OrderBasketViewModel viewModel = new()
+        {
+            OrderBasket = basket,
             SimilarSuggestions = similarBooks,
         };
 
         return View(viewModel);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Details(OrderBasketViewModel viewModel)
+    {
+        if (!ModelState.IsValid)
+        {
+            TempData["FailedOperation"] = "An error occurred while processing your request. Please try again later.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity!;
+        string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        viewModel.OrderBasket!.UserId = userId;
+        OrderBasket basket = viewModel.OrderBasket;
+
+        InventoryItem inventoryItem =
+            await _workUnit.InventoryRepo.GetAsync(i => i.Id == basket.InventoryItemId && i.BookId == basket.BookId);
+
+        if (basket.Items > inventoryItem.QuantityInStock)
+        {
+            ModelState.AddModelError(string.Empty,
+                "The selected amount of books exceeds the quantity available in stock for that product!");
+        }
+
+        OrderBasket existingBasket = await _workUnit.OrderBasketRepo.GetAsync(b => b.UserId == basket.UserId
+            && b.BookId == basket.BookId && b.InventoryItemId == basket.InventoryItemId);
+
+        if (existingBasket is null)
+        {
+            await _workUnit.OrderBasketRepo.CreateAsync(basket);
+        }
+        else
+        {
+            existingBasket.Items += basket.Items;
+            _workUnit.OrderBasketRepo.Update(existingBasket);
+        }
+
+        await _workUnit.SaveAsync();
+        TempData["SuccessfulOperation"] = "Your cart was successfully updated!";
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Privacy()

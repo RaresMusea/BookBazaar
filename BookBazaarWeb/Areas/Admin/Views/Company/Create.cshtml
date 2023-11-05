@@ -1,0 +1,75 @@
+﻿@model Company;
+
+@{
+    ViewData["Title"] = "Add a new company";
+}
+
+<form
+    method="post"
+    asp-action="Create"
+    asp-controller="Company"
+    class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
+    <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
+        <h2 class="text-primary text-center">Add a new associated company</h2>
+        <hr/>
+        <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-11">
+                <label asp-for="Name" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Name" class="ValidationError"></span>
+                <input asp-for="Name" class="form-control TextInput mt-">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-5">
+                <label asp-for="Phone" class="ml-1 mt-2"></label>
+                <input asp-for="Phone" class="form-control TextInput mt-">
+            </div>
+            <div class="col-5">
+                <label asp-for="Email" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Email" class="ValidationError"></span>
+                <input asp-for="Email" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-around">
+            <div class="col-5">
+                <label asp-for="NumberOfEmployees" class="ml-1 mt-2"></label>
+                <span asp-validation-for="NumberOfEmployees" class="ValidationError"></span>
+                <input asp-for="NumberOfEmployees" class="form-control TextInput mt-1">
+            </div>
+            <div class="col-5">
+                <label asp-for="IncorporationDate" class="ml-1 mt-2"></label>
+                <input asp-for="IncorporationDate" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-around">
+            <div class="col-5">
+                <label asp-for="Country" class="ml-1 mt-2"></label>
+                <span asp-validation-for="Country" class="ValidationError"></span>
+                <input asp-for="Country" class="form-control TextInput mt-1">
+            </div>
+            <div class="col-5">
+                <label asp-for="City" class="ml-1 mt-2"></label>
+                <span asp-validation-for="City" class="ValidationError"></span>
+                <input asp-for="City" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <div class="col-11">
+                <label asp-for="HeadquartersAddress" class="ml-1 mt-2"></label>
+                <input asp-for="HeadquartersAddress" class="form-control TextInput mt-1">
+            </div>
+        </div>
+        <button type="submit" class="button-primary mt-4 SubmitNewCategory ForcedMargin Shadow2 rounded-3">Save</button>
+        <a asp-controller="Company" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Show all companies</a>
+    </div>
+    <img src="~/img/undraw_factory_dy-0-a.svg"
+         alt="Factory Art"
+         class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial"></partial>
+    }
+}

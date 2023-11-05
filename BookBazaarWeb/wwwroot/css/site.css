@@ -559,3 +559,149 @@ tbody {
     text-decoration: underline;
 }
 
+#CompaniesTable {
+    margin-top: .5em !important;
+}
+
+.Invisible {
+    display: none !important;
+}
+
+.Visible {
+    display: block !important;
+}
+
+.GrayScaled {
+    filter: grayscale(85%);
+    transition: .4s ease-in-out;
+}
+
+.GrayScaled:hover {
+    filter: grayscale(0);
+}
+
+.Discount {
+    color: #ED5B2D !important;
+}
+
+.VisibleBlock {
+    display: block !important;
+}
+
+.BasketBookCoverImage {
+    width: 80px !important;
+    height: 100px !important;
+}
+
+.BasketItemsWrapper {
+    gap: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+    border-radius: 15px;
+    padding: 2em 1.5em 1em;
+    margin-bottom: 3em !important;
+    margin-right: 3em;
+}
+
+@media screen and (max-width: 1400px) {
+    .BasketItemsWrapper {
+        width: 95%;
+        margin-right: 0;
+        gap: 0;
+    }
+}
+
+.BasketOrderSummary {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+    border-radius: 15px;
+    padding: 2em 1.5em 1em;
+    margin-bottom: 3em !important;
+    width: 30%;
+}
+
+@media screen and(max-width: 1400px) {
+    .BasketOrderSummary {
+        width: 95% !important;
+        gap: 0;
+        margin-right: 0;
+    }
+}
+
+.OrderBasketLink {
+    cursor: pointer;
+    flex: 1;
+}
+
+.OrderBasketLink:hover {
+    text-decoration: underline;
+    color: #ED5B2D !important;
+}
+
+.OrderItemInteractionButton {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    font-weight: bolder;
+    outline: none;
+    border: none;
+    margin-left: .25em;
+    margin-right: .25em;
+    padding: 0;
+    background-color: #468B91;
+    transition: .2s ease-in-out;
+}
+
+.OrderItemDeleteButton {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    font-weight: bolder;
+    outline: none;
+    border: none;
+    margin-left: .25em;
+    margin-right: .25em;
+    padding: 0;
+    background-color: red;
+    transition: .2s ease-in-out;
+}
+
+.OrderItemDeleteButton:hover {
+    background-color: orangered;
+}
+
+.OrderItemDeleteButton > i {
+    font-size: .8em;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.OrderItemInteractionButton:hover {
+    background-color: #fd7e14;
+}
+
+.bi-dash, .bi-pkus {
+    text-align: center;
+}
+
+.ContainerWidth {
+    width: 85% !important;
+}
+
+.ShippingContainer {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+    border-radius: 15px;
+    padding: 2em 1.5em 1em;
+    margin-bottom: 3em !important;
+    width: 100%;
+}
+
+.OrderInfo {
+    color: #ED5B2D !important;
+}
+
+

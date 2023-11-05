@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Company>;
+
+@{
+    ViewData["Title"] = "Manage associated companies";
+}
+
+<partial name="OperationResult"></partial>
+<div class="CenteredContainer">
+    <div class="row pt-3 mt-3 mb-5">
+        <div class="col-6">
+            <h2>Companies</h2>
+        </div>
+        <div class="col-6 text-end">
+            <button onclick="location.href='@Url.Action("Create", "Company")'" class="button primary Button AddButton">
+                <i class="bi bi-plus-square-fill"></i>
+                Add a new associated company
+            </button>
+        </div>
+    </div>
+    <table
+        id="CompaniesTable"
+        class="mt-4 table table-bordered table-striped text-left w-100" style="white-space: normal">
+        <thead class="TableHeading box-shadow">
+        <th>Company</th>
+        <th>Employees</th>
+        <th>Founded at</th>
+        <th>Headquarters address</th>
+        <th>City</th>
+        <th>Country</th>
+        <th style="width: 250px">Email</th>
+        <th>Phone</th>
+        <th></th>
+        </thead>
+        <tbody>
+        @foreach (var company in Model)
+        {
+            <tr class="m-0 p-0">
+                <td class="align-middle">@Html.DisplayName(company.Name)</td>
+                <td class="align-middle">@Html.DisplayName(company.NumberOfEmployees.ToString())</td>
+                <td class="align-middle">@Html.DisplayName(company.IncorporationDate.ToShortDateString())</td>
+                <td class="align-middle">@Html.DisplayName(company.HeadquartersAddress)</td>
+                <td class="align-middle">@Html.DisplayName(company.City)</td>
+                <td class="align-middle">@Html.DisplayName(company.Country)</td>
+                <td class="align-midlle">@company.Email</td>
+                <td class="align-middle">@Html.DisplayName(company.Phone)</td>
+                <td class="align-middle">
+                    <div class="btn-group d-flex align-items-center justify-content-evenly" role="group">
+                        <a
+                            asp-controller="Company"
+                            asp-action="Update"
+                            asp-route-id="@company.Id"
+                            class="button Button EditButton">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <button asp-controller="Company"
+                                data-url="@Url.Action("Delete", "Company", new { id = company.Id })"
+                                class="button Button DeleteButton">
+                            <i class="bi bi-x-square-fill"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/DataTables/CompanyDataTables.js"></script>
+    <script src="~/js/ajax/Company/DeleteCompany.js"></script>
+}
