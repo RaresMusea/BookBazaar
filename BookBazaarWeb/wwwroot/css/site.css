@@ -615,12 +615,14 @@ tbody {
     border-radius: 15px;
     padding: 2em 1.5em 1em;
     margin-bottom: 3em !important;
+    width: 30%;
 }
 
 @media screen and(max-width: 1400px) {
     .BasketOrderSummary {
-        width: 95%;
+        width: 95% !important;
         gap: 0;
+        margin-right: 0;
     }
 }
 
@@ -673,7 +675,9 @@ tbody {
 }
 
 .OrderItemDeleteButton > i {
-    font-size: 1em;
+    font-size: .8em;
+    display: block !important;
+    margin: 0 auto !important;
 }
 
 .OrderItemInteractionButton:hover {

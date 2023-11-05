@@ -23,20 +23,28 @@ quantitySelector.addEventListener('change', () => {
 
 const calculatePrice = (amount, pricePerUnit) => {
     let newPrice = 0;
+    const priceBeforeDiscount = (amount * pricePerUnit).toFixed(2);
+
     if (amount < 10) {
-        newPrice = (amount * pricePerUnit).toFixed(2);
+        newPrice = priceBeforeDiscount;
         resetDiscount();
     }
     if (amount >= 10 && amount < 25) {
-        const priceBeforeDiscount = (amount * pricePerUnit).toFixed(2);
-        const newPrice = (priceBeforeDiscount - 0.1 * priceBeforeDiscount).toFixed(2);
+        newPrice = (priceBeforeDiscount - 0.1 * priceBeforeDiscount).toFixed(2);
         displayDiscount(newPrice, 10, amount);
+    }
+    if (amount >= 25 && amount < 50) {
+        newPrice = (priceBeforeDiscount - 0.15 * priceBeforeDiscount).toFixed(2);
+        displayDiscount(newPrice, 15, amount);
+    }
+    if (amount >= 50) {
+        newPrice = (priceBeforeDiscount - 0.30 * priceBeforeDiscount).toFixed(2);
+        displayDiscount(newPrice, 30, amount);
     }
 }
 
 const displayDiscount = (newPrice, discount, selectedAmount) => {
     price.style.textDecoration = 'line-through';
-
 
     discountAmount.innerHTML = `-${discount}% off because you selected ${selectedAmount} books!`;
     discountAmount.style.color = '#ED5B2D';

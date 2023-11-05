@@ -45,4 +45,68 @@ public class OrderBasketController : Controller
 
         return View(viewModel);
     }
+
+    public async Task<IActionResult> IncreaseQuantity(int orderBasketId)
+    {
+        if (orderBasketId <= 0)
+        {
+            return NotFound();
+        }
+
+        OrderBasket? orderBasket = await _workUnit.OrderBasketRepo.GetAsync(o => o.Id == orderBasketId);
+
+        if (orderBasket is null)
+        {
+            return NotFound();
+        }
+
+        orderBasket.Items++;
+
+        _workUnit.OrderBasketRepo.Update(orderBasket);
+        await _workUnit.SaveAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> DecreaseQuantity(int orderBasketId)
+    {
+        if (orderBasketId <= 0)
+        {
+            return NotFound();
+        }
+
+        OrderBasket? orderBasket = await _workUnit.OrderBasketRepo.GetAsync(o => o.Id == orderBasketId);
+
+        if (orderBasket is null)
+        {
+            return NotFound();
+        }
+
+        orderBasket.Items--;
+
+        _workUnit.OrderBasketRepo.Update(orderBasket);
+        await _workUnit.SaveAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> RemoveOrderBasketItem(int orderBasketId)
+    {
+        if (orderBasketId <= 0)
+        {
+            return NotFound();
+        }
+
+        OrderBasket? basket = await _workUnit.OrderBasketRepo.GetAsync(b => b.Id == orderBasketId);
+
+        if (basket is null)
+        {
+            return NotFound();
+        }
+
+        _workUnit.OrderBasketRepo.Remove(basket);
+        await _workUnit.SaveAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
 }
