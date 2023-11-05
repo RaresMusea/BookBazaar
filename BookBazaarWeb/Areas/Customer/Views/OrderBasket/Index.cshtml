@@ -18,11 +18,11 @@
         <h1 class="mt-3">My order basket</h1>
         <form method="post"
               class="mt-4 d-flex justify-content-around align-items-strech flex-column flex-sm-column flex-md-row flex-lg-row flex-row">
-            <div class="BasketItemsWrapper mb-4">
+            <div class="BasketItemsWrapper mb-2">
                 @foreach (var cartItem in orderBasketList)
                 {
-                    <div class="BasketCard w-100 d-flex align-items-center justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-between justify-content-xl-between gap-5 flex-row mt-3 flex-nowrap">
-                        <div class="ContainerWidth d-flex flex-row flex-nowrap align-items-center justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-center">
+                    <div class="BasketCard w-100 d-flex align-items-center justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-between justify-content-xl-between gap-2 flex-row mt-3 flex-nowrap">
+                        <div class="ContainerWidth d-flex flex-row flex-nowrap align-items-flex-start justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-center">
                             <img src="@cartItem.Book.CoverImageUrl" alt="Book cover" class="BasketBookCoverImage"/>
                             <div class="d-flex flex-column">
                                 <span
@@ -83,21 +83,31 @@
                 <div fw-bolder>
                     <div>Books marked for delivery: @productsAmount</div>
                     <span>Total price:</span>
-                    <span class="@(discountsApplied ? "text-decoration-line-through" : "")">
+                    <span class="@(discountsApplied ? "text-decoration-line-through" : "fs-4")">
                         @(totalWithoutDiscount.ToString("0.00")) &euro;
                     </span>
-                    <span class="Discount">@(Model.Total.ToString("0.00")) &euro;</span>
-                    <div>You saved: @(savings.ToString("0.00")) &euro;</div>
+                    <div class="Discount fw-bolder fs-4 @(discountsApplied ? "d-block" : "d-none")">@(Model.Total.ToString("0.00")) &euro;</div>
+                    <div class="mb-2 @(discountsApplied ? "d-block" : "d-none mb-2")">You saved: @(savings.ToString("0.00")) &euro;</div>
                 </div>
+                <button
+                    type="submit"
+                    asp-action="ShippingDetails"
+                    class="button primary Button AddButton CenteredButton w-50 mt-2">
+                    Continue
+                </button>
             </div>
         </form>
     </div>
 }
 else
 {
-    <div class="d-flex align-items-center justify-content-center flex-column">
-        <img src="~/img/undraw_empty_cart_co35.svg" width="400" height="600" alt="Empty shopping cart illustration">
+    <div class="d-flex align-items-center justify-content-center flex-column mb-3">
+        <img src="~/img/undraw_empty_cart_co35.svg" width="500" height="700" alt="Empty shopping cart illustration">
         <h2>Your order basket is empty.</h2>
-        <button class="button primary Button AddButton CenteredButton w-25"> Find books</button>
+        <button
+            onclick="location.href=`@Url.Action("Index", "Home")`"
+            class="button primary Button AddButton CenteredButton w-25">
+            Find books
+        </button>
     </div>
 }

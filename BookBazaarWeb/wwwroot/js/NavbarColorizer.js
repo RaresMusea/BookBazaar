@@ -3,11 +3,12 @@ console.log(currentPage);
 let pagesText;
 
 if (currentPage.includes("Admin")) {
-    pagesText = ["Home", "Privacy", "Book", "Category", "Register", "Login"];
+    pagesText = ["Home", "Privacy", "Book", "Category", "Register", "Login", "OrderBasket"];
 } else {
-    pagesText = ["Home", "Privacy", "Register", "Login"];
+    pagesText = ["Home", "Privacy", "Register", "Login", "OrderBasket"];
 }
 const pagesDOM = document.querySelectorAll(".NavigationLink");
+console.log(pagesDOM);
 pagesDOM.forEach(p => console.log(p));
 const color = "#ED5B2D";
 
@@ -24,7 +25,9 @@ if (currentPage === "https://localhost:7279/" || currentPage === ("https://local
     pagesDOM[0].setAttribute('style', `color:${color} !important`);
 } else if (currentPage.includes("Category") || currentPage.includes("Book") || currentPage.includes("Company")) {
     revalidateColors();
-    pagesDOM[2].setAttribute('style', `color:${color} !importnat`);
+    pagesDOM[2].setAttribute('style', `color:${color} !important`);
+} else if (currentPage.includes("Manage")) {
+    pagesDOM[3].setAttribute('style', `color:${color} !important`);
 } else {
     for (let i = 0; i < pagesText.length; i++) {
         if (currentPage.includes(pagesText[i])) {

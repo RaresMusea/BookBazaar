@@ -109,4 +109,9 @@ public class OrderBasketController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    public IActionResult ShippingDetails()
+    {
+        return View("ShippingDetails");
+    }
 }
