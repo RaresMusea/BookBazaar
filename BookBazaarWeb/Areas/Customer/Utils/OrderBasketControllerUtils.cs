@@ -8,6 +8,10 @@ public static class OrderBasketControllerUtils
     public static double TotalWithoutDiscount { get; private set; }
     public static double GrandTotal { get; private set; }
 
+    public static int TotalProducts { get; private set; }
+
+    public static bool DiscountsApplied { get; private set; }
+
     public static Dictionary<int, double> ComputeDiscounts(IEnumerable<OrderBasket> orderBasketList)
     {
         Dictionary<int, double> result = new();
@@ -23,16 +27,19 @@ public static class OrderBasketControllerUtils
             {
                 result[bookId] = 0.10;
                 discount = 0.10;
+                DiscountsApplied = true;
             }
             else if (amount is >= 25 and < 50)
             {
                 result[bookId] = 0.15;
                 discount = 0.15;
+                DiscountsApplied = true;
             }
             else if (amount is >= 50)
             {
                 result[bookId] = 0.30;
                 discount = 0.30;
+                DiscountsApplied = true;
             }
             else
             {
@@ -41,7 +48,8 @@ public static class OrderBasketControllerUtils
 
             Savings += initialPrice - discount * initialPrice;
             TotalWithoutDiscount += initialPrice;
-            GrandTotal += discount * initialPrice;
+            GrandTotal += initialPrice - (discount >= 0.0 ? discount : 1) * initialPrice;
+            TotalProducts += amount;
         }
 
         return result;

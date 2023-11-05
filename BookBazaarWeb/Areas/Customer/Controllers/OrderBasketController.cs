@@ -25,7 +25,7 @@ public class OrderBasketController : Controller
         string loggedInUserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
         IEnumerable<OrderBasket> orderBasketElements =
-            await _workUnit.OrderBasketRepo.RetrieveAllAsync(b => b.UserId == loggedInUserId, "Book, InventoryItem");
+            await _workUnit.OrderBasketRepo.RetrieveAllAsync(b => b.UserId == loggedInUserId, "Book,InventoryItem");
 
         Dictionary<int, double> discounts = OrderBasketControllerUtils.ComputeDiscounts(orderBasketElements);
 
