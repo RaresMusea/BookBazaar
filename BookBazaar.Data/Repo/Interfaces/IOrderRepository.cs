@@ -1,5 +1,8 @@
-﻿namespace BookBazaar.Data.Repo.Interfaces;
+﻿using BookBazaar.Models.OrderModels;
 
-public interface IOrderRepository
+namespace BookBazaar.Data.Repo.Interfaces;
+
+public interface IOrderRepository : IRepository<Order>
 {
+    Order Update(Order order);
 }

@@ -10,11 +10,6 @@
             <span asp-validation-for="Genre" class="ValidationError"></span>
             <input asp-for="Genre" name="Genre" id="Genre" class="form-control TextInput mt-1">
         </div>
-        @*<div class="mb-3">
-            <label for="Priority" class="ml-1 mt-2">Display priority</label>
-            <span asp-validation-for="Priority" class="ValidationError"></span>
-            <input asp-for="Priority" name="Priority" id="Priority" class="form-control TextInput mt-1">
-        </div>*@
         <button type="submit" class="button-primary mt-2 w-50 align-center UpdateButton Shadow2 rounded-3">Update</button>
         <a asp-controller="Category" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Show catergories list</a>
     </div>

@@ -8,6 +8,8 @@ public interface IWorkUnit
     ICompanyRepository CompanyRepo { get; }
     IOrderBasketRepository OrderBasketRepo { get; }
     IAppUserRepository UserRepo { get; }
+    IOrderRepository OrderRepo { get; }
+    IOrderInfoRepository OrderInfoRepo { get; }
 
     Task<int> SaveAsync();
 }
