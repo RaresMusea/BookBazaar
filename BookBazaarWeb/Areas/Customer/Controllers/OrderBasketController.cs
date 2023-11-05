@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using AutoMapper;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Models.CartModels;
 using BookBazaar.Models.VM;
@@ -14,11 +15,13 @@ public class OrderBasketController : Controller
 {
     private readonly IWorkUnit _workUnit;
     private readonly OrderBasketControllerUtils _utils;
+    private readonly IMapper _mapper;
 
-    public OrderBasketController(IWorkUnit workUnit, OrderBasketControllerUtils utils)
+    public OrderBasketController(IWorkUnit workUnit, OrderBasketControllerUtils utils, IMapper mapper)
     {
         _workUnit = workUnit;
         _utils = utils;
+        _mapper = mapper;
     }
 
     public async Task<IActionResult> Index()
@@ -34,7 +37,10 @@ public class OrderBasketController : Controller
         DetailedOrderBasketViewModel viewModel = new()
         {
             OrderBasketList = orderBasketElements,
-            Total = _utils.GrandTotal,
+            Order = new()
+            {
+                GrandTotal = _utils.GrandTotal
+            },
             BookDiscounts = discounts
         };
 
@@ -110,8 +116,35 @@ public class OrderBasketController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult ShippingDetails()
+    public async Task<IActionResult> ShippingDetails()
     {
-        return View("ShippingDetails");
+        ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity!;
+        string loggedInUserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        IEnumerable<OrderBasket> orderBasketElements =
+            await _workUnit.OrderBasketRepo.RetrieveAllAsync(b => b.UserId == loggedInUserId, "Book,InventoryItem");
+
+        Dictionary<int, double> discounts = _utils.ComputeDiscounts(orderBasketElements);
+
+        DetailedOrderBasketViewModel viewModel = new()
+        {
+            OrderBasketList = orderBasketElements,
+            Order = new()
+            {
+                GrandTotal = _utils.GrandTotal,
+            },
+            BookDiscounts = discounts
+        };
+
+        var loggedUser = await _workUnit.UserRepo.GetAsync(u => u.Id == loggedInUserId);
+        viewModel.Order.User = loggedUser;
+
+        viewModel.Order.Name = viewModel.Order.User.Name;
+        viewModel.Order.PhoneNumber = viewModel.Order.User.PhoneNumber!;
+        viewModel.Order.Address = viewModel.Order.User.Address;
+        viewModel.Order.City = viewModel.Order.User.City;
+        viewModel.Order.Country = viewModel.Order.User.Country;
+
+        return View("ShippingDetails", viewModel);
     }
 }

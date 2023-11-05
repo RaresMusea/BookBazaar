@@ -86,7 +86,7 @@
                     <span class="@(discountsApplied ? "text-decoration-line-through" : "fs-4")">
                         @(totalWithoutDiscount.ToString("0.00")) &euro;
                     </span>
-                    <div class="Discount fw-bolder fs-4 @(discountsApplied ? "d-block" : "d-none")">@(Model.Total.ToString("0.00")) &euro;</div>
+                    <div class="Discount fw-bolder fs-4 @(discountsApplied ? "d-block" : "d-none")">@(Model.Order.GrandTotal.ToString("0.00")) &euro;</div>
                     <div class="mb-2 @(discountsApplied ? "d-block" : "d-none mb-2")">You saved: @(savings.ToString("0.00")) &euro;</div>
                 </div>
                 <button
