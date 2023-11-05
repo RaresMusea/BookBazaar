@@ -3,6 +3,7 @@ using BookBazaar.Data.DataContext;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Data.Repo.UnitOfWork;
 using BookBazaar.Misc.Email;
+using BookBazaarWeb.Areas.Customer.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
@@ -41,6 +42,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddScoped<IWorkUnit, WorkUnit>();
 builder.Services.AddScoped<IEmailSender, EmailEmitter>();
+builder.Services.AddScoped<OrderBasketControllerUtils>();
 
 var app = builder.Build();
 

@@ -651,6 +651,31 @@ tbody {
     transition: .2s ease-in-out;
 }
 
+.OrderItemDeleteButton {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    font-weight: bolder;
+    outline: none;
+    border: none;
+    margin-left: .25em;
+    margin-right: .25em;
+    padding: 0;
+    background-color: red;
+    transition: .2s ease-in-out;
+}
+
+.OrderItemDeleteButton:hover {
+    background-color: orangered;
+}
+
+.OrderItemDeleteButton > i {
+    font-size: 1em;
+}
+
 .OrderItemInteractionButton:hover {
     background-color: #fd7e14;
 }

@@ -13,10 +13,12 @@ namespace BookBazaarWeb.Areas.Customer.Controllers;
 public class OrderBasketController : Controller
 {
     private readonly IWorkUnit _workUnit;
+    private readonly OrderBasketControllerUtils _utils;
 
-    public OrderBasketController(IWorkUnit workUnit)
+    public OrderBasketController(IWorkUnit workUnit, OrderBasketControllerUtils utils)
     {
         _workUnit = workUnit;
+        _utils = utils;
     }
 
     public async Task<IActionResult> Index()
@@ -27,14 +29,19 @@ public class OrderBasketController : Controller
         IEnumerable<OrderBasket> orderBasketElements =
             await _workUnit.OrderBasketRepo.RetrieveAllAsync(b => b.UserId == loggedInUserId, "Book,InventoryItem");
 
-        Dictionary<int, double> discounts = OrderBasketControllerUtils.ComputeDiscounts(orderBasketElements);
+        Dictionary<int, double> discounts = _utils.ComputeDiscounts(orderBasketElements);
 
         DetailedOrderBasketViewModel viewModel = new()
         {
             OrderBasketList = orderBasketElements,
-            Total = OrderBasketControllerUtils.GrandTotal,
+            Total = _utils.GrandTotal,
             BookDiscounts = discounts
         };
+
+        ViewData["Savings"] = _utils.Savings;
+        ViewData["DiscountsApplied"] = _utils.DiscountsApplied;
+        ViewData["TotalWithoutDiscount"] = _utils.TotalWithoutDiscount;
+        ViewData["ProductsAmount"] = _utils.TotalProducts;
 
         return View(viewModel);
     }

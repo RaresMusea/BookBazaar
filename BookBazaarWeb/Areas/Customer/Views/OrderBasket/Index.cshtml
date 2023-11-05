@@ -1,10 +1,15 @@
-﻿@using BookBazaarWeb.Areas.Customer.Utils
-@model BookBazaar.Models.VM.DetailedOrderBasketViewModel;
+﻿@model BookBazaar.Models.VM.DetailedOrderBasketViewModel;
 
 @{
     ViewData["Title"] = "My order basket - Book Bazaar";
     var orderBasketList = @Model.OrderBasketList;
     var discounts = @Model.BookDiscounts;
+
+    double savings = (double)ViewData["Savings"]!;
+    bool discountsApplied = (bool)ViewData["DiscountsApplied"]!;
+    double totalWithoutDiscount = (double)ViewData["TotalWithoutDiscount"]!;
+    int productsAmount = (int)ViewData["ProductsAmount"]!;
+
 }
 
 <div class="container">
@@ -14,15 +19,25 @@
         <div class="BasketItemsWrapper mb-4">
             @foreach (var cartItem in orderBasketList)
             {
-                <div class="BasketCard d-flex align-items-center justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-between justify-content-xl-between gap-5 flex-row mt-3 flex-wrap">
+                <div class="BasketCard w-100 d-flex align-items-center justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-between justify-content-xl-between gap-5 flex-row mt-3 flex-nowrap">
                     <div class="ContainerWidth d-flex flex-row flex-nowrap align-items-center justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-center">
                         <img src="@cartItem.Book.CoverImageUrl" alt="Book cover" class="BasketBookCoverImage"/>
-                        <span
-                            onclick="location.href=`@Url.Action("Details", "Home", new { Id = cartItem.BookId })`"
-                            class="OrderBasketLink mx-2">
-                            @(cartItem.Book.Title) by
-                            @(cartItem.Book.Author.Contains(',') ? cartItem.Book.Author.Split(",")[0] + " et al." : cartItem.Book.Author)
-                        </span>
+                        <div class="d-flex flex-column">
+                            <span
+                                onclick="location.href=`@Url.Action("Details", "Home", new { Id = cartItem.BookId })`"
+                                class="OrderBasketLink mx-2">
+                                @(cartItem.Book.Title) by
+                                @(cartItem.Book.Author.Contains(',') ? cartItem.Book.Author.Split(",")[0] + " et al." : cartItem.Book.Author)
+                            </span>
+                            <span class="mx-2 d-flex align-items-center">
+                                <span class="StockCircle fw-bolder"
+                                      style="background-color:@(cartItem.InventoryItem.QuantityInStock > 0 ? "#468B91" : "red")">
+                                </span>
+                                <span style="color:@(cartItem.InventoryItem.QuantityInStock > 0 ? "#468B91" : "red")">
+                                    &nbsp;@(cartItem.InventoryItem.QuantityInStock > 0 ? "In stock" : "Sold out")
+                                </span>
+                            </span>
+                        </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center flex-column flex-sm-row flex-md-row flex-lg-column flex-xl-column gap-0 gap-sm-0 gap-md-0 gap-lg-1 gap-xl-1">
                         <span class="fw-bolder @(discounts[cartItem.BookId] > 0.00 ? "text-decoration-line-through" : "")">
@@ -32,16 +47,23 @@
                         {
                             <span class="fw-bolder Discount text-center">-@(discounts[cartItem.BookId] * 100)% off</span>
                             <span class="fw-bolder Discount text-center">
-                                @((cartItem.Book.Price * cartItem.Items - discounts[cartItem.BookId] * 100).ToString("0.00")) &euro;
+                                @(((cartItem.Book.Price * cartItem.Items) - (discounts[cartItem.BookId] * cartItem.Book.Price * cartItem.Items)).ToString("0.00")) &euro;
                             </span>
                         }
-                        <div class="d-flex align-items-center justify-content-center">
-                            <div class="OrderItemInteractionButton d-flex align-items-center justify-content-center @(cartItem.Items > 1 ? "d-flex" : "d-none")">
-                                <span>-</span>
-                            </div>
-                            <span>@cartItem.Items</span>
-                            <div class="OrderItemInteractionButton d-flex align-items-center justify-content-center @(cartItem.Items + 1 > cartItem.InventoryItem.QuantityInStock ? "d-none" : "d-flex")">
-                                <span>+</span>
+                        <div class="d-flex align-items-center justify-content-center flex-column">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="OrderItemInteractionButton d-flex align-items-center justify-content-center @(cartItem.Items > 1 ? "d-flex" : "d-none")">
+                                    <span>-</span>
+                                </div>
+                                <span>@cartItem.Items</span>
+                                <div class="OrderItemInteractionButton d-flex align-items-center justify-content-center @(cartItem.Items + 1 > cartItem.InventoryItem.QuantityInStock ? "d-none" : "d-flex")">
+                                    <span>+</span>
+                                </div>
+                                <div>
+                                    <div class="OrderItemDeleteButton d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -51,13 +73,13 @@
         <div class="BasketOrderSummary">
             <h3>Order summary</h3>
             <div fw-bolder>
-                <div>Books marked for delivery: @(OrderBasketControllerUtils.TotalProducts)</div>
+                <div>Books marked for delivery: @productsAmount</div>
                 <span>Total price:</span>
-                <span class="@(OrderBasketControllerUtils.DiscountsApplied ? "text-decoration-line-through" : "")">
-                    @(OrderBasketControllerUtils.TotalWithoutDiscount.ToString("0.00")) &euro;
+                <span class="@(discountsApplied ? "text-decoration-line-through" : "")">
+                    @(totalWithoutDiscount.ToString("0.00")) &euro;
                 </span>
-                <span class="Discount">@OrderBasketControllerUtils.GrandTotal.ToString("0.00") &euro;</span>
-                <div>You saved: @(OrderBasketControllerUtils.Savings.ToString("0.00")) &euro;</div>
+                <span class="Discount">@(Model.Total.ToString("0.00")) &euro;</span>
+                <div>You saved: @(savings.ToString("0.00")) &euro;</div>
             </div>
         </div>
     </form>

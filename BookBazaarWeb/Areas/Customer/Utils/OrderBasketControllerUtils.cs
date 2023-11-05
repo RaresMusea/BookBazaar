@@ -2,17 +2,19 @@
 
 namespace BookBazaarWeb.Areas.Customer.Utils;
 
-public static class OrderBasketControllerUtils
+public class OrderBasketControllerUtils
 {
-    public static double Savings { get; private set; }
-    public static double TotalWithoutDiscount { get; private set; }
-    public static double GrandTotal { get; private set; }
+    public double Savings { get; private set; }
 
-    public static int TotalProducts { get; private set; }
+    public double TotalWithoutDiscount { get; private set; }
 
-    public static bool DiscountsApplied { get; private set; }
+    public double GrandTotal { get; private set; }
 
-    public static Dictionary<int, double> ComputeDiscounts(IEnumerable<OrderBasket> orderBasketList)
+    public int TotalProducts { get; private set; }
+
+    public bool DiscountsApplied { get; private set; }
+
+    public Dictionary<int, double> ComputeDiscounts(IEnumerable<OrderBasket> orderBasketList)
     {
         Dictionary<int, double> result = new();
 
@@ -20,7 +22,7 @@ public static class OrderBasketControllerUtils
         {
             int bookId = orderBasket.BookId;
             int amount = orderBasket.Items;
-            double initialPrice = orderBasket.Book.Price * orderBasket.Items;
+            double initialPrice = (orderBasket.Book.Price * orderBasket.Items);
             double discount = 0.00;
 
             if (amount is >= 10 and < 25)
@@ -46,9 +48,9 @@ public static class OrderBasketControllerUtils
                 result[bookId] = 0.00;
             }
 
-            Savings += initialPrice - discount * initialPrice;
+            Savings += (discount * initialPrice);
             TotalWithoutDiscount += initialPrice;
-            GrandTotal += initialPrice - (discount >= 0.0 ? discount : 1) * initialPrice;
+            GrandTotal += initialPrice - ((discount >= 0.0 ? discount : 1) * initialPrice);
             TotalProducts += amount;
         }
 
