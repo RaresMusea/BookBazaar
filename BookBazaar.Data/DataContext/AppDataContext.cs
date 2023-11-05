@@ -4,6 +4,7 @@ using BookBazaar.Models.CartModels;
 using BookBazaar.Models.CategoryModels;
 using BookBazaar.Models.CompanyModels;
 using BookBazaar.Models.InventoryModels;
+using BookBazaar.Models.OrderModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,8 @@ public class AppDataContext : IdentityDbContext<IdentityUser>
     public DbSet<Company> Companies { get; set; } = null!;
     public DbSet<AppUser> AppUsers { get; set; } = null!;
     public DbSet<OrderBasket> OrderBaskets { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderInfo> OrderInfos { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
