@@ -1,0 +1,116 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Order>;
+
+@{
+    ViewData["Title"] = "Manage orders";
+}
+
+<partial name="OperationResult"></partial>
+<div class="CenteredContainer">
+    <div class="row pt-3 mt-3 mb-5">
+        <div class="col-6">
+            <h2>Orders</h2>
+        </div>
+        <div class="d-flex justify-content-between pb-2 pt-2">
+            <span>
+            </span>
+            <div>
+                <span>Filter by order state</span>
+                <ul class="list-group list-group-horizontal-sm">
+                    <a class="NoDecoration"
+                       asp-controller="OrderManagement"
+                       asp-action="Index"
+                       asp-route-state="Processing">
+                        <li class="list-group-item">Processing</li>
+                        <a class="NoDecoration"
+                           asp-controller="OrderManagement"
+                           asp-action="Index"
+                           asp-route-state="Pending">
+                            <li class="list-group-item">Pending</li>
+                        </a>
+                        <a asp-controller="OrderManagement"
+                           asp-action="Index"
+                           asp-route-state="Approved"
+                           class="NoDecoration">
+                            <li class="list-group-item">Approved</li>
+                        </a>
+                        <a asp-controller="OrderManagement"
+                           asp-action="Index"
+                           asp-route-state="Delivered"
+                           class="NoDecoration">
+                            <li class="list-group-item">Delivered</li>
+                        </a>
+                        <a asp-controller="OrderManagement"
+                           asp-action="Index"
+                           asp-route-state="Canceled"
+                           class="NoDecoration">
+                            <li class="list-group-item">Canceled</li>
+                        </a>
+                        <a asp-controller="OrderManagement"
+                           asp-action="Index"
+                           asp-route-state="Refunded"
+                           class="NoDecoration">
+                            <li class="list-group-item">Refunded</li>
+                        </a>
+                        <a asp-controller="OrderManagement"
+                           asp-action="Index"
+                           class="NoDecoration">
+                            <li class="list-group-item">All</li>
+                        </a>
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <table
+        id="OrdersTable"
+        class="mt-4 table table-bordered table-striped text-left w-100" style="white-space: normal">
+        <thead class="TableHeading box-shadow">
+        <th>Order ID</th>
+        <th>Order date</th>
+        <th>State</th>
+        <th>Recipient name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Address line</th>
+        <th>City</th>
+        <th>Country</th>
+        <th></th>
+        </thead>
+        <tbody>
+        @foreach (var order in Model)
+        {
+            <tr class="m-0 p-0">
+                <td class="align-middle">@Html.DisplayName(order.Name)</td>
+                <td class="align-middle">@Html.DisplayName(order.OrderDate.ToShortDateString())</td>
+                <td class="align-middle">@Html.DisplayName(order.OrderState)</td>
+                <td class="align-middle">@Html.DisplayName(order.Name)</td>
+                <td class="align-middle">@Html.DisplayName(order.PhoneNumber)</td>
+                <td class="align-middle">@order.User.Email</td>
+                <td class="align-middle">@Html.DisplayName(order.Address)</td>
+                <td class="align-middle">@Html.DisplayName(order.City)</td>
+                <td class="align-middle">@Html.DisplayName(order.Country)</td>
+                <td class="align-middle">
+                    <div class="btn-group d-flex align-items-center justify-content-evenly" role="group">
+                        <a
+                            asp-controller="Company"
+                            asp-action="Update"
+                            class="button Button EditButton">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        <button asp-controller="Company"
+                                class="button Button DeleteButton">
+                            <i class="bi bi-x-square-fill"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/DataTables/OrdersDataTables.js"></script>
+}

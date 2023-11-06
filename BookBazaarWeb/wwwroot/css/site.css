@@ -703,4 +703,17 @@ tbody {
     color: #ED5B2D !important;
 }
 
+.NoDecoration {
+    text-decoration: none !important;
+}
+
+.NoDecoration > li {
+    transition: .2s ease-in-out !important;
+}
+
+.NoDecoration > li:hover {
+    background-color: #ED5B2D !important;
+    color: white !important;
+}
+
 
