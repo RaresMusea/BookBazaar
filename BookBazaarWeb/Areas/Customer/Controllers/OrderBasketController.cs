@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Misc;
-using BookBazaar.Models;
 using BookBazaar.Models.CartModels;
 using BookBazaar.Models.OrderModels;
 using BookBazaar.Models.VM;
@@ -206,7 +205,7 @@ public class OrderBasketController : Controller
 
             var service = new SessionService();
             Session session = await service.CreateAsync(options);
-            await _workUnit.OrderRepo.UpdateStripeId(viewModel.Order.Id, session.Id, session.PaymentIntentId);
+            await _workUnit.OrderRepo.UpdateStripeIdAsync(viewModel.Order.Id, session.Id, session.PaymentIntentId);
             await _workUnit.SaveAsync();
 
             Response.Headers.Add("Location", session.Url);
@@ -218,13 +217,31 @@ public class OrderBasketController : Controller
 
     public async Task<IActionResult> ConfirmOrder(int orderId)
     {
-        string loggedUserId = GetLoggedUserId();
-        AppUser user = await _workUnit.UserRepo.GetAsync(user => user.Id == loggedUserId);
+        Order order = await _workUnit.OrderRepo.GetAsync(o => o.Id == orderId, "User");
+
+        if (order.TransactionState != PaymentStatus.BusinessDelayed)
+        {
+            var service = new SessionService();
+            Session session = await service.GetAsync(order.SessionId);
+
+            if (session.PaymentStatus.ToLower() == "paid")
+            {
+                await _workUnit.OrderRepo.UpdateStripeIdAsync(order.Id, session.Id, session.PaymentIntentId);
+                await _workUnit.OrderRepo.UpdateOrderStateAsync(order.Id, OrderStatus.Approved, PaymentStatus.Approved);
+                await _workUnit.SaveAsync();
+            }
+        }
+
+        IEnumerable<OrderBasket> orderBasketItems =
+            await _workUnit.OrderBasketRepo.RetrieveAllAsync(b => b.UserId == order.UserId);
+
+        _workUnit.OrderBasketRepo.RemoveRange(orderBasketItems);
+        await _workUnit.SaveAsync();
 
         OrderConfirmationViewModel viewModel = new()
         {
             OrderId = orderId,
-            Name = user.Name
+            Name = order.Name
         };
 
         return View(viewModel);

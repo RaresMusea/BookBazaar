@@ -19,7 +19,7 @@ public class OrderRepository : Repository<Order>, IOrderRepository
         return _context.Update(order).Entity;
     }
 
-    public async Task UpdateOrderState(int id, string orderState, string? paymentState = null)
+    public async Task UpdateOrderStateAsync(int id, string orderState, string? paymentState = null)
     {
         Order order = (await _context.Orders.FirstOrDefaultAsync(o => o.Id == id))!;
 
@@ -34,7 +34,7 @@ public class OrderRepository : Repository<Order>, IOrderRepository
         }
     }
 
-    public async Task UpdateStripeId(int id, string sessId, string transactionId)
+    public async Task UpdateStripeIdAsync(int id, string sessId, string transactionId)
     {
         Order order = (await _context.Orders.FirstOrDefaultAsync(o => o.Id == id))!;
 
