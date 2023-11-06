@@ -3,11 +3,13 @@ using BookBazaar.Data.DataContext;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Data.Repo.UnitOfWork;
 using BookBazaar.Misc.Email;
+using BookBazaar.Misc.Stripe;
 using BookBazaarWeb.Areas.Customer.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = @"/Identity/Account/AccessDenied";
 });
 
+builder.Services.Configure<StripeManager>(builder.Configuration.GetSection("StripePayments"));
+
 builder.Services.AddScoped<IWorkUnit, WorkUnit>();
 builder.Services.AddScoped<IEmailSender, EmailEmitter>();
 builder.Services.AddScoped<OrderBasketControllerUtils>();
@@ -56,7 +60,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("StripePayments:SecretKey").Get<string>();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
