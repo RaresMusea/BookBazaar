@@ -19,7 +19,7 @@ public class Order
 
     public double GrandTotal { get; set; }
 
-    public string? Status { get; set; } = string.Empty;
+    public string? OrderState { get; set; } = string.Empty;
 
     public string? TransactionState { get; set; } = string.Empty;
 

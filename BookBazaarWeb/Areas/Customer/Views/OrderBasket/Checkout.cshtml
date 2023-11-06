@@ -7,7 +7,7 @@
 <div class="mt-3">
     <div class="container">
         <h1>Shipping details</h1>
-        <div class=" mt-2 d-flex flex-column-reverse flex-sm-column-reverse flex-md-column-reverse flex-lg-row flex-xl-row ShippingContainer align-items-center align-items-sm-center align-items-md-center align-items-lg-start align-items-xl-start justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-evenly justify-content-xl-evenly">
+        <div class=" mt-3 d-flex flex-column-reverse flex-sm-column-reverse flex-md-column-reverse flex-lg-row flex-xl-row ShippingContainer align-items-center align-items-sm-center align-items-md-center align-items-lg-start align-items-xl-start justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-evenly justify-content-xl-evenly">
             <form
                 method="post"
                 class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
@@ -96,6 +96,7 @@
                         <strong style="color:#468B91">@Model.Order.GrandTotal &euro;</strong>
                     </li>
                 </ul>
+                <div class="fw-bolder Discount">Estimated arrival: @DateTime.Now.AddDays(5).ToShortDateString() - @DateTime.Now.AddDays(10).ToShortDateString()</div>
             </div>
         </div>
     </div>

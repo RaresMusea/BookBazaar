@@ -1,0 +1,12 @@
+﻿@model OrderConfirmationViewModel
+
+<div class="d-flex align-items-center justify-content-center flex-column">
+    <h2>Dear @(Model.Name),</h2>
+    <div class="fs-3">Your order with id @(Model.OrderId) was registered successfully. Until next time, happy reading and pleasant relaxation!</div>
+    <img src="~/img/undraw_order_confirmed_re_g0if.svg" alt="Order Confirmed Ilustration" width="400" height="500">
+    <button
+        onclick="location.href=`@Url.Action("Index", "Home")`"
+        class="mt-2 button primary Button AddButton CenteredButton w-25">
+        Browse for more books
+    </button>
+</div>
