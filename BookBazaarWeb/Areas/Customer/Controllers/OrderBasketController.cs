@@ -1,12 +1,14 @@
 ﻿using System.Security.Claims;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Misc;
+using BookBazaar.Models;
 using BookBazaar.Models.CartModels;
 using BookBazaar.Models.OrderModels;
 using BookBazaar.Models.VM;
 using BookBazaarWeb.Areas.Customer.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
 
 namespace BookBazaarWeb.Areas.Customer.Controllers;
 
@@ -138,6 +140,8 @@ public class OrderBasketController : Controller
         await _workUnit.OrderRepo.CreateAsync(viewModel.Order);
         await _workUnit.SaveAsync();
 
+        IList<double> unitaryPrices = new List<double>();
+
         foreach (var orderBasketItem in viewModel.OrderBasketList)
         {
             OrderInfo info = new()
@@ -154,30 +158,74 @@ public class OrderBasketController : Controller
                                                                            orderBasketItem.Items))),
             };
 
+            if (viewModel.BookDiscounts[orderBasketItem.BookId] == 0.00)
+            {
+                unitaryPrices.Add(orderBasketItem.Book.Price);
+            }
+            else
+            {
+                double discount = Math.Round(viewModel.BookDiscounts[orderBasketItem.BookId], 2);
+                unitaryPrices.Add(orderBasketItem.Book.Price -
+                                  discount * orderBasketItem.Book.Price);
+            }
+
             await _workUnit.OrderInfoRepo.CreateAsync(info);
             await _workUnit.SaveAsync();
         }
 
         if (isRegularCustomer)
         {
-            //TODO: PROCESS PAYMENT
+            const string domain = @"https://localhost:7279";
+            var options = new SessionCreateOptions
+            {
+                SuccessUrl = $"{domain}/Customer/OrderBasket/ConfirmOrder?orderId={viewModel.Order.Id}",
+                CancelUrl = $"{domain}/Customer/OrderBasket",
+                LineItems = new List<SessionLineItemOptions>(),
+                Mode = "payment",
+            };
+
+            int pricesIdx = 0;
+            foreach (OrderBasket orderBasketItem in viewModel.OrderBasketList)
+            {
+                SessionLineItemOptions sessionLineItemOptions = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(unitaryPrices[pricesIdx++] * 100),
+                        Currency = "eur",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = $"{orderBasketItem.Book.Title} by {orderBasketItem.Book.Author}",
+                        }
+                    },
+                    Quantity = orderBasketItem.Items
+                };
+
+                options.LineItems.Add(sessionLineItemOptions);
+            }
+
+            var service = new SessionService();
+            Session session = await service.CreateAsync(options);
+            await _workUnit.OrderRepo.UpdateStripeId(viewModel.Order.Id, session.Id, session.PaymentIntentId);
+            await _workUnit.SaveAsync();
+
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
         }
 
-        TempData["Name"] = viewModel.Order.Name;
-        TempData["OrderId"] = viewModel.Order.Id;
-        return RedirectToAction(nameof(ConfirmOrder));
+        return RedirectToAction(nameof(ConfirmOrder), new { orderId = viewModel.Order.Id });
     }
 
-    public IActionResult ConfirmOrder()
+    public async Task<IActionResult> ConfirmOrder(int orderId)
     {
+        string loggedUserId = GetLoggedUserId();
+        AppUser user = await _workUnit.UserRepo.GetAsync(user => user.Id == loggedUserId);
+
         OrderConfirmationViewModel viewModel = new()
         {
-            Name = (string)TempData["Name"]!,
-            OrderId = (int)TempData["OrderId"]!
+            OrderId = orderId,
+            Name = user.Name
         };
-
-        TempData.Keep("Name");
-        TempData.Keep("OrderId");
 
         return View(viewModel);
     }
