@@ -31,6 +31,8 @@ public class Order
 
     public DateTime PaymentDueDate { get; set; }
 
+    public string? SessionId { get; set; } = string.Empty;
+
     public string? TransactionId { get; set; } = string.Empty;
 
     [Required]
