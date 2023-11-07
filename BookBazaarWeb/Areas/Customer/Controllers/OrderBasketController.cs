@@ -108,6 +108,14 @@ public class OrderBasketController : Controller
 
         DetailedOrderBasketViewModel viewModel = await BuildViewModel(loggedInUserId);
 
+        foreach (var orderBasketItem in viewModel.OrderBasketList)
+        {
+            if (orderBasketItem.InventoryItem.QuantityInStock == 0)
+            {
+                return NoContent();
+            }
+        }
+
         return View(viewModel);
     }
 
@@ -150,22 +158,18 @@ public class OrderBasketController : Controller
                 OrderId = viewModel.Order.Id,
                 InventoryItemId = orderBasketItem.InventoryItemId,
                 Discount = viewModel.BookDiscounts[orderBasketItem.BookId],
-                Price = viewModel.BookDiscounts[orderBasketItem.BookId] == 0.00
-                    ? (orderBasketItem.Book.Price * orderBasketItem.Items)
-                    : (orderBasketItem.Book.Price * orderBasketItem.Items -
-                       (viewModel.BookDiscounts[orderBasketItem.BookId] * (orderBasketItem.Book.Price *
-                                                                           orderBasketItem.Items))),
+                Price = orderBasketItem.Book.Price
             };
 
             if (viewModel.BookDiscounts[orderBasketItem.BookId] == 0.00)
             {
-                unitaryPrices.Add(orderBasketItem.Book.Price);
+                unitaryPrices.Add(Math.Round(orderBasketItem.Book.Price, 2));
             }
             else
             {
-                double discount = Math.Round(viewModel.BookDiscounts[orderBasketItem.BookId], 2);
-                unitaryPrices.Add(orderBasketItem.Book.Price -
-                                  discount * orderBasketItem.Book.Price);
+                unitaryPrices.Add(Math.Round(orderBasketItem.Book.Price -
+                                             viewModel.BookDiscounts[orderBasketItem.BookId] *
+                                             orderBasketItem.Book.Price));
             }
 
             await _workUnit.OrderInfoRepo.CreateAsync(info);
@@ -245,6 +249,11 @@ public class OrderBasketController : Controller
         };
 
         return View(viewModel);
+    }
+
+    public IActionResult Error()
+    {
+        return PartialView("_OrderBasketStockError");
     }
 
     private string GetLoggedUserId()

@@ -78,7 +78,7 @@
                                 </span>
                                 <span class="d-flex align-items-center justify-content-start gap-2">
                                     <small class="text-muted">Price/Unit:</small>
-                                    <span class="@(Model.BookDiscounts[orderItem.BookId] != 0.00 ? "text-decoration-line-through" : "")">
+                                    <span>
                                         @orderItem.Book.Price.ToString("0.00") &euro;
                                     </span>
                                     <span class="Discount @(Model.BookDiscounts[orderItem.BookId] != 0.00 ? "d-block" : "d-none")">
@@ -86,9 +86,17 @@
                                     </span>
                                 </span>
                             </div>
-                            <span class="text-muted">
-                                @orderItem.Items X @(orderItem.Book.Price - Model.BookDiscounts[orderItem.BookId] * orderItem.Book.Price) &euro;
-                            </span>
+                            <div class="d-flex flex-column align-items-center">
+                                <span class="text-muted">
+                                    @orderItem.Items X @orderItem.Book.Price &euro;
+                                </span >
+                                <span class="@(Model.BookDiscounts[orderItem.BookId] != 0.00 ? "text-decoration-line-through" : "")">
+                                    @Math.Round((orderItem.Items * orderItem.Book.Price), 2) &euro;
+                                </span>
+                                <div class="@(Model.BookDiscounts[orderItem.BookId] != 0.00 ? "d-block Discount" : "d-none")">
+                                    @(Model.BookDiscounts[orderItem.BookId] != 0.00 ? ((orderItem.Book.Price * orderItem.Items) - (Model.BookDiscounts[orderItem.BookId] * orderItem.Book.Price * orderItem.Items)).ToString("0.00") : "") &euro;
+                                </div>
+                            </div>
                         </li>
                     }
                     <li class="list-group-item d-flex justify-content-between bg-light">

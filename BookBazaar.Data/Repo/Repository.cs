@@ -38,10 +38,12 @@ public class Repository<T> : IRepository<T> where T : class
         return await queryable.Where(filter).ToListAsync();
     }
 
-    public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string? includedProperties = null)
+    public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string? includedProperties = null,
+        bool detached = false)
     {
         IQueryable<T> queryable = _dbSet;
         queryable = queryable.Where(filter);
+
 
         if (includedProperties is not null)
         {
@@ -52,7 +54,14 @@ public class Repository<T> : IRepository<T> where T : class
             }
         }
 
-        return (await queryable.FirstOrDefaultAsync(filter))!;
+        T? entity = await queryable.FirstOrDefaultAsync();
+
+        if (detached && entity is not null)
+        {
+            _context.Entry(entity).State = EntityState.Detached;
+        }
+
+        return entity!;
     }
 
     public async Task<T> CreateAsync(T entity)

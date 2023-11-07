@@ -10,14 +10,30 @@
     double totalWithoutDiscount = (double)ViewData["TotalWithoutDiscount"]!;
     int productsAmount = (int)ViewData["ProductsAmount"]!;
 
+    bool ContainsSoldOutItems()
+    {
+        bool result = false;
+        orderBasketList.ForEach(item =>
+        {
+            if (item.InventoryItem.QuantityInStock == 0)
+            {
+                result = true;
+                return;
+            }
+        });
+
+        return result;
+    }
+
+
 }
 
 @if (orderBasketList.Count > 0)
 {
     <div class="container">
         <h1 class="mt-3">My order basket</h1>
-        <form method="get"
-              class="mt-4 d-flex justify-content-around align-items-strech flex-column flex-sm-column flex-md-row flex-lg-row flex-row">
+        <form
+            class="mt-4 d-flex justify-content-around align-items-strech flex-column flex-sm-column flex-md-row flex-lg-row flex-row">
             <div class="BasketItemsWrapper mb-2">
                 @foreach (var cartItem in orderBasketList)
                 {
@@ -89,12 +105,14 @@
                     <div class="Discount fw-bolder fs-4 @(discountsApplied ? "d-block" : "d-none")">@(Model.Order.GrandTotal.ToString("0.00")) &euro;</div>
                     <div class="mb-2 @(discountsApplied ? "d-block" : "d-none mb-2")">You saved: @(savings.ToString("0.00")) &euro;</div>
                 </div>
-                <button
+                <input
                     type="submit"
+                    id="ToCheckout"
                     asp-action="Checkout"
+                    data-url="@Url.Action("Error", "OrderBasket")"
+                    data-trigger="@ContainsSoldOutItems().ToString()"
+                    value="Continue"
                     class="button primary Button AddButton CenteredButton w-50 mt-2">
-                    Continue
-                </button>
             </div>
         </form>
     </div>
@@ -110,4 +128,8 @@ else
             Find books
         </button>
     </div>
+}
+
+@section Scripts{
+    <script src="~/js/Errors/OrderBasketModalError.js"></script>
 }

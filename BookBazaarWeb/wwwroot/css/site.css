@@ -716,4 +716,18 @@ tbody {
     color: white !important;
 }
 
+.TotalBar {
+    background-color: #ED5B2D !important;
+    color: white !important;
+}
+
+.DropdownItem:focus {
+    background-color: #ED5B2D !important;
+}
+
+.DropdownItem > a:focus {
+    background-color: #ED5B2D;
+!important;
+}
+
 

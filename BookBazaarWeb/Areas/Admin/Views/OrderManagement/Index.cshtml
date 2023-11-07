@@ -87,21 +87,18 @@
                 <td class="align-middle">@Html.DisplayName(order.Name)</td>
                 <td class="align-middle">@Html.DisplayName(order.PhoneNumber)</td>
                 <td class="align-middle">@order.User.Email</td>
-                <td class="align-middle">@Html.DisplayName(order.Address)</td>
+                <td class="align-middle">@order.Address</td>
                 <td class="align-middle">@Html.DisplayName(order.City)</td>
                 <td class="align-middle">@Html.DisplayName(order.Country)</td>
                 <td class="align-middle">
-                    <div class="btn-group d-flex align-items-center justify-content-evenly" role="group">
+                    <div class="w-100 d-flex align-items-center justify-content-center" role="group">
                         <a
-                            asp-controller="Company"
-                            asp-action="Update"
-                            class="button Button EditButton">
+                            asp-controller="OrderManagement"
+                            asp-action="Details"
+                            asp-route-orderId="@order.Id"
+                            class="button w-100 Button EditButton d-flex align-items-center justify-content-center">
                             <i class="bi bi-pencil-fill"></i>
                         </a>
-                        <button asp-controller="Company"
-                                class="button Button DeleteButton">
-                            <i class="bi bi-x-square-fill"></i>
-                        </button>
                     </div>
                 </td>
             </tr>
