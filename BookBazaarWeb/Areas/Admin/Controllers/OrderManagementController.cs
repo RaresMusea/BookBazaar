@@ -106,6 +106,32 @@ public class OrderManagementController : Controller
         return RedirectToAction(nameof(Details), new { orderId = id });
     }
 
+    [Authorize(Roles = $"{RoleManager.Administrator},{RoleManager.Internal}")]
+    [HttpPost]
+    public async Task<IActionResult> Deliver(int id)
+    {
+        if (id <= 0)
+        {
+            return NotFound();
+        }
+
+        Order order = await _workUnit.OrderRepo.GetAsync(o => o.Id == id);
+        order.DeliveryDate = DateTime.Now;
+
+        if (order.TransactionState == PaymentStatus.BusinessDelayed)
+        {
+            order.PaymentDueDate = DateTime.Now.AddDays(30);
+        }
+
+        order.OrderState = OrderStatus.Delivered;
+
+        _workUnit.OrderRepo.Update(order);
+        await _workUnit.SaveAsync();
+        TempData["SuccessfulOperation"] = "The order was delivered.";
+
+        return RedirectToAction(nameof(Details), new { orderId = id });
+    }
+
     private IEnumerable<Order> FilterOrdersBasedOnState(string? state, IEnumerable<Order> orders)
     {
         switch (state)

@@ -3,6 +3,7 @@ const url = submitButton.dataset.url;
 const trigger = submitButton.dataset.trigger;
 
 submitButton.addEventListener('click', () => {
+
     if (trigger === "True") {
         fetch(url)
             .then(response => response.text())

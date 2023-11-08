@@ -159,7 +159,7 @@
 </div>
 
 <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
-    @if (order.SessionId is not null)
+    @if (!string.IsNullOrEmpty(order.SessionId))
     {
         <div class="col-11">
             <label asp-for="Order.PaymentDate" class="ml-1 mt-2"></label>
@@ -180,7 +180,7 @@
         <label asp-for="Order.ShippingProvider" class="ml-1 mt-2"></label>
         @if (HasPermission())
         {
-            <input asp-for="Order.ShippingProvider" class="form-control TextInput mt-1">
+            <input asp-for="Order.ShippingProvider" id="Provider" class="form-control TextInput mt-1">
         }
         else
         {
@@ -192,7 +192,7 @@
         <label asp-for="Order.Awb" class="ml-1 mt-2"></label>
         @if (HasPermission())
         {
-            <input asp-for="Order.Awb" class="form-control TextInput mt-1">
+            <input asp-for="Order.Awb" id="Awb" class="form-control TextInput mt-1">
         }
         else
         {
@@ -274,7 +274,17 @@
     }
     @if (order.OrderState == OrderStatus.Processing)
     {
-        <button type="submit" class="Submit button primary Button ProcessingButton w-50 mt-2">Start Delivery</button>
+        <form method="post">
+            <button
+                id="StartDeliveryButton"
+                asp-action="Deliver"
+                asp-controller="OrderManagement"
+                asp-route-id="@order.Id"
+                type="submit"
+                class="Submit button primary Button ProcessingButton w-50 mt-2">
+                Start delivery
+            </button>
+        </form>
     }
 
     @if (order.OrderState != OrderStatus.Refunded && order.OrderState != OrderStatus.Canceled && order.OrderState != OrderStatus.Delivered)
@@ -285,3 +295,8 @@
 </div>
 </div>
 </div>
+
+@section Scripts
+{
+    <script src="~/js/Errors/UnprovidedDeliveryDetails.js"></script>
+}
