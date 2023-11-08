@@ -159,7 +159,7 @@
 </div>
 
 <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
-    @if (order.SessionId is null)
+    @if (order.SessionId is not null)
     {
         <div class="col-11">
             <label asp-for="Order.PaymentDate" class="ml-1 mt-2"></label>

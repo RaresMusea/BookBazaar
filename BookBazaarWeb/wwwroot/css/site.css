@@ -721,13 +721,86 @@ tbody {
     color: white !important;
 }
 
-.DropdownItem:focus {
+.DropdownItem {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.DropdownItem:focus, .DropdownItem:hover {
     background-color: #ED5B2D !important;
+    color: white !important;
+}
+
+.DropdownItem a {
+    display: block !important;
+    width: 100% !important;
 }
 
 .DropdownItem > a:focus {
     background-color: #ED5B2D;
 !important;
 }
+
+.DropdownHeader {
+    cursor: pointer !important;
+}
+
+.NavigationLinkDropDown {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.OrdersListWrapper {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+    overflow: scroll !important;
+    width: 30%;
+    height: 25% !important;
+    max-height: 25% !important;
+}
+
+.OrdersListWrapper::-webkit-scrollbar {
+    display: none !important;
+}
+
+.OrderElement {
+    cursor: pointer;
+    padding: 1em;
+    border-bottom: 1px solid rgba(82, 82, 82, 0.2);
+    transition: .2s ease-in-out;
+}
+
+.OrderElement:hover {
+    background-color: #ED5B2D;
+    color: white;
+    border-bottom: 3px solid var(--navbarColor);
+}
+
+
+.Orders {
+    width: 40% !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+
+}
+
+.OrderDetailsWindow {
+    width: 60% !important;
+    height: 600px !important;
+    max-height: 600px !important;
+    overflow: auto !important;
+}
+
+.OrderDetailsWindow::-webkit-scrollbar {
+}
+
+.Flexbox {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.Margin {
+    margin-top: 4em !important;
+}
+
 
 

@@ -1,6 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using BookBazaar.Data.Repo.Interfaces
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IWorkUnit WorkUnit;
+
+@{
+    string loggedInUserId = string.Empty;
+    if (SignInManager.IsSignedIn(User))
+    {
+        ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity!;
+        loggedInUserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+    }
+}
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
@@ -23,14 +35,24 @@
                aria-expanded="false">
                 <i class="bi bi-person"></i>
             </a>
-
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li class="nav-item DropdownItem">
-                    <a class="NavigationLinkDropDown dropdown-item w-100"
-                       asp-area="Admin"
-                       asp-controller="OrderManagement"
+            <ul class="dropdown-menu w-50" aria-labelledby="navbarDropdown">
+                <div class="dropdown-header DropdownHeader">
+                    @((await WorkUnit.UserRepo.GetAsync(u => u.Id == loggedInUserId)).Name)
+                </div>
+                <hr class="dropdown-divider">
+                <li class="nav-item DropdownItem text-center">
+                    <a class="NavigationLinkDropDown dropdown-item text-center"
+                       asp-area="Customer"
+                       asp-controller="Order"
                        asp-action="Index">
-                        Orders
+                        My orders
+                    </a>
+                </li>
+                <li class="nav-item DropdownItem text-center">
+                    <a class="NavigationLinkDropDown dropdown-item text-center"
+                       asp-area="Identity"
+                       asp-page="/Account/Manage/Index">
+                        Manage account
                     </a>
                 </li>
                 <li>
