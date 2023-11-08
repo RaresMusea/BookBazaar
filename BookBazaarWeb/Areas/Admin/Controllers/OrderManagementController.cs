@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace BookBazaarWeb.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize]
 public class OrderManagementController : Controller
 {
     private readonly IWorkUnit _workUnit;
@@ -87,6 +88,22 @@ public class OrderManagementController : Controller
         TempData["SuccessfulOperation"] = "Order details were updated successfully!";
 
         return RedirectToAction(nameof(Details), new { orderId = viewModel.Order.Id });
+    }
+
+    [Authorize(Roles = $"{RoleManager.Administrator},{RoleManager.Internal}")]
+    [HttpPost]
+    public async Task<IActionResult> ProcessOrder(int id)
+    {
+        if (id <= 0)
+        {
+            return NotFound();
+        }
+
+        await _workUnit.OrderRepo.UpdateOrderStateAsync((int)id, OrderStatus.Processing);
+        await _workUnit.SaveAsync();
+        TempData["SuccessfulOperation"] = "Order state set to Processing";
+
+        return RedirectToAction(nameof(Details), new { orderId = id });
     }
 
     private IEnumerable<Order> FilterOrdersBasedOnState(string? state, IEnumerable<Order> orders)

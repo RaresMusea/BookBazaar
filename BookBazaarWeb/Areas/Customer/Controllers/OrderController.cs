@@ -58,4 +58,22 @@ public class OrderController : Controller
 
         return PartialView("_OrderDetails", viewModel);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Update(OrderViewModel viewModel)
+    {
+        if (viewModel.Order is null)
+        {
+            return NotFound();
+        }
+
+        Order? order = await _workUnit.OrderRepo.GetAsync(o => o.Id == viewModel.Order.Id);
+
+        if (order is null)
+        {
+            return NotFound();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
 }

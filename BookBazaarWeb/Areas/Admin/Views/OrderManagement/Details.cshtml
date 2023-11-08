@@ -261,7 +261,27 @@
             <strong> @Model.Order.GrandTotal &euro;</strong>
         </li>
     </ul>
+    @if (order.OrderState == OrderStatus.Approved)
+    {
+        <form method="post">
+            <input type="submit"
+                   asp-action="ProcessOrder"
+                   asp-controller="OrderManagement"
+                   asp-route-id="@order.Id"
+                   value="Set state as Processing"
+                   class="Submit button primary Button ProcessingButton w-50 mt-2">
+        </form>
+    }
+    @if (order.OrderState == OrderStatus.Processing)
+    {
+        <button type="submit" class="Submit button primary Button ProcessingButton w-50 mt-2">Start Delivery</button>
+    }
+
+    @if (order.OrderState != OrderStatus.Refunded && order.OrderState != OrderStatus.Canceled && order.OrderState != OrderStatus.Delivered)
+    {
+        <button type="submit" class="Submit button primary Button RevokeButton w-50 mt-2">Revoke</button>
+    }
 </div>
 </div>
 </div>
-</div >
+</div>

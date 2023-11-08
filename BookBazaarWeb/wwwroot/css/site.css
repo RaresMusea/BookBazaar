@@ -165,6 +165,23 @@ tbody {
     background-color: #ED5B2D !important;
 }
 
+.PayButton:hover {
+    background-color: #61A6AB !important;
+}
+
+.RevokeButton:hover {
+    background-color: red !important;
+}
+
+.ProcessingButton:hover {
+    background-color: #525252 !important;
+    color: white !important;
+}
+
+.DeliveryButton {
+    background-color: #61A6AB !important;
+}
+
 .EditButton:hover {
     background-color: #fd7e14 !important;
 }
