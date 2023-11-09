@@ -55,7 +55,6 @@ public class OrderManagementController : Controller
         }
 
         order.OrderState = viewModel.Order.OrderState;
-        order.User = viewModel.Order.User;
         order.Address = viewModel.Order.Address;
         order.Name = viewModel.Order.Name;
 

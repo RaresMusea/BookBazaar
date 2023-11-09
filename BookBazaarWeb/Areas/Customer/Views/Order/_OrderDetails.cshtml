@@ -90,7 +90,15 @@
 
     @if (order.TransactionState == PaymentStatus.BusinessDelayed && order.OrderState == OrderStatus.Delivered)
     {
-        <button class="Submit button primary Button AddButton PayButton w-50 mt-2" type="submit">Pay order</button>
+        <form method="post">
+            <button
+                asp-action="PerformBusinessPayment"
+                asp-controller="Order"
+                class="Submit button primary Button AddButton PayButton mt-2 mb-4"
+                type="submit">
+                Pay order
+            </button>
+        </form>
     }
 
 </div>

@@ -35,7 +35,7 @@ public class OrderController : Controller
             });
         }
 
-        return View(viewModel);
+        return View(viewModel.OrderByDescending(vm => vm.Order.OrderDate));
     }
 
     public async Task<IActionResult> Details(int orderId)
@@ -75,5 +75,11 @@ public class OrderController : Controller
         }
 
         return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PerformBusinessPayment()
+    {
+        return RedirectToAction("Index");
     }
 }
