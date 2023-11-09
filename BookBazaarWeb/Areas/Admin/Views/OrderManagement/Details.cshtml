@@ -22,6 +22,7 @@
 <p class="text-center fw-bolder">Shipping details</p>
 <input hidden asp-for="Order.Id">
 <input hidden asp-for="Order.UserId">
+<input hidden asp-for="Order.GrandTotal">
 <div asp-validation-summary="ModelOnly" class="ValidationSummary"></div>
 <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
     <div class="col-11">
@@ -289,7 +290,15 @@
 
     @if (order.OrderState != OrderStatus.Refunded && order.OrderState != OrderStatus.Canceled && order.OrderState != OrderStatus.Delivered)
     {
-        <button type="submit" class="Submit button primary Button RevokeButton w-50 mt-2">Revoke</button>
+        <form method="post">
+            <button asp-action="Revoke"
+                    asp-controller="OrderManagement"
+                    asp-route-id="@order.Id"
+                    type="submit"
+                    class="Submit button primary Button RevokeButton w-50 mt-2">
+                Revoke
+            </button>
+        </form>
     }
 </div>
 </div>

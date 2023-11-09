@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using BookBazaar.Data.Repo.Interfaces;
+﻿using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Misc;
 using BookBazaar.Models.OrderModels;
 using BookBazaar.Models.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Stripe;
 
 namespace BookBazaarWeb.Areas.Admin.Controllers;
 
@@ -14,11 +14,9 @@ namespace BookBazaarWeb.Areas.Admin.Controllers;
 public class OrderManagementController : Controller
 {
     private readonly IWorkUnit _workUnit;
-    private readonly IMapper _mapper;
 
-    public OrderManagementController(IWorkUnit workUnit, IMapper mapper)
+    public OrderManagementController(IWorkUnit workUnit)
     {
-        _mapper = mapper;
         _workUnit = workUnit;
     }
 
@@ -99,7 +97,7 @@ public class OrderManagementController : Controller
             return NotFound();
         }
 
-        await _workUnit.OrderRepo.UpdateOrderStateAsync((int)id, OrderStatus.Processing);
+        await _workUnit.OrderRepo.UpdateOrderStateAsync(id, OrderStatus.Processing);
         await _workUnit.SaveAsync();
         TempData["SuccessfulOperation"] = "Order state set to Processing";
 
@@ -130,6 +128,40 @@ public class OrderManagementController : Controller
         TempData["SuccessfulOperation"] = "The order was delivered.";
 
         return RedirectToAction(nameof(Details), new { orderId = id });
+    }
+
+    [Authorize(Roles = $"{RoleManager.Administrator},{RoleManager.Internal}")]
+    [HttpPost]
+    public async Task<IActionResult> Revoke(int id)
+    {
+        if (id <= 0)
+        {
+            return NotFound();
+        }
+
+        Order order = await _workUnit.OrderRepo.GetAsync(o => o.Id == id);
+
+        if (order.TransactionState == PaymentStatus.Approved)
+        {
+            RefundCreateOptions options = new RefundCreateOptions
+            {
+                Reason = RefundReasons.RequestedByCustomer,
+                PaymentIntent = order.TransactionId
+            };
+
+            RefundService service = new RefundService();
+            await service.CreateAsync(options);
+            await _workUnit.OrderRepo.UpdateOrderStateAsync(order.Id, OrderStatus.Canceled, PaymentStatus.Refunded);
+        }
+        else
+        {
+            await _workUnit.OrderRepo.UpdateOrderStateAsync(order.Id, OrderStatus.Canceled, OrderStatus.Canceled);
+        }
+
+        await _workUnit.SaveAsync();
+        TempData["SuccessfulOperation"] = "Order was canceled and then revoked!";
+
+        return RedirectToAction(nameof(Details), new { orderId = order.Id });
     }
 
     private IEnumerable<Order> FilterOrdersBasedOnState(string? state, IEnumerable<Order> orders)
