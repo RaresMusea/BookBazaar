@@ -2,6 +2,7 @@
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Misc;
 using BookBazaar.Models.CartModels;
+using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.OrderModels;
 using BookBazaar.Models.VM;
 using BookBazaarWeb.Areas.Customer.Utils;
@@ -266,6 +267,17 @@ public class OrderBasketController : Controller
                 await _workUnit.OrderRepo.UpdateStripeIdAsync(order.Id, session.Id, session.PaymentIntentId);
                 await _workUnit.OrderRepo.UpdateOrderStateAsync(order.Id, order.OrderState!, PaymentStatus.Approved);
                 await _workUnit.SaveAsync();
+
+                IEnumerable<OrderInfo> orderInfos =
+                    await _workUnit.OrderInfoRepo.RetrieveAllAsync(i => i.OrderId == orderId, "InventoryItem");
+
+                foreach (var info in orderInfos)
+                {
+                    InventoryItem infoInventoryItem = info.InventoryItem;
+                    infoInventoryItem.QuantitySold += info.Amount;
+                    _workUnit.InventoryRepo.Update(infoInventoryItem);
+                    await _workUnit.SaveAsync();
+                }
             }
         }
 
