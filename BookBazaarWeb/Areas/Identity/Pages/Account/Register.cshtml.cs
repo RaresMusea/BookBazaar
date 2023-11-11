@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using BookBazaar.Data.Repo.Interfaces;
-using BookBazaar.Misc;
+using BookBazaar.Misc.Roles;
 using BookBazaar.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using BookBazaar.Misc
+@using BookBazaar.Misc.Roles
+@inject IHttpContextAccessor IHttpContextAccessor;
 @inject SignInManager<IdentityUser> SignInManager
 
 <!DOCTYPE html>

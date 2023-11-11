@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Security.Claims;
 using BookBazaar.Data.Repo.Interfaces;
+using BookBazaar.Misc.Session;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CartModels;
 using BookBazaar.Models.InventoryModels;
@@ -16,11 +17,13 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IWorkUnit _workUnit;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HomeController(ILogger<HomeController> logger, IWorkUnit workUnit)
+    public HomeController(ILogger<HomeController> logger, IWorkUnit workUnit, IHttpContextAccessor contextAccessor)
     {
         _logger = logger;
         _workUnit = workUnit;
+        _httpContextAccessor = contextAccessor;
     }
 
     public async Task<IActionResult> Index()
@@ -112,6 +115,9 @@ public class HomeController : Controller
         if (existingBasket is null)
         {
             await _workUnit.OrderBasketRepo.CreateAsync(basket);
+            int basketAmount = (await _workUnit.OrderBasketRepo.RetrieveAllAsync(b => b.UserId == userId)).Count();
+            await _workUnit.SaveAsync();
+            _httpContextAccessor.HttpContext!.Session.SetInt32(SessionManager.OrderBasketSession, basketAmount);
         }
         else
         {
@@ -119,7 +125,6 @@ public class HomeController : Controller
             _workUnit.OrderBasketRepo.Update(existingBasket);
         }
 
-        await _workUnit.SaveAsync();
         TempData["SuccessfulOperation"] = "Your cart was successfully updated!";
         return RedirectToAction(nameof(Index));
     }

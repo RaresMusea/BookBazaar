@@ -1,5 +1,6 @@
 ﻿using BookBazaar.Data.Repo.Interfaces;
-using BookBazaar.Misc;
+using BookBazaar.Misc.Orders_Payments;
+using BookBazaar.Misc.Roles;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.OrderModels;
 using BookBazaar.Models.VM;

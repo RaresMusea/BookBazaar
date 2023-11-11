@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @using BookBazaar.Data.Repo.Interfaces
+@using BookBazaar.Misc.Session
+@inject IHttpContextAccessor IHttpContextAccessor;
 @inject SignInManager<IdentityUser> SignInManager
 @inject IWorkUnit WorkUnit;
 
@@ -16,16 +18,6 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        @*<a id="manage"
-           class="nav-link NavigationLink text-white border-0 text-uppercase"
-           asp-area="Identity"
-           asp-page="/Account/Manage/Index"
-           title="Manage">
-            
-            @User.FindFirst(ClaimTypes.Name)?.Value
-        </a>*@
-
-
         <li class="nav-item dropdown">
             <a class="NavbarLink NavigationLink border-0 text-uppercase DropdownParent text-white nav-link dropdown-toggle"
                href="#" id="navbarDropdown"
@@ -84,8 +76,16 @@
            asp-area="Customer"
            asp-controller="OrderBasket"
            asp-action="Index">
-            <i class="bi bi-basket text-center Basket"></i>
-            (0)
+            @if (IHttpContextAccessor.HttpContext!.Session.GetInt32(SessionManager.OrderBasketSession) is not null)
+            {
+                <i class="bi bi-basket text-center Basket"></i>
+                <span>(@IHttpContextAccessor.HttpContext.Session.GetInt32(SessionManager.OrderBasketSession))</span>
+            }
+            else
+            {
+                <i class="bi bi-basket text-center Basket"></i>
+                <span>(0)</span>
+            }
         </a>
     </li>
 </ul>

@@ -1,4 +1,4 @@
-﻿namespace BookBazaar.Misc;
+﻿namespace BookBazaar.Misc.Roles;
 
 public static class RoleManager
 {

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using BookBazaar.Data.Repo.Interfaces;
-using BookBazaar.Misc;
+using BookBazaar.Misc.Orders_Payments;
+using BookBazaar.Misc.Session;
 using BookBazaar.Models.CartModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.OrderModels;
@@ -98,6 +99,9 @@ public class OrderBasketController : Controller
         }
 
         _workUnit.OrderBasketRepo.Remove(basket);
+        int itemsAfterRemoval =
+            (await _workUnit.OrderBasketRepo.RetrieveAllAsync(b => b.UserId == basket.UserId)).Count();
+        HttpContext.Session.SetInt32(SessionManager.OrderBasketSession, itemsAfterRemoval - 1);
         await _workUnit.SaveAsync();
 
         return RedirectToAction(nameof(Index));

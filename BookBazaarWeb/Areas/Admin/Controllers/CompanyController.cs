@@ -1,5 +1,5 @@
 ﻿using BookBazaar.Data.Repo.Interfaces;
-using BookBazaar.Misc;
+using BookBazaar.Misc.Roles;
 using BookBazaar.Models.CompanyModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

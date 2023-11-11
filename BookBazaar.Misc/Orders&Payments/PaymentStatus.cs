@@ -1,4 +1,4 @@
-﻿namespace BookBazaar.Misc;
+﻿namespace BookBazaar.Misc.Orders_Payments;
 
 public static class PaymentStatus
 {

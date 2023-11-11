@@ -42,11 +42,19 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = @"/Identity/Account/AccessDenied";
 });
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+builder.Services.AddHttpContextAccessor();
 builder.Services.Configure<StripeManager>(builder.Configuration.GetSection("StripePayments"));
-
 builder.Services.AddScoped<IWorkUnit, WorkUnit>();
 builder.Services.AddScoped<IEmailSender, EmailEmitter>();
 builder.Services.AddScoped<OrderBasketControllerUtils>();
+
 
 var app = builder.Build();
 
@@ -64,6 +72,7 @@ StripeConfiguration.ApiKey = builder.Configuration.GetSection("StripePayments:Se
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 app.MapRazorPages();
 
 app.MapControllerRoute(

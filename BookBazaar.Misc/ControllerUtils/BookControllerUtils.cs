@@ -1,4 +1,4 @@
-﻿namespace BookBazaar.Misc;
+﻿namespace BookBazaar.Misc.ControllerUtils;
 
 public static class BookControllerUtils
 {
