@@ -31,6 +31,12 @@ public class OrderRepository : Repository<Order>, IOrderRepository
             {
                 order.TransactionState = paymentState;
             }
+
+            if (!string.IsNullOrEmpty(order.TransactionState) && !string.IsNullOrEmpty(paymentState) &&
+                paymentState != order.TransactionState)
+            {
+                order.TransactionState = paymentState;
+            }
         }
     }
 

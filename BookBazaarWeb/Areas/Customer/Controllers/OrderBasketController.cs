@@ -144,6 +144,7 @@ public class OrderBasketController : Controller
             viewModel.Order.TransactionState = PaymentStatus.BusinessDelayed;
         }
 
+        _workUnit.OrderRepo.Update(viewModel.Order);
         await _workUnit.OrderRepo.CreateAsync(viewModel.Order);
         await _workUnit.SaveAsync();
 
@@ -241,6 +242,32 @@ public class OrderBasketController : Controller
 
         _workUnit.OrderBasketRepo.RemoveRange(orderBasketItems);
         await _workUnit.SaveAsync();
+
+        OrderConfirmationViewModel viewModel = new()
+        {
+            OrderId = orderId,
+            Name = order.Name
+        };
+
+        return View(viewModel);
+    }
+
+    public async Task<IActionResult> ConfirmBusinessOrder(int orderId)
+    {
+        Order order = await _workUnit.OrderRepo.GetAsync(o => o.Id == orderId, "User");
+
+        if (order.TransactionState == PaymentStatus.BusinessDelayed)
+        {
+            var service = new SessionService();
+            Session session = await service.GetAsync(order.SessionId);
+
+            if (session.PaymentStatus.ToLower() == "paid")
+            {
+                await _workUnit.OrderRepo.UpdateStripeIdAsync(order.Id, session.Id, session.PaymentIntentId);
+                await _workUnit.OrderRepo.UpdateOrderStateAsync(order.Id, order.OrderState!, PaymentStatus.Approved);
+                await _workUnit.SaveAsync();
+            }
+        }
 
         OrderConfirmationViewModel viewModel = new()
         {

@@ -1,4 +1,6 @@
-﻿@using BookBazaar.Misc
+﻿@inject IWorkUnit WorkUnit;
+@using BookBazaar.Data.Repo.Interfaces
+@using BookBazaar.Misc
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model OrderViewModel
 
@@ -12,13 +14,9 @@
 
 <div class="mt-3">
 <div class="container">
-<h1 class="text-center text-sm-center text-md-center text-lg-start text-xl-start">
-    Book Bazaar Order #@order.Id
-</h1>
+<h1 class="text-center text-sm-center text-md-center text-lg-start text-xl-start">Book Bazaar Order #@order.Id</h1>
 <div class=" mt-3 d-flex flex-column-reverse flex-sm-column-reverse flex-md-column-reverse flex-lg-row flex-xl-row ShippingContainer align-items-center align-items-sm-center align-items-md-center align-items-lg-start align-items-xl-start justify-content-center justify-content-sm-center justify-content-md-center justify-content-lg-evenly justify-content-xl-evenly">
-<form
-    method="post"
-    class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
+<form method="post" class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
 <p class="text-center fw-bolder">Shipping details</p>
 <input hidden asp-for="Order.Id">
 <input hidden asp-for="Order.UserId">
@@ -117,7 +115,7 @@
         <label asp-for="Order.OrderDate" class="ml-1 mt-2"></label>
         @if (HasPermission())
         {
-            <input asp-for="Order.OrderDate.Date" class="form-control TextInput mt-1">
+            <input asp-for="Order.OrderDate" class="form-control TextInput mt-1">
         }
         else
         {
@@ -210,6 +208,20 @@
         </div >
     </div>
 }
+
+@if (HasPermission())
+{
+    @if (order.User.CompanyId is not null)
+    {
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-11">
+                <label for="Company" class="ml-1 mt-2">Company</label >
+                <input id="Company" value="@((await WorkUnit.CompanyRepo.GetAsync(c => c.Id == order.User.CompanyId)).Name)" class="form-control TextInput mt-1" readonly>
+            </div>
+        </div>
+    }
+}
+
 @if (HasPermission())
 {
     <button type="submit"
@@ -293,7 +305,7 @@
         <form method="post">
             <button asp-action="Revoke"
                     asp-controller="OrderManagement"
-                    asp-route-id="@order.Id"
+                    asp-route-id="@Model.Order.Id"
                     type="submit"
                     class="Submit button primary Button RevokeButton w-50 mt-2">
                 Revoke

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<OrderViewModel>
+﻿@using BookBazaar.Misc
+@model IEnumerable<OrderViewModel>
 
 @{
     ViewData["Title"] = "My orders";
@@ -11,11 +12,14 @@
             @foreach (var orderViewModel in Model)
             {
                 <div
+                    data-id="@orderViewModel.Order.Id"
                     data-url="@Url.Action("Details", "Order", new { orderId = orderViewModel.Order.Id })"
                     class="OrderElement">
                     <div class="d-flex flex-column">
-                        <span>Order #@orderViewModel.Order.Id</span>
-                        <span>Order status: @orderViewModel.Order.OrderState</span>
+                        <span>@(orderViewModel.Order.User.CompanyId is not null ? "Business " : "") Order #@orderViewModel.Order.Id</span>
+                        <span>
+                            Order status: @orderViewModel.Order.OrderState @(orderViewModel.Order.TransactionState == PaymentStatus.BusinessDelayed ? ", payment delayed until " + orderViewModel.Order.PaymentDueDate.ToShortDateString() + "." : "")
+                        </span>
                         <span>Subtotal: @(Math.Round(orderViewModel.Order.GrandTotal, 2)) &euro;</span>
                     </div>
 
