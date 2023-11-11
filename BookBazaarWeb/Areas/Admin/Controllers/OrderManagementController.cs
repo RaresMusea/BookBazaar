@@ -137,6 +137,21 @@ public class OrderManagementController : Controller
             order.PaymentDueDate = DateTime.Now.AddDays(30);
         }
 
+        if (order.TransactionState != PaymentStatus.BusinessDelayed)
+        {
+            IEnumerable<OrderInfo> orderInfos =
+                await _workUnit.OrderInfoRepo.RetrieveAllAsync(i => i.OrderId == id, "InventoryItem");
+
+            foreach (var info in orderInfos)
+            {
+                InventoryItem infoInventoryItem = info.InventoryItem;
+                infoInventoryItem.QuantitySold += info.Amount;
+
+                _workUnit.InventoryRepo.Update(infoInventoryItem);
+                await _workUnit.SaveAsync();
+            }
+        }
+
         order.OrderState = OrderStatus.Delivered;
 
         _workUnit.OrderRepo.Update(order);
@@ -224,7 +239,7 @@ public class OrderManagementController : Controller
         }
 
         IEnumerable<OrderInfo> orderInfos =
-            await _workUnit.OrderInfoRepo.RetrieveAllAsync(oi => oi.OrderId == orderId, "Book");
+            await _workUnit.OrderInfoRepo.RetrieveAllAsync(oi => oi.OrderId == orderId, "Book,InventoryItem");
 
         OrderViewModel viewModel = new()
         {

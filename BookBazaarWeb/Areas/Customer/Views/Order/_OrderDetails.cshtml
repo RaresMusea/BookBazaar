@@ -9,7 +9,7 @@
     var orderInfos = @Model.OrderInfos;
 }
 
-<div class="fs-4 text-center mt-2">@(order.User.CompanyId != 0 ? "Business " : "") Order #@order.Id from @order.OrderDate.ToShortDateString()</div>
+<div class="fs-4 text-center mt-2">@(order.User.CompanyId is not null ? "Business " : "") Order #@order.Id from @order.OrderDate.ToShortDateString()</div>
 <div class="Flexbox flex-column">
     <span class="text-center fs-5 mt-2">Order information</span>
     <div class="border Shadow1 rounded-2 p-3 mt-4 mx-6 mb-4">
