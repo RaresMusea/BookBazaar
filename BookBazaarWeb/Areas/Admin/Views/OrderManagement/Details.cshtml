@@ -7,9 +7,24 @@
 @{
     ViewData["Title"] = $"Details for order #{@Model.Order.Id}";
     var order = @Model.Order;
-    var orderInfos = @Model.OrderInfos;
+    var orderInfos = @Model.OrderInfos.ToList();
 
     bool HasPermission() => User.IsInRole(RoleManager.Administrator) || User.IsInRole(RoleManager.Internal);
+
+    bool ContainsSoldOutItems()
+    {
+        bool result = false;
+        orderInfos!.ForEach(item =>
+        {
+            if (item.InventoryItem.QuantityInStock == 0)
+            {
+                result = true;
+                return;
+            }
+        });
+
+        return result;
+    }
 }
 
 <div class="mt-3">
@@ -281,6 +296,8 @@
                    asp-action="ProcessOrder"
                    asp-controller="OrderManagement"
                    asp-route-id="@order.Id"
+                   data-url="@Url.Action("Error", "OrderManagement")"
+                   data-trigger="@ContainsSoldOutItems().ToString()"
                    value="Set state as Processing"
                    class="Submit button primary Button ProcessingButton w-50 mt-2">
         </form>
@@ -320,4 +337,5 @@
 @section Scripts
 {
     <script src="~/js/Errors/UnprovidedDeliveryDetails.js"></script>
+    <script src="~/js/Errors/InventoryMismatchError.js"></script>
 }

@@ -1,5 +1,6 @@
 ﻿using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Misc;
+using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.OrderModels;
 using BookBazaar.Models.VM;
 using Microsoft.AspNetCore.Authorization;
@@ -96,6 +97,22 @@ public class OrderManagementController : Controller
             return NotFound();
         }
 
+        IEnumerable<OrderInfo> orderInfo =
+            await _workUnit.OrderInfoRepo.RetrieveAllAsync(i => i.OrderId == id, "InventoryItem");
+
+        foreach (var orderDetail in orderInfo)
+        {
+            InventoryItem orderInventoryItem = orderDetail.InventoryItem;
+
+            if (orderInventoryItem.QuantityInStock - orderDetail.Amount >= 0)
+            {
+                orderInventoryItem.QuantityInStock -= orderDetail.Amount;
+            }
+
+            _workUnit.InventoryRepo.Update(orderInventoryItem);
+            await _workUnit.SaveAsync();
+        }
+
         await _workUnit.OrderRepo.UpdateOrderStateAsync(id, OrderStatus.Processing);
         await _workUnit.SaveAsync();
         TempData["SuccessfulOperation"] = "Order state set to Processing";
@@ -161,6 +178,11 @@ public class OrderManagementController : Controller
         TempData["SuccessfulOperation"] = "Order was canceled and then revoked!";
 
         return RedirectToAction(nameof(Details), new { orderId = order.Id });
+    }
+
+    public IActionResult Error()
+    {
+        return PartialView("_InventoryError");
     }
 
     private IEnumerable<Order> FilterOrdersBasedOnState(string? state, IEnumerable<Order> orders)

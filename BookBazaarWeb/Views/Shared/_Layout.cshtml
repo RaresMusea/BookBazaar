@@ -1,6 +1,8 @@
-﻿@using BookBazaar.Misc
+﻿@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Syncfusion.EJ2
+@using BookBazaar.Misc
+@inject SignInManager<IdentityUser> SignInManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,11 +20,13 @@
 <body>
 <header>
     <partial name="OperationResult"></partial>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow"
+         data-usertype="@(User.IsInRole(RoleManager.Administrator) ? "Admin" : "User")"
+         data-signedin="@(SignInManager.IsSignedIn(User))">
         <div class="container-fluid">
             <a class="navbar-brand d-flex flex-row align-items-center" asp-area="" asp-action="Index" asp-controller="Home">
                 <img src="~/img/BookBazaarLogo.svg" class="LogoImg" alt="Logo"/>
-                <div class="fw-bold text-white nav-link LogoText">BOOK BAZAAR</div>
+                <div class="fw-bold text-white nav-link  NavbarLink NavigationLink LogoText">BOOK BAZAAR</div>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -30,9 +34,7 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="NavigationLink nav-link text-white NavbarLink" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
+
                     @if (User.IsInRole(RoleManager.Administrator))
                     {
                         <li class="nav-item dropdown">
@@ -75,6 +77,18 @@
                                     <hr class="dropdown-divider">
                                 </li>
                             </ul>
+                        </li>
+                    }
+                    @if (User.IsInRole(RoleManager.Internal))
+                    {
+                        <li class="nav-item">
+                            <a class="NavigationLink nav-link text-white NavbarLink"
+                               id="cart"
+                               asp-area="Admin"
+                               asp-controller="OrderManagement"
+                               asp-action="Index">
+                                Manage orders
+                            </a>
                         </li>
                     }
                 </ul>

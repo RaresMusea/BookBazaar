@@ -124,9 +124,11 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
 
             [DisplayName("Phone number")] public string PhoneNumber { get; set; }
 
-            public int? CompanyId { get; set; }
+            [ValidateNever] public int? CompanyId { get; set; }
 
-            [DisplayName("Company")] public IEnumerable<SelectListItem> Companies { get; set; }
+            [DisplayName("Company")]
+            [ValidateNever]
+            public IEnumerable<SelectListItem> Companies { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
