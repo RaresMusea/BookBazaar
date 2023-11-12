@@ -739,6 +739,7 @@ tbody {
 }
 
 .DropdownItem {
+    cursor: pointer !important;
     display: block !important;
     margin: 0 auto !important;
 }

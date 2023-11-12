@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using BookBazaar.Models.BookModels;
+﻿using BookBazaar.Models.BookModels;
 using BookBazaar.Models.InventoryModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,5 +9,7 @@ public class BookViewModel
 {
     public Book? Book { get; set; }
     [ValidateNever] public IEnumerable<SelectListItem>? CategoriesList { get; set; }
-    [ValidateNever] public InventoryItem? InventoryItem { get; set; } 
+    [ValidateNever] public InventoryItem? InventoryItem { get; set; }
+
+    [ValidateNever] public string CategoryQuery { get; set; } = string.Empty;
 }
