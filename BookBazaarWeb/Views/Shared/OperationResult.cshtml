@@ -2,10 +2,12 @@
 {
     <p data-toast="@TempData["SuccessfulOperation"]" class="d-none Dummy"></p>
     <script src="~/js/Toaster.js"></script>
+    TempData.Remove("SuccessfulOperation");
 }
 
 @if (TempData["FailedOperation"] is not null)
 {
     <p data-toast="@TempData["FailedOperation"]" class="d-none Dummy"></p>
     <script src="~/js/Toaster.js"></script>
+    TempData.Remove("FailedOperation");
 }

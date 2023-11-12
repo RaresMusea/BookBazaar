@@ -45,6 +45,34 @@
                     <td class="align-middle">@element.User.Country</td>
                     <td class="align-middle border-end-0">
                         <div class="d-flex align-items-center justify-content-evenly w-100" role="group">
+                            @if (element.User.LockoutEnd is null || element.User.LockoutEnd < DateTime.Now)
+                            {
+                                <a
+                                    asp-area="Admin"
+                                    asp-controller="User"
+                                    asp-action="Suspend"
+                                    asp-route-userId="@element.User.Id"
+                                    class="button Button SuspendButton text-decoration-none">
+                                    <div class="text-center d-flex flex-row align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-dash-circle-dotted"></i>
+                                        <span>Suspend</span>
+                                    </div>
+                                </a>
+                            }
+                            else
+                            {
+                                <a
+                                    asp-area="Admin"
+                                    asp-controller="User"
+                                    asp-action="Unsuspend"
+                                    asp-route-userId="@element.User.Id"
+                                    class="button Button EditButton text-decoration-none">
+                                    <div class="text-center d-flex flex-row align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-check2-circle"></i>
+                                        <span>Unsuspend</span>
+                                    </div>
+                                </a>
+                            }
                         </div>
                     </td>
                 </tr>

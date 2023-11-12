@@ -46,4 +46,43 @@ public class UserController : Controller
 
         return View(viewModels);
     }
+
+    public async Task<IActionResult> Suspend(string userId)
+    {
+        var specificUser = await _workUnit.UserRepo.GetAsync(u => u.Id == userId);
+
+        if (specificUser is null)
+        {
+            return NotFound();
+        }
+
+        if (specificUser.LockoutEnd is null || specificUser.LockoutEnd < DateTime.Now)
+        {
+            specificUser.LockoutEnd = DateTime.Now.AddYears(100);
+        }
+
+        await _workUnit.SaveAsync();
+        TempData["SuccessfulOperation"] = $"User {specificUser.Name} was suspended.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Unsuspend(string userId)
+    {
+        var specificUser = await _workUnit.UserRepo.GetAsync(u => u.Id == userId);
+
+        if (specificUser is null)
+        {
+            return NotFound();
+        }
+
+        if (specificUser.LockoutEnd is not null && specificUser.LockoutEnd > DateTime.Now)
+        {
+            specificUser.LockoutEnd = DateTime.Now;
+        }
+
+        await _workUnit.SaveAsync();
+        TempData["SuccessfulOperation"] = $"User {specificUser.Name} was unsuspended";
+        return RedirectToAction(nameof(Index));
+    }
 }
