@@ -142,6 +142,12 @@ tbody {
     outline: none !important;
 }
 
+.SearchButton {
+    color: white !important;
+    background-color: #5d6166 !important;
+}
+
+
 .UpdateButton {
     background-color: var(--navbarColor);
     color: white;

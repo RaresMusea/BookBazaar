@@ -10,6 +10,7 @@ public class BookViewModel
     public Book? Book { get; set; }
     [ValidateNever] public IEnumerable<SelectListItem>? CategoriesList { get; set; }
     [ValidateNever] public InventoryItem? InventoryItem { get; set; }
+    [ValidateNever] public string CategoryQuery { get; init; } = string.Empty;
 
-    [ValidateNever] public string CategoryQuery { get; set; } = string.Empty;
+    [ValidateNever] public string SearchQuery { get; init; } = string.Empty;
 }
