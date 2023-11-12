@@ -1,16 +1,33 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
+@using BookBazaar.Data.DataContext
 @using BookBazaar.Data.Repo.Interfaces
+@using BookBazaar.Misc.Roles
 @inject IHttpContextAccessor IHttpContextAccessor;
 @inject SignInManager<IdentityUser> SignInManager
 @inject IWorkUnit WorkUnit;
+@inject AppDataContext DataContext;
 
 @{
     string loggedInUserId = string.Empty;
+    string role = string.Empty;
+    string company = string.Empty;
+
     if (SignInManager.IsSignedIn(User))
     {
         ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity!;
         loggedInUserId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+        string roleIdentifier = DataContext.UserRoles.FirstOrDefault(r => r.UserId == loggedInUserId)!.RoleId;
+        role = DataContext.Roles.FirstOrDefault(r => r.Id == roleIdentifier)!.Name!;
+
+        if (role == RoleManager.Company)
+        {
+            company = (await WorkUnit.UserRepo.GetAsync(u => u.Id == loggedInUserId, "Company"))
+                .Company!.Name;
+
+            role = "Business User";
+        }
     }
 }
 
@@ -25,9 +42,29 @@
                aria-expanded="false">
                 <i class="bi bi-person"></i>
             </a>
-            <ul class="dropdown-menu w-50" aria-labelledby="navbarDropdown">
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <div class="dropdown-header DropdownHeader">
-                    @((await WorkUnit.UserRepo.GetAsync(u => u.Id == loggedInUserId)).Name)
+                    <span>@((await WorkUnit.UserRepo.GetAsync(u => u.Id == loggedInUserId)).Name)</span>
+
+                    @if (role != "Business User")
+                    {
+                        if (role != RoleManager.Administrator)
+                        {
+                            <div class="mt-2 text-muted">Account type: @role User</div>
+                        }
+                        else
+                        {
+                            <div class="mt-2 text-muted">Account type: @role</div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-muted mt-2">
+                            <span>Account type: @role</span>
+                            <span>representing @company</span>
+                        </div>
+                    }
+
                 </div>
                 <hr class="dropdown-divider">
                 <li class="nav-item DropdownItem text-center">
