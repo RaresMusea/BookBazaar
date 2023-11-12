@@ -29,22 +29,27 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         IEnumerable<Book> books = await _workUnit.BookRepo.RetrieveAllAsync(includedProperties: "Category");
-        if (books is not null)
-        {
-            List<BookViewModel> viewModels = new();
-            foreach (var book in books)
-            {
-                viewModels.Add(new()
-                {
-                    Book = book,
-                    InventoryItem = await _workUnit.InventoryRepo.GetAsync(inv => inv.BookId == book.Id)
-                });
-            }
+        IEnumerable<InventoryItem> inventoryItems =
+            await _workUnit.InventoryRepo.RetrieveAllAsync(i => i.QuantityInStock > 0);
+        inventoryItems = inventoryItems.OrderByDescending(i => i.QuantitySold).Take(4);
 
-            return View(viewModels.OrderByDescending(o => o.InventoryItem!.QuantityInStock).ToList());
+        if (books is null || inventoryItems is null)
+        {
+            return NotFound();
         }
 
-        return NotFound();
+        List<BookViewModel> viewModels = new();
+
+        foreach (var inventoryItem in inventoryItems)
+        {
+            viewModels.Add(new()
+            {
+                Book = books.FirstOrDefault(b => b.Id == inventoryItem.BookId),
+                InventoryItem = inventoryItem
+            });
+        }
+
+        return View(viewModels.ToList());
     }
 
     public async Task<IActionResult> Details(int id)
