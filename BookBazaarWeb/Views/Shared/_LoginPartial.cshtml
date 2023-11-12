@@ -15,7 +15,7 @@
 }
 
 <ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
+    @if (User.Identity!.IsAuthenticated && SignInManager.IsSignedIn(User))
     {
         <li class="nav-item dropdown">
             <a class="NavbarLink NavigationLink border-0 text-uppercase DropdownParent text-white nav-link dropdown-toggle"

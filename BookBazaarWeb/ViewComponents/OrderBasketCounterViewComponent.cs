@@ -18,7 +18,7 @@ public class OrderBasketCounterViewComponent : ViewComponent
     {
         ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity!;
 
-        var claim = claimsIdentity!.FindFirst(ClaimTypes.NameIdentifier);
+        var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
         if (claim is not null)
         {

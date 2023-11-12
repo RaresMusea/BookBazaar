@@ -43,6 +43,7 @@
                                 Management
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <span class="mx-2">Assets</span>
                                 <li class="nav-item DropdownItem text-center">
                                     <a class="NavigationLinkDropDown dropdown-item" asp-area="Admin"
                                        asp-controller="Category"
@@ -76,6 +77,14 @@
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
+                                </li>
+                                <span class="mx-2">Users</span>
+                                <li class="nav-item DropdownItem text-center">
+                                    <a class="NavigationLinkDropDown dropdown-item"
+                                       asp-area="Identity"
+                                       asp-page="/Account/Register">
+                                        Register a new user
+                                    </a>
                                 </li>
                             </ul>
                         </li>

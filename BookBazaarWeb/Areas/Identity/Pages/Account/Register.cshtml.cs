@@ -71,6 +71,35 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
         /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+        public class RequiredForRoleAttribute : ValidationAttribute
+        {
+            private readonly string role;
+            private readonly string propertyName;
+
+            public RequiredForRoleAttribute(string role, string propertyName)
+            {
+                this.role = role;
+                this.propertyName = propertyName;
+            }
+
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+            {
+                if (validationContext.ObjectInstance is RegisterModel instance)
+                {
+                    if (instance.Input.Role == role)
+                    {
+                        if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
+                        {
+                            return new ValidationResult($"{propertyName} is required for the {role} role.");
+                        }
+                    }
+                }
+
+                return ValidationResult.Success;
+            }
+        }
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -124,7 +153,9 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
 
             [DisplayName("Phone number")] public string PhoneNumber { get; set; }
 
-            [ValidateNever] public int? CompanyId { get; set; }
+
+            [RequiredForRole(RoleManager.Company, "Company")]
+            public int? CompanyId { get; set; }
 
             [DisplayName("Company")]
             [ValidateNever]
@@ -214,7 +245,15 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(RoleManager.Administrator))
+                        {
+                            TempData["SuccessfulOperation"] = "User account created successfully!";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
+
                         return LocalRedirect(returnUrl);
                     }
                 }
