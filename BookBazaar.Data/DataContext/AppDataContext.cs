@@ -1,4 +1,4 @@
-﻿using BookBazaar.Models;
+﻿using BookBazaar.Models.AppUser;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CartModels;
 using BookBazaar.Models.CategoryModels;

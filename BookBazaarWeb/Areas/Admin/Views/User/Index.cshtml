@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<BookBazaar.Models.AppUser.AppUser>
+
+@{
+    ViewData["Title"] = "Manage users";
+    var users = Model;
+}
+
+
+<partial name="OperationResult"></partial>
+<section>
+    <div class="container">
+        <div class="row pt-3 mb-3 mt-3">
+            <div class="col-6">
+                <h2>Manage users</h2>
+            </div>
+        </div>
+        <table
+            id="UsersTable"
+            class="responsive mt-6 table table-striped align-middle text-left row-cols-6">
+            <thead class="TableHeading box-shadow">
+            <th>Name</th>
+            <th>Phone number</th>
+            <th>Email </th>
+            <th>Company</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Country</th>
+            <th class="last" data-nosorting="true"></th>
+            </thead>
+            <tbody>
+            @foreach (var user in users)
+            {
+                <tr class="m-0 p-0">
+                    <td class="align-middle">@user.Name</td>
+                    <td class="align-middle">@user.PhoneNumber</td>
+                    <td class="align-middle">@(user.Email)</td>
+                    <td
+                        title="@(user.CompanyId is null ? "The user is not registered as a business account" : user.Company!.Name)"
+                        class="align-middle TableDefinition HovarableTableData">
+                        @(user.CompanyId is null ? "No" : user.Company!.Name)
+                    </td>
+                    <td class="align-middle">@user.Address</td>
+                    <td class="align-middle">@user.City</td>
+                    <td class="align-middle">@user.Country</td>
+                    <td class="align-middle border-end-0">
+                        <div class="d-flex align-items-center justify-content-evenly w-100" role="group">
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@section Scripts{
+    <script src="~/js/DataTables/UsersDataTables.js"></script>
+}

@@ -1,6 +1,6 @@
 ﻿using BookBazaar.Data.DataContext;
 using BookBazaar.Data.Repo.Interfaces;
-using BookBazaar.Models;
+using BookBazaar.Models.AppUser;
 
 namespace BookBazaar.Data.Repo.Impl;
 

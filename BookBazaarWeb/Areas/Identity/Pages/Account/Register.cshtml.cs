@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Misc.Roles;
-using BookBazaar.Models;
+using BookBazaar.Models.AppUser;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;

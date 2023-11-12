@@ -4,7 +4,7 @@ using BookBazaar.Models.CompanyModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace BookBazaar.Models;
+namespace BookBazaar.Models.AppUser;
 
 public class AppUser : IdentityUser
 {
@@ -14,7 +14,7 @@ public class AppUser : IdentityUser
 
     [ForeignKey("CompanyId")]
     [ValidateNever]
-    Company Company { get; set; }
+    public Company? Company { get; set; }
 
     public string Address { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;

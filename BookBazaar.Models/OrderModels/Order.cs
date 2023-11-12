@@ -11,7 +11,7 @@ public class Order
 
     public string UserId { get; set; } = string.Empty;
 
-    [ValidateNever] [ForeignKey("UserId")] public AppUser User { get; set; } = null!;
+    [ValidateNever] [ForeignKey("UserId")] public AppUser.AppUser User { get; set; } = null!;
 
     [DisplayName("Order date")] public DateTime OrderDate { get; set; }
 
