@@ -24,7 +24,7 @@ public class Repository<T> : IRepository<T> where T : class
         if (includedProperties is not null)
         {
             foreach (var property in
-                     includedProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                     includedProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 queryable = queryable.Include(property);
             }
@@ -48,7 +48,7 @@ public class Repository<T> : IRepository<T> where T : class
         if (includedProperties is not null)
         {
             foreach (var property in
-                     includedProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                     includedProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 queryable = queryable.Include(property);
             }
