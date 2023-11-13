@@ -1,0 +1,58 @@
+﻿@using BookBazaar.Models.AppUser
+@using BookBazaar.Misc.Roles
+@model UserManagementVewModel
+
+@{
+    AppUser user = Model.UserDetails.User;
+
+    ViewData["Title"] = $"Manage user {user.Name}";
+    string companySelectCustomStyle = "d-none";
+
+    if (Model.UserDetails.Role == RoleManager.Company)
+    {
+        companySelectCustomStyle = "d-flex";
+    }
+}
+
+<form
+    method="post"
+    asp-action="RoleManagement"
+    asp-controller="User"
+    class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
+    <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4 mb-4">
+        <h2 class="text-primary text-center">Management for user @Model.UserDetails.User.Name</h2>
+        <hr/>
+        <input asp-for="@Model.UserDetails.User.Id" hidden>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-11">
+                <label asp-for="@Model.UserDetails.User.Name" class="ml-1 mt-2"></label>
+                <input asp-for="@Model.UserDetails.User.Name" readonly class="form-control TextInput mt-2">
+            </div>
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-around align-items-center">
+            <div class="col-11">
+                <label class="ml-1 mt-2">Role</label>
+                <select asp-for="@Model.UserDetails.Role" asp-items="@Model.AvailableAppRoles" class="form-select mt-1">
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 @companySelectCustomStyle justify-content-around CompanyWrapper">
+            <div class="col-11">
+                <label class="ml-1 mt-2">Company</label>
+                <select asp-for="@Model.UserDetails.User.CompanyId" asp-items="@Model.Companies" class="form-select mt-1">
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="button-primary mt-4 SubmitNewCategory ForcedMargin Shadow2 rounded-3">Update</button>
+        <a asp-controller="User" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Back to users</a>
+    </div>
+    <img src="~/img/undraw_user_flow_re_bvfx.svg"
+         alt="User Flow Art"
+         class="CreateCategoryImage col-lg-6 col-xl-6 d-sm-none d-none d-md-none d-lg-block d-xl-block"/>
+</form>
+
+@section Scripts
+{
+    <script src="~/js/ToggleCompanyDropDownList.js"></script>
+}

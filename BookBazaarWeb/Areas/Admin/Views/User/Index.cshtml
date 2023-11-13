@@ -73,6 +73,16 @@
                                     </div>
                                 </a>
                             }
+                            <a asp-area="Admin"
+                               asp-controller="User"
+                               asp-action="ManageUser"
+                               asp-route-userId="@element.User.Id"
+                               class="button Button ManageButton text-decoration-none mx-2">
+                                <div class="text-center d-flex flex-row align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-kanban"></i>
+                                    <span>Manage</span>
+                                </div>
+                            </a>
                         </div>
                     </td>
                 </tr>
