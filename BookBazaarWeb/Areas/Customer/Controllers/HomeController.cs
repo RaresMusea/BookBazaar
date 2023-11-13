@@ -4,9 +4,9 @@ using BookBazaar.Data.Repo.Interfaces;
 using BookBazaar.Misc.Session;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CartModels;
+using BookBazaar.Models.ErrorModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
-using BookBazaarWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
