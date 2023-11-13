@@ -92,7 +92,7 @@ footer > div {
 .TableHeading {
     text-align: center;
     font-weight: bolder;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px !important;
+    box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 3px !important;
 }
 
 .TableHeading th {
@@ -101,7 +101,7 @@ footer > div {
 }
 
 tbody {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px !important;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 20px 25px -5px, rgba(0, 0, 0, 0.04) 0 10px 10px -5px !important;
 }
 
 .Icon {
@@ -116,7 +116,7 @@ tbody {
     font-size: 1em !important;
     padding: .5em !important;
     font-weight: bold !important;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px !important;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 3px 3px 0 !important;
 }
 
 .Button:hover {
@@ -142,6 +142,12 @@ tbody {
     outline: none !important;
 }
 
+.SearchButton {
+    color: white !important;
+    background-color: #5d6166 !important;
+}
+
+
 .UpdateButton {
     background-color: var(--navbarColor);
     color: white;
@@ -163,6 +169,23 @@ tbody {
 
 .AddButton:hover {
     background-color: #ED5B2D !important;
+}
+
+.PayButton:hover {
+    background-color: #61A6AB !important;
+}
+
+.RevokeButton:hover {
+    background-color: red !important;
+}
+
+.ProcessingButton:hover {
+    background-color: #525252 !important;
+    color: white !important;
+}
+
+.DeliveryButton {
+    background-color: #61A6AB !important;
 }
 
 .EditButton:hover {
@@ -231,11 +254,11 @@ tbody {
 
 /*Shadows*/
 .Shadow1 {
-    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px !important;
+    box-shadow: rgba(9, 30, 66, 0.25) 0 4px 8px -2px, rgba(9, 30, 66, 0.08) 0 0 0 1px !important;
 }
 
 .Shadow2 {
-    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px !important;
+    box-shadow: rgba(50, 50, 105, 0.15) 0 2px 5px 0, rgba(0, 0, 0, 0.05) 0 1px 1px 0 !important;
 }
 
 /*Anchors*/
@@ -568,7 +591,7 @@ tbody {
 }
 
 .Visible {
-    display: block !important;
+    display: flex !important;
 }
 
 .GrayScaled {
@@ -615,7 +638,6 @@ tbody {
     border-radius: 15px;
     padding: 2em 1.5em 1em;
     margin-bottom: 3em !important;
-    width: 30%;
 }
 
 @media screen and(max-width: 1400px) {
@@ -703,5 +725,128 @@ tbody {
 .OrderInfo {
     color: #ED5B2D !important;
 }
+
+.NoDecoration {
+    text-decoration: none !important;
+}
+
+.NoDecoration > li {
+    transition: .2s ease-in-out !important;
+}
+
+.NoDecoration > li:hover {
+    background-color: #ED5B2D !important;
+    color: white !important;
+}
+
+.TotalBar {
+    background-color: #ED5B2D !important;
+    color: white !important;
+}
+
+.DropdownItem {
+    cursor: pointer !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.DropdownItem:focus, .DropdownItem:hover {
+    background-color: #ED5B2D !important;
+    color: white !important;
+}
+
+.DropdownItem a {
+    display: block !important;
+    width: 100% !important;
+}
+
+.DropdownItem > a:focus {
+    background-color: #ED5B2D;
+!important;
+}
+
+.DropdownHeader {
+    cursor: pointer !important;
+}
+
+.NavigationLinkDropDown {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.OrdersListWrapper {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23) !important;
+    overflow: scroll !important;
+    width: 30%;
+    height: 25% !important;
+    max-height: 25% !important;
+}
+
+.OrdersListWrapper::-webkit-scrollbar {
+    display: none !important;
+}
+
+.OrderElement {
+    cursor: pointer;
+    padding: 1em;
+    border-bottom: 1px solid rgba(82, 82, 82, 0.2);
+    transition: .2s ease-in-out;
+}
+
+.OrderElement:hover {
+    background-color: #ED5B2D;
+    color: white;
+    border-bottom: 3px solid var(--navbarColor);
+}
+
+
+.Orders {
+    width: 40% !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+
+}
+
+.OrderDetailsWindow {
+    width: 60% !important;
+    height: 600px !important;
+    max-height: 600px !important;
+    overflow: auto !important;
+}
+
+.OrderDetailsWindow::-webkit-scrollbar {
+}
+
+.Flexbox {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.Margin {
+    margin-top: 4em !important;
+}
+
+.SuspendButton {
+    background-color: red;
+!important;
+    transition: .2s ease-in-out !important;
+    color: white !important;
+}
+
+.SuspendButton:hover {
+    background-color: #82322f !important;
+}
+
+.ManageButton {
+    background-color: #291B25 !important;
+    color: white !important;
+    transition: .2s ease-in-out;
+}
+
+.ManageButton:hover {
+    background-color: #F6F6E9 !important;
+    color: black !important;
+}
+
 
 

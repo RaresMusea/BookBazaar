@@ -1,0 +1,45 @@
+﻿@using BookBazaar.Misc.Orders_Payments
+@model IEnumerable<OrderViewModel>
+
+@{
+    ViewData["Title"] = "My orders";
+}
+
+<div class="container">
+    <h1 class="mt-4 mb-3">My orders</h1>
+    <div class="d-flex OrdersListWrapper w-100">
+        <div class="d-flex flex-column Orders">
+            @foreach (var orderViewModel in Model)
+            {
+                <div
+                    data-id="@orderViewModel.Order.Id"
+                    data-url="@Url.Action("Details", "Order", new { orderId = orderViewModel.Order.Id })"
+                    class="OrderElement">
+                    <div class="d-flex flex-column">
+                        <span>@(orderViewModel.Order.User.CompanyId is not null ? "Business " : "") Order #@orderViewModel.Order.Id</span>
+                        <span>
+                            Order status: @orderViewModel.Order.OrderState @(orderViewModel.Order.TransactionState == PaymentStatus.BusinessDelayed ? ", payment delayed until " + orderViewModel.Order.PaymentDueDate.ToShortDateString() + "." : "")
+                        </span>
+                        <span>Subtotal: @(Math.Round(orderViewModel.Order.GrandTotal, 2)) &euro;</span>
+                    </div>
+
+                </div>
+            }
+        </div>
+        <div class="OrderDetailsWindow">
+            <div class="d-flex align-items-center justify-content-center flex-column Margin gap-5">
+                <img src="~/img/undraw_order_delivered_re_v4ab.svg" alt="Shopping illustration" width="450" height="300">
+                <span class="fs-4 fw-bolder text-center">
+                    Here you can find all your orders.
+                    Select an order from the left to see its details.
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/ajax/Order/AppedOrderDetails.js"></script>
+}

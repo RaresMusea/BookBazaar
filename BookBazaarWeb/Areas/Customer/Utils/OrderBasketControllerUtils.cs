@@ -28,19 +28,19 @@ public class OrderBasketControllerUtils
             if (amount is >= 10 and < 25)
             {
                 result[bookId] = 0.10;
-                discount = 0.10;
+                discount = Math.Round(0.10, 2);
                 DiscountsApplied = true;
             }
             else if (amount is >= 25 and < 50)
             {
                 result[bookId] = 0.15;
-                discount = 0.15;
+                discount = Math.Round(0.15, 2);
                 DiscountsApplied = true;
             }
             else if (amount is >= 50)
             {
                 result[bookId] = 0.30;
-                discount = 0.30;
+                discount = Math.Round(0.30, 2);
                 DiscountsApplied = true;
             }
             else
@@ -53,6 +53,10 @@ public class OrderBasketControllerUtils
             GrandTotal += initialPrice - ((discount >= 0.0 ? discount : 1) * initialPrice);
             TotalProducts += amount;
         }
+
+        Savings = Math.Round(Savings, 2);
+        TotalWithoutDiscount = Math.Round(TotalWithoutDiscount, 2);
+        GrandTotal = Math.Round(GrandTotal, 2);
 
         return result;
     }

@@ -3,6 +3,10 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model List<BookViewModel>
 
+@{
+    ViewData["Title"] = "Manage books";
+}
+
 <partial name="OperationResult"></partial>
 <div class="CenteredContainer">
     <div class="row pt-3 mb-3">
@@ -74,5 +78,5 @@
     </table>
 </div>
 <script src="~/js/DataTables/BookDataTables.js"></script>
-<script src="~/js/BookDescriptionModal.js"></script>
+<script src="~/js/Modals/BookDescriptionModal.js"></script>
 <script src="~/js/ajax/Book/DeleteBook.js"></script>

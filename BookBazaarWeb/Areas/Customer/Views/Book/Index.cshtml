@@ -1,0 +1,70 @@
+﻿@model List<BookViewModel>
+
+@{
+    string query = string.Empty;
+    if (Model.Count != 0)
+    {
+        query = !string.IsNullOrEmpty(Model[0].CategoryQuery) ? Model[0].CategoryQuery : "";
+        ViewData["Title"] = $"{query} books";
+    }
+    else
+    {
+        ViewData["Title"] = "No results found";
+    }
+}
+
+@if (Model.Count != 0)
+{
+    <div class="d-flex justify-content-around align-items-center mt-5 mb-5 flex-row">
+        <span class="Line"></span>
+        <h3 mx-2>@query books</h3>
+        <span class="Line"></span>
+    </div>
+
+    <div class="BooksWrapper mt-5 mx-5 h-75">
+        <div class="d-flex gap-5 align-items-strech justify-content-center flex-wrap">
+            @foreach (var viewModel in Model)
+            {
+                <div class="BookCard">
+                    <div
+                        class="Ornament
+                   @(viewModel.InventoryItem!.QuantityInStock > 0 ? "InStock" : "OutOfStock")">
+                        @(viewModel.InventoryItem!.QuantityInStock > 0 ? "Available" : "Sold out")
+                    </div>
+                    <img src="@viewModel.Book!.CoverImageUrl"
+                         class="w-50 @(viewModel.InventoryItem.QuantityInStock == 0 ? "GrayScaled" : "")" alt="Book image cover">
+                    <a
+                        asp-controller="Home"
+                        asp-action="Details"
+                        asp-route-id="@viewModel.Book.Id"
+                        class="text-center BookTitle d-block px-1">
+                        @viewModel.Book!.Title
+                    </a>
+                    <span class="text-center d-block px-1">
+                        by @(viewModel.Book!.Author.Contains(',') ?
+                               viewModel.Book!.Author.Split(",")[0] + " et al." :
+                               viewModel.Book!.Author)
+                    </span>
+                    <span class="text-center d-block px-1">Publisher: @viewModel.Book!.Publisher</span>
+                    <h4 class="text-center mt-3 px-1">@viewModel.Book!.Price &euro;</h4>
+                    <button
+                        onclick="location.href='@Url.Action("Details", "Home", new { id = viewModel.Book.Id })'"
+                        class="button primary Button AddButton CenteredButton">
+                        View
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <section class="mt-1">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-center flex-column gap-2 mt-5">
+                <img src="~/img/undraw_feeling_blue_-4-b7q.svg" alt="Not Found Art" width="650" height="400"/>
+                <span class="fs-3 text-center">Unfortunately, at the moment there are no books belonging to this category.</span>
+            </div>
+        </div>
+    </section>
+}

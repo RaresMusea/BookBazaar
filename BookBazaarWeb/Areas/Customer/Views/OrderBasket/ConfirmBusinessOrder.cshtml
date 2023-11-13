@@ -1,0 +1,15 @@
+﻿@model OrderConfirmationViewModel
+
+<div class="mt-5 d-flex align-items-center justify-content-center flex-column">
+    <h2 class="text-center">Dear @(Model.Name),</h2>
+    <div class="fs-3 text-center">
+        Your payment for business order #@(Model.OrderId) was processed successfully.
+        Until next time, happy reading and pleasant relaxation for you and your entire team!
+    </div>
+    <img src="~/img/undraw_shared_goals_re_jvqd.svg" alt="Order Confirmed Ilustration" width="400" height="500">
+    <button
+        onclick="location.href=`@Url.Action("Index", "Order")`"
+        class="mt-2 button primary Button AddButton CenteredButton w-25">
+        Back to your orders
+    </button>
+</div>

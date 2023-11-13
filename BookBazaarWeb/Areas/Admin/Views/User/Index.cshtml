@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IList<UserViewModel>
+
+@{
+    ViewData["Title"] = "Manage users";
+}
+
+<partial name="OperationResult"></partial>
+<section>
+    <div class="container">
+        <div class="row pt-3 mb-3 mt-3">
+            <div class="col-6">
+                <h2>Manage users</h2>
+            </div>
+        </div>
+        <table
+            id="UsersTable"
+            class="responsive mt-6 table table-striped align-middle text-left row-cols-6">
+            <thead class="TableHeading box-shadow">
+            <th>Name</th>
+            <th>Role</th>
+            <th>Phone number</th>
+            <th>Email </th>
+            <th>Company</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Country</th>
+            <th class="last" data-nosorting="true"></th>
+            </thead>
+            <tbody>
+            @foreach (var element in Model)
+            {
+                <tr class="m-0 p-0">
+                    <td class="align-middle">@element.User.Name</td>
+                    <td>@element.Role</td>
+                    <td class="align-middle">@element.User.PhoneNumber</td>
+                    <td class="align-middle">@(element.User.Email)</td>
+                    <td
+                        title="@(element.User.CompanyId is null ? "The user is not registered as a business account" : element.User.Company!.Name)"
+                        class="align-middle TableDefinition HovarableTableData">
+                        @(element.User.CompanyId is null ? "No" : element.User.Company!.Name)
+                    </td>
+                    <td class="align-middle">@element.User.Address</td>
+                    <td class="align-middle">@element.User.City</td>
+                    <td class="align-middle">@element.User.Country</td>
+                    <td class="align-middle border-end-0">
+                        <div class="d-flex align-items-center justify-content-evenly w-100" role="group">
+                            @if (element.User.LockoutEnd is null || element.User.LockoutEnd < DateTime.Now)
+                            {
+                                <a
+                                    asp-area="Admin"
+                                    asp-controller="User"
+                                    asp-action="Suspend"
+                                    asp-route-userId="@element.User.Id"
+                                    class="button Button SuspendButton text-decoration-none">
+                                    <div class="text-center d-flex flex-row align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-dash-circle-dotted"></i>
+                                        <span>Suspend</span>
+                                    </div>
+                                </a>
+                            }
+                            else
+                            {
+                                <a
+                                    asp-area="Admin"
+                                    asp-controller="User"
+                                    asp-action="Unsuspend"
+                                    asp-route-userId="@element.User.Id"
+                                    class="button Button EditButton text-decoration-none">
+                                    <div class="text-center d-flex flex-row align-items-center justify-content-center gap-2">
+                                        <i class="bi bi-check2-circle"></i>
+                                        <span>Unsuspend</span>
+                                    </div>
+                                </a>
+                            }
+                            <a asp-area="Admin"
+                               asp-controller="User"
+                               asp-action="ManageUser"
+                               asp-route-userId="@element.User.Id"
+                               class="button Button ManageButton text-decoration-none mx-2">
+                                <div class="text-center d-flex flex-row align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-kanban"></i>
+                                    <span>Manage</span>
+                                </div>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@section Scripts{
+    <script src="~/js/DataTables/UsersDataTables.js"></script>
+}

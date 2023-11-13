@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Security.Claims;
 using BookBazaar.Data.Repo.Interfaces;
+using BookBazaar.Misc.Session;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CartModels;
+using BookBazaar.Models.ErrorModels;
 using BookBazaar.Models.InventoryModels;
 using BookBazaar.Models.VM;
-using BookBazaarWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,34 +15,39 @@ namespace BookBazaarWeb.Areas.Customer.Controllers;
 [Area("Customer")]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IWorkUnit _workUnit;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HomeController(ILogger<HomeController> logger, IWorkUnit workUnit)
+    public HomeController(IWorkUnit workUnit, IHttpContextAccessor contextAccessor)
     {
-        _logger = logger;
         _workUnit = workUnit;
+        _httpContextAccessor = contextAccessor;
     }
 
     public async Task<IActionResult> Index()
     {
         IEnumerable<Book> books = await _workUnit.BookRepo.RetrieveAllAsync(includedProperties: "Category");
-        if (books is not null)
-        {
-            List<BookViewModel> viewModels = new();
-            foreach (var book in books)
-            {
-                viewModels.Add(new()
-                {
-                    Book = book,
-                    InventoryItem = await _workUnit.InventoryRepo.GetAsync(inv => inv.BookId == book.Id)
-                });
-            }
+        IEnumerable<InventoryItem> inventoryItems =
+            await _workUnit.InventoryRepo.RetrieveAllAsync(i => i.QuantityInStock > 0);
+        inventoryItems = inventoryItems.OrderByDescending(i => i.QuantitySold).Take(4);
 
-            return View(viewModels.OrderByDescending(o => o.InventoryItem!.QuantityInStock).ToList());
+        if (books is null || inventoryItems is null)
+        {
+            return NotFound();
         }
 
-        return NotFound();
+        List<BookViewModel> viewModels = new();
+
+        foreach (var inventoryItem in inventoryItems)
+        {
+            viewModels.Add(new()
+            {
+                Book = books.FirstOrDefault(b => b.Id == inventoryItem.BookId),
+                InventoryItem = inventoryItem
+            });
+        }
+
+        return View(viewModels.ToList());
     }
 
     public async Task<IActionResult> Details(int id)
@@ -59,9 +65,9 @@ public class HomeController : Controller
         }
 
         InventoryItem inventoryItem = await _workUnit.InventoryRepo.GetAsync(i => i.BookId == id);
-        IEnumerable<Book> similarBooks = await _workUnit.BookRepo.RetrieveAllAsync(
+        List<Book> similarBooks = (await _workUnit.BookRepo.RetrieveAllAsync(
             b => b.CategoryId == book.CategoryId && b.Id != book.Id,
-            "Category");
+            "Category")).ToList();
 
         OrderBasket basket = new()
         {
@@ -112,6 +118,9 @@ public class HomeController : Controller
         if (existingBasket is null)
         {
             await _workUnit.OrderBasketRepo.CreateAsync(basket);
+            int basketAmount = (await _workUnit.OrderBasketRepo.RetrieveAllAsync(b => b.UserId == userId)).Count();
+            await _workUnit.SaveAsync();
+            _httpContextAccessor.HttpContext!.Session.SetInt32(SessionManager.OrderBasketSession, basketAmount);
         }
         else
         {
@@ -119,14 +128,8 @@ public class HomeController : Controller
             _workUnit.OrderBasketRepo.Update(existingBasket);
         }
 
-        await _workUnit.SaveAsync();
         TempData["SuccessfulOperation"] = "Your cart was successfully updated!";
         return RedirectToAction(nameof(Index));
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -13,6 +13,8 @@ public class WorkUnit : IWorkUnit
     public ICompanyRepository CompanyRepo { get; private set; }
     public IOrderBasketRepository OrderBasketRepo { get; private set; }
     public IAppUserRepository UserRepo { get; private set; }
+    public IOrderRepository OrderRepo { get; private set; }
+    public IOrderInfoRepository OrderInfoRepo { get; private set; }
 
     public WorkUnit(AppDataContext context)
     {
@@ -23,6 +25,8 @@ public class WorkUnit : IWorkUnit
         CompanyRepo = new CompanyRepository(_context);
         UserRepo = new AppUserRepository(_context);
         OrderBasketRepo = new OrderBasketRepository(_context);
+        OrderRepo = new OrderRepository(_context);
+        OrderInfoRepo = new OrderInfoRepository(_context);
     }
 
     public async Task<int> SaveAsync()

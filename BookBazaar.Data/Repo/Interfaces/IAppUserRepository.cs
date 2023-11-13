@@ -1,4 +1,4 @@
-﻿using BookBazaar.Models;
+﻿using BookBazaar.Models.AppUser;
 
 namespace BookBazaar.Data.Repo.Interfaces;
 

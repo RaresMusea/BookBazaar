@@ -1,5 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model BookBazaar.Models.VM.BookViewModel;
+@model BookViewModel;
+
+@{
+    ViewData["Title"] = $"Update book {Model.Book!.Title} by {Model.Book!.Author}";
+}
 
 <form method="post"
       enctype="multipart/form-data"

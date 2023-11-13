@@ -4,7 +4,7 @@
 @{
     var book = @Model.OrderBasket!.Book;
     var inventoryItem = @Model.OrderBasket!.InventoryItem;
-    ViewData["Title"] = $"{book.Title} by {book.Author} - Book Bazaar";
+    ViewData["Title"] = $"{book.Title} by {book.Author}";
 }
 
 <div class="container">
@@ -56,10 +56,10 @@
                                 <div class="d-flex align-items-center justify-content-center justify-content-md-start justify-content-lg-start">
                                     <span class="fw-bold">Availability:&nbsp;</span>
                                     <span class="StockCircle fw-bolder"
-                                          style="background-color:@(inventoryItem!.QuantityInStock > 0 ? "#468B91" : "red")">
+                                          style="background-color:@(inventoryItem.QuantityInStock > 0 ? "#468B91" : "red")">
                                     </span>
-                                    <span style="color:@(inventoryItem!.QuantityInStock > 0 ? "#468B91" : "red")">
-                                        &nbsp;@(inventoryItem!.QuantityInStock > 0 ? "In stock" : "Sold out")
+                                    <span style="color:@(inventoryItem.QuantityInStock > 0 ? "#468B91" : "red")">
+                                        &nbsp;@(inventoryItem.QuantityInStock > 0 ? "In stock" : "Sold out")
                                     </span>
                                 </div>
                             </div>
@@ -70,11 +70,11 @@
                             </div>
                             <div class="mt-2">
                                 <span class="fw-bold">Publisher:&nbsp;</span>
-                                <span>@book!.Publisher</span>
+                                <span>@book.Publisher</span>
                             </div>
                             <div class="mt-2">
                                 <span class="fw-bold">Language:&nbsp;</span>
-                                <span>@book!.Language</span>
+                                <span>@book.Language</span>
                             </div>
                             <div class="mt-2">
                                 <span class="fw-bold">Date published:&nbsp;</span>
@@ -115,7 +115,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 col-md-6 pb-1">
+                            <div class="col-12 col-md-6 pb-1 mb-4">
                                 <input hidden asp-for="OrderBasket!.BookId">
                                 <input hidden asp-for="OrderBasket!.InventoryItemId">
                                 <button type="submit"
@@ -131,44 +131,48 @@
         </div>
     </div>
 </div>
-<div class="d-flex justify-content-around align-items-center mt-5 mb-5 flex-row">
-    <span class="Line"></span>
-    <h3 mx-2>You may also like</h3>
-    <span class="Line"></span>
-</div>
-<div class="BooksWrapper mt-5 mx-5 h-75">
-    <div class="d-flex gap-5 align-items-strech justify-content-center flex-wrap">
-        @foreach (var suggestion in @Model.SimilarSuggestions)
-        {
-            <div class="BookCard mt-2">
-                <img src="@suggestion.CoverImageUrl" class="w-50 mt-2" alt="Book image cover">
-                <a
-                    asp-controller="Home"
-                    asp-action="Details"
-                    asp-route-id="@suggestion.Id"
-                    class="text-center BookTitle d-block px-1">
-                    @suggestion.Title
-                </a>
-                <span class="text-center d-block px-1">
-                    by @(suggestion.Author.Contains(',') ?
-                           suggestion.Author.Split(",")[0] + " et al." :
-                           suggestion.Author)
-                </span>
-                <span class="text-center d-block px-1">Publisher: @suggestion.Publisher</span>
-                <h4 class="text-center mt-3 px-1">@suggestion.Price &euro;</h4>
-                <button
-                    onclick="location.href='@Url.Action("Details", "Home", new { id = suggestion.Id })'"
-                    class="button primary Button AddButton CenteredButton">
-                    View
-                </button>
-            </div>
-        }
+
+@if (@Model.SimilarSuggestions.Count > 0)
+{
+    <div class="d-flex justify-content-around align-items-center mt-5 mb-5 flex-row">
+        <span class="Line"></span>
+        <h3 mx-2>You may also like</h3>
+        <span class="Line"></span>
     </div>
-</div>
+    <div class="BooksWrapper mt-5 mx-5 h-75">
+        <div class="d-flex gap-5 align-items-strech justify-content-center flex-wrap">
+            @foreach (var suggestion in @Model.SimilarSuggestions)
+            {
+                <div class="BookCard mt-2">
+                    <img src="@suggestion.CoverImageUrl" class="w-50 mt-2" alt="Book image cover">
+                    <a
+                        asp-controller="Home"
+                        asp-action="Details"
+                        asp-route-id="@suggestion.Id"
+                        class="text-center BookTitle d-block px-1">
+                        @suggestion.Title
+                    </a>
+                    <span class="text-center d-block px-1">
+                        by @(suggestion.Author.Contains(',') ?
+                               suggestion.Author.Split(",")[0] + " et al." :
+                               suggestion.Author)
+                    </span>
+                    <span class="text-center d-block px-1">Publisher: @suggestion.Publisher</span>
+                    <h4 class="text-center mt-3 px-1">@suggestion.Price &euro;</h4>
+                    <button
+                        onclick="location.href='@Url.Action("Details", "Home", new { id = suggestion.Id })'"
+                        class="button primary Button AddButton CenteredButton">
+                        View
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+}
 
 @section Scripts{
     @{
-        <script src="~/js/PriceUpdater.js"></script>
+        <script src="~/js/PriceUpdater/PriceUpdater.js"></script>
         <partial name="_ValidationScriptsPartial"></partial>
     }
 }

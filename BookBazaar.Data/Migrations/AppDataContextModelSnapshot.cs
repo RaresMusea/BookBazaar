@@ -167,9 +167,6 @@ namespace BookBazaar.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -178,20 +175,17 @@ namespace BookBazaar.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Genre = "Adventure",
-                            Priority = 1
+                            Genre = "Adventure"
                         },
                         new
                         {
                             Id = 2,
-                            Genre = "Science-Fiction",
-                            Priority = 1
+                            Genre = "Science-Fiction"
                         },
                         new
                         {
                             Id = 3,
-                            Genre = "Psychology",
-                            Priority = 1
+                            Genre = "Psychology"
                         });
                 });
 
@@ -311,7 +305,7 @@ namespace BookBazaar.Data.Migrations
                         {
                             Id = 1,
                             BookId = 1,
-                            DateAdded = new DateTime(2023, 11, 5, 22, 34, 12, 178, DateTimeKind.Local).AddTicks(211),
+                            DateAdded = new DateTime(2023, 11, 6, 20, 38, 1, 960, DateTimeKind.Local).AddTicks(2802),
                             QuantityInStock = 40,
                             QuantitySold = 0
                         },
@@ -319,7 +313,7 @@ namespace BookBazaar.Data.Migrations
                         {
                             Id = 2,
                             BookId = 2,
-                            DateAdded = new DateTime(2023, 11, 5, 22, 34, 12, 178, DateTimeKind.Local).AddTicks(257),
+                            DateAdded = new DateTime(2023, 11, 6, 20, 38, 1, 960, DateTimeKind.Local).AddTicks(2847),
                             QuantityInStock = 60,
                             QuantitySold = 0
                         },
@@ -327,7 +321,7 @@ namespace BookBazaar.Data.Migrations
                         {
                             Id = 3,
                             BookId = 3,
-                            DateAdded = new DateTime(2023, 11, 5, 22, 34, 12, 178, DateTimeKind.Local).AddTicks(259),
+                            DateAdded = new DateTime(2023, 11, 6, 20, 38, 1, 960, DateTimeKind.Local).AddTicks(2849),
                             QuantityInStock = 20,
                             QuantitySold = 0
                         });
@@ -369,6 +363,9 @@ namespace BookBazaar.Data.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("OrderState")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
@@ -379,10 +376,10 @@ namespace BookBazaar.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ShippingProvider")
+                    b.Property<string>("SessionId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("ShippingProvider")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TransactionId")
@@ -711,13 +708,13 @@ namespace BookBazaar.Data.Migrations
 
             modelBuilder.Entity("BookBazaar.Models.OrderModels.Order", b =>
                 {
-                    b.HasOne("BookBazaar.Models.AppUser", "AppUser")
+                    b.HasOne("BookBazaar.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AppUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BookBazaar.Models.OrderModels.OrderInfo", b =>

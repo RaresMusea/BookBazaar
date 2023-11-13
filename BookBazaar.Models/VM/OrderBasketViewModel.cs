@@ -6,7 +6,7 @@ namespace BookBazaar.Models.VM;
 
 public class OrderBasketViewModel
 {
-    public OrderBasket? OrderBasket { get; set; } = null!;
+    public OrderBasket? OrderBasket { get; set; }
 
-    [ValidateNever] public IEnumerable<Book> SimilarSuggestions { get; set; } = null!;
+    [ValidateNever] public List<Book> SimilarSuggestions { get; set; } = null!;
 }

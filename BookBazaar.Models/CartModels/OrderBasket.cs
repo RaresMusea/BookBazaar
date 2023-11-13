@@ -24,5 +24,5 @@ public class OrderBasket
 
     public string UserId { get; set; } = string.Empty;
 
-    [ForeignKey("UserId")] [ValidateNever] public AppUser User { get; set; } = null!;
+    [ForeignKey("UserId")] [ValidateNever] public AppUser.AppUser User { get; set; } = null!;
 }

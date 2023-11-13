@@ -1,4 +1,4 @@
-﻿using BookBazaar.Models;
+﻿using BookBazaar.Models.AppUser;
 using BookBazaar.Models.BookModels;
 using BookBazaar.Models.CartModels;
 using BookBazaar.Models.CategoryModels;
@@ -32,9 +32,9 @@ public class AppDataContext : IdentityDbContext<IdentityUser>
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Category>().HasData(
-            new Category { Id = 1, Genre = "Adventure", Priority = 1 },
-            new Category { Id = 2, Genre = "Science-Fiction", Priority = 1 },
-            new Category { Id = 3, Genre = "Psychology", Priority = 1 }
+            new Category { Id = 1, Genre = "Adventure" },
+            new Category { Id = 2, Genre = "Science-Fiction" },
+            new Category { Id = 3, Genre = "Psychology" }
         );
 
         modelBuilder.Entity<Book>().HasData(

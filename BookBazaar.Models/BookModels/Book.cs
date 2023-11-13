@@ -47,7 +47,7 @@ public class Book
     [Range(2.00, 600.00)]
     [DisplayName("Price (€)")]
     [Required]
-    public double Price { get; set; } = 0.00;
+    public double Price { get; set; }
 
     [DisplayName("Date published")]
     [ValidateNever]

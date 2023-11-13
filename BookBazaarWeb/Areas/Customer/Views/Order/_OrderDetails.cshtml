@@ -1,0 +1,122 @@
+﻿@inject IWorkUnit WorkUnit;
+@using BookBazaar.Data.Repo.Interfaces
+@using BookBazaar.Misc.Orders_Payments
+@model OrderViewModel
+
+@{
+    ViewData["Title"] = "My orders";
+    var order = @Model.Order;
+    var orderInfos = @Model.OrderInfos;
+}
+
+<div class="fs-4 text-center mt-2">@(order.User.CompanyId is not null ? "Business " : "") Order #@order.Id from @order.OrderDate.ToShortDateString()</div>
+<div class="Flexbox flex-column">
+    <span class="text-center fs-5 mt-2">Order information</span>
+    <div class="border Shadow1 rounded-2 p-3 mt-4 mx-6 mb-4">
+        <div class="d-flex flex-column gap-1">
+            <span>Order status: @order.OrderState</span>
+            <span>Recipient: @order.Name</span>
+            <span>Address: @order.Address, @order.City, @order.Country</span>
+            <span>Recipient's email: @order.User.Email</span>
+            <span>Recipient's phone number: @order.PhoneNumber</span>
+            <span>Transaction status: @order.TransactionState</span>
+
+            @if (order.User.CompanyId is not null)
+            {
+                <span>Company: @((await WorkUnit.CompanyRepo.GetAsync(c => c.Id == order.User.CompanyId)).Name)</span>
+            }
+            @if (order.User.CompanyId is not null)
+            {
+                @if (!string.IsNullOrEmpty(order.SessionId))
+                {
+                    <span>Payment date: @order.PaymentDate.ToShortDateString()</span>
+                }
+                else
+                {
+                    <span>Payment due date: @order.PaymentDueDate.ToShortDateString()</span>
+                }
+            }
+            else
+            {
+                @if (!string.IsNullOrEmpty(order.SessionId))
+                {
+                    <span>Payment date: @order.PaymentDate.ToShortDateString()</span>
+                }
+            }
+
+            @if (!string.IsNullOrEmpty(order.ShippingProvider))
+            {
+                <span>Shipped by: @order.ShippingProvider</span>
+            }
+
+            @if (!string.IsNullOrEmpty(order.Awb))
+            {
+                <span>Tracking number (AWB): @order.Awb</span>
+            }
+
+            @if (order.DeliveryDate != new DateTime(1, 1, 1))
+            {
+                <span>Delivered by: @order.DeliveryDate.ToShortDateString()</span>
+            }
+
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-9 mt-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="OrderInfo"> Order details </span >
+        </h4>
+        <ul class="list-group mb-3">
+            @foreach (var orderItemInfo in @orderInfos)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="w-75">
+                        <h6 class="my-0"> @orderItemInfo.Book.Title </h6 >
+                        <span class="d-block">
+                            <small class="text-muted"> Amount:@orderItemInfo.Amount </small >
+                        </span >
+                        <span class="d-block">
+                            <small class="text-muted"> Discount: @(orderItemInfo.Discount == 0.00 ? "No" : (orderItemInfo.Discount * 100) + "%") </small >
+                        </span >
+                        <span class="d-flex align-items-center justify-content-start gap-2">
+                            <small class="text-muted"> Price / Unit:</small >
+                            <span>
+                                @orderItemInfo.Price.ToString("0.00") &euro;
+                            </span >
+                        </span >
+                    </div >
+                    <div class="d-flex flex-column align-items-center">
+                        <span class="text-muted">
+                            @orderItemInfo.Amount X @orderItemInfo.Book.Price &euro;
+                        </span >
+                        <span class="@(orderItemInfo.Discount != 0.00 ? "text-decoration-line-through" : "")">
+                            @Math.Round((orderItemInfo.Amount * orderItemInfo.Price), 2) &euro;
+                        </span>
+                        <div class="@(orderItemInfo.Discount != 0.00 ? "d-block Discount" : "d-none")">
+                            @(orderItemInfo.Discount != 0.00 ? ((orderItemInfo.Price * orderItemInfo.Amount) - (orderItemInfo.Discount * orderItemInfo.Price * orderItemInfo.Amount)).ToString("0.00") : "") &euro;
+                        </div>
+                    </div>
+                </li>
+            }
+            <li class="list-group-item d-flex justify-content-between TotalBar">
+                <div class="fw-bolder"> TOTAL</div >
+                <strong> @Model.Order.GrandTotal &euro;</strong>
+            </li>
+        </ul>
+    </div>
+
+    @if (order.TransactionState == PaymentStatus.BusinessDelayed && order.OrderState == OrderStatus.Delivered)
+    {
+        <form method="post">
+            <button
+                asp-action="PerformBusinessPayment"
+                asp-controller="Order"
+                asp-route-id="@Model.Order.Id"
+                class="Submit button primary Button AddButton PayButton mt-2 mb-4"
+                type="submit">
+                Pay order
+            </button>
+        </form>
+    }
+
+</div>

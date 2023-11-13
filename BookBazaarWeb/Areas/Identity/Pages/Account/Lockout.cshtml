@@ -1,10 +1,15 @@
 ﻿@page
 @model LockoutModel
 @{
-    ViewData["Title"] = "Locked out";
+    ViewData["Title"] = "Account suspended";
 }
 
 <header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">This account has been locked out, please try again later.</p>
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-center flex-column gap-2 mt-5">
+            <img src="~/img/undraw_access_denied_re_awnf.svg" alt="Access denied Ilustration" width="650" height="400">
+            <div class="fs-3">Your account has been suspended based on your previous activity.</div>
+            <div class="fs-4">For any details regarding this action, please contact <i>user-management@bookbazaar.com.</i></div>
+        </div>
+    </div>
 </header>

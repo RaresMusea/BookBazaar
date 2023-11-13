@@ -1,4 +1,8 @@
-﻿@model BookBazaar.Models.CategoryModels.Category
+﻿@model Category
+
+@{
+    ViewData["Title"] = "Add a new category";
+}
 
 <form method="post" class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
     <div class="col-lg-6 col-xl-6 col-md-11 col-sm-11 col-11 border mt-3 Shadow1 rounded-2 p-3 mt-4">
@@ -9,11 +13,6 @@
             <label asp-for="Genre" class="ml-1 mt-2"></label>
             <span asp-validation-for="Genre" class="ValidationError"></span>
             <input asp-for="Genre" name="Genre" id="Genre" class="form-control TextInput mt-1">
-        </div>
-        <div class="mb-3">
-            <label for="Priority" class="ml-1 mt-2">Display priority</label>
-            <span asp-validation-for="Priority" class="ValidationError"></span>
-            <input asp-for="Priority" name="Priority" id="Priority" class="form-control TextInput mt-1">
         </div>
         <button type="submit" class="button-primary mt-2 SubmitNewCategory Shadow2 rounded-3">Save</button>
         <a asp-controller="Category" asp-action="Index" class="mt-2 nav-link link-underline text-center Anchor">Show catergories list</a>

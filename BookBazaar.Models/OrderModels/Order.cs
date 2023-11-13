@@ -11,26 +11,29 @@ public class Order
 
     public string UserId { get; set; } = string.Empty;
 
-    [ValidateNever] [ForeignKey("UserId")] public AppUser AppUser { get; set; } = null!;
+    [ValidateNever] [ForeignKey("UserId")] public AppUser.AppUser User { get; set; } = null!;
 
-    public DateTime OrderDate { get; set; }
+    [DisplayName("Order date")] public DateTime OrderDate { get; set; }
 
-    public DateTime DeliveryDate { get; set; }
+    [DisplayName("Delivery date")] public DateTime DeliveryDate { get; set; }
 
     public double GrandTotal { get; set; }
 
-    public string? Status { get; set; } = string.Empty;
+    [DisplayName("Order state")] public string? OrderState { get; set; } = string.Empty;
 
-    public string? TransactionState { get; set; } = string.Empty;
+    [DisplayName("Transaction state")] public string? TransactionState { get; set; } = string.Empty;
 
-    public string? Awb { get; set; } = string.Empty;
+    [DisplayName("Tracking number (AWB)")] public string? Awb { get; set; } = string.Empty;
 
-    public string? ShippingProvider { get; set; } = string.Empty;
+    [DisplayName("Shipping provider")] public string? ShippingProvider { get; set; } = string.Empty;
 
-    public DateTime PaymentDate { get; set; }
+    [DisplayName("Payment date")] public DateTime PaymentDate { get; set; }
 
-    public DateTime PaymentDueDate { get; set; }
+    [DisplayName("Payment due date")] public DateTime PaymentDueDate { get; set; }
 
+    public string? SessionId { get; set; } = string.Empty;
+
+    [DisplayName("Transaction identifier")]
     public string? TransactionId { get; set; } = string.Empty;
 
     [Required]
