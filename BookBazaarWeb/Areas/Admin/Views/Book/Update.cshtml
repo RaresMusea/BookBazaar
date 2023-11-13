@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model BookViewModel;
 
+@{
+    ViewData["Title"] = $"Update book {Model.Book!.Title} by {Model.Book!.Author}";
+}
+
 <form method="post"
       enctype="multipart/form-data"
       class="CreateCategoryForm row d-flex align-items-center justify-content-lg-around justify-content-xl-around justify-content-md-center justify-content-sm-center justify-content-center m-0">
