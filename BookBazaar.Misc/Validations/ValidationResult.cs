@@ -2,8 +2,8 @@
 
 public class ValidationResult
 {
-    public bool Valid { get; private set; }
-    public string Message { get; private set; }
+    bool Valid { get; }
+    string Message { get; }
 
     public ValidationResult(bool valid, string message)
     {
