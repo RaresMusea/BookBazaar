@@ -2,7 +2,6 @@
 const urls = [];
 
 buttons.forEach(button => {
-    console.table(button, button.dataset.url);
     urls.push(button.dataset.url);
 })
 
@@ -35,11 +34,10 @@ const displayFailureDialog = (entityName) => {
 }
 
 for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', async (e) => {
+    buttons[i].addEventListener('click', async () => {
         fetch(urls[i])
             .then(response => response.text())
             .then(data => {
-                console.log(data)
                 Swal.fire({
                     template: "#SwalDelModal",
                     html: data,

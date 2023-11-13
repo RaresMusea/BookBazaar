@@ -13,7 +13,7 @@ const displayInfoDialog = async (data) => {
 }
 
 modalTriggers.forEach(modalTrigger => {
-    modalTrigger.addEventListener(`click`, async (e) => {
+    modalTrigger.addEventListener(`click`, async () => {
         const dataJson = JSON.parse(modalTrigger.dataset.json);
         await displayInfoDialog(dataJson);
     });

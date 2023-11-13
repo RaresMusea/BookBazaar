@@ -1,7 +1,4 @@
 ﻿@inject IWorkUnit WorkUnit;
-@using BookBazaar.Data.Repo.Interfaces
-@using BookBazaar.Misc.Orders_Payments
-@using BookBazaar.Misc.Roles
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model OrderViewModel
 
@@ -15,7 +12,7 @@
     bool ContainsSoldOutItems()
     {
         bool result = false;
-        orderInfos!.ForEach(item =>
+        orderInfos.ForEach(item =>
         {
             if (item.InventoryItem.QuantityInStock == 0)
             {

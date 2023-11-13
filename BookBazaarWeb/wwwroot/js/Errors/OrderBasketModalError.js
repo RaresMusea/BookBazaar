@@ -8,7 +8,6 @@ submitButton.addEventListener('click', () => {
         fetch(url)
             .then(response => response.text())
             .then(data => {
-                console.log(data)
                 Swal.fire({
                     template: "#SwalErrModal",
                     html: data,
