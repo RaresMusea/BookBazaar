@@ -15,13 +15,11 @@ namespace BookBazaarWeb.Areas.Customer.Controllers;
 [Area("Customer")]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IWorkUnit _workUnit;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HomeController(ILogger<HomeController> logger, IWorkUnit workUnit, IHttpContextAccessor contextAccessor)
+    public HomeController(IWorkUnit workUnit, IHttpContextAccessor contextAccessor)
     {
-        _logger = logger;
         _workUnit = workUnit;
         _httpContextAccessor = contextAccessor;
     }
@@ -132,11 +130,6 @@ public class HomeController : Controller
 
         TempData["SuccessfulOperation"] = "Your cart was successfully updated!";
         return RedirectToAction(nameof(Index));
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
