@@ -4,6 +4,7 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using BookBazaar.Data.Repo.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,13 +15,16 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IWorkUnit _workUnit;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IWorkUnit workUnit)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _workUnit = workUnit;
         }
 
         /// <summary>
@@ -56,18 +60,33 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            public string Name { get; set; } = string.Empty;
+            public string Email { get; set; } = string.Empty;
+            public string Address { get; set; } = string.Empty;
+            public string City { get; set; } = string.Empty;
+            public string Country { get; set; } = string.Empty;
+
+            public int? CompanyId { get; set; } = null!;
         }
 
         private async Task LoadAsync(IdentityUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var appUser = await _workUnit.UserRepo.GetAsync(u => u.Id == user.Id);
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Name = appUser.Name,
+                Address = appUser.Address,
+                Email = appUser.Email,
+                City = appUser.City,
+                Country = appUser.Country,
+                CompanyId = appUser.CompanyId
             };
         }
 
@@ -79,6 +98,7 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+
             await LoadAsync(user);
             return Page();
         }
@@ -86,6 +106,8 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            var userToUpdate = await _workUnit.UserRepo.GetAsync(u => u.Id == user.Id);
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -108,6 +130,13 @@ namespace BookBazaarWeb.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            userToUpdate.CompanyId = Input.CompanyId;
+            userToUpdate.Address = Input.Address;
+            userToUpdate.Email = Input.Email;
+            userToUpdate.Name = Input.Name;
+            userToUpdate.Country = Input.Country;
+            userToUpdate.City = Input.City;
+            await _workUnit.SaveAsync();
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
