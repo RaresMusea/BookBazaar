@@ -21,6 +21,7 @@
 <header>
     <partial name="OperationResult"></partial>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow"
+         data-isinternal="@(User.IsInRole(RoleManager.Internal) ? "True" : "False")"
          data-usertype="@(User.IsInRole(RoleManager.Administrator) ? "Admin" : "User")"
          data-signedin="@(SignInManager.IsSignedIn(User))">
         <div class="container-fluid">
@@ -34,7 +35,7 @@
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav me-auto">
-
+                    <partial name="_BooksDropdownPartial"></partial>
                     @if (User.IsInRole(RoleManager.Administrator))
                     {
                         <li class="nav-item dropdown">
@@ -108,7 +109,6 @@
                             </a>
                         </li>
                     }
-                    <partial name="_BooksDropdownPartial"></partial>
                 </ul>
                 <partial name="_LoginPartial"></partial>
                 <form
@@ -141,7 +141,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-<script src="~/js/NavbarColorizer.js"></script>
+<script src="~/js/Navbar/NavbarColorizer.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.tiny.cloud/1/gsp3v5q8132afyduayynqao2okd91sc5eib5cv9193bhe96p/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>

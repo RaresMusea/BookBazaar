@@ -8,5 +8,5 @@ public class OrderBasketViewModel
 {
     public OrderBasket? OrderBasket { get; set; } = null!;
 
-    [ValidateNever] public IEnumerable<Book> SimilarSuggestions { get; set; } = null!;
+    [ValidateNever] public List<Book> SimilarSuggestions { get; set; } = null!;
 }

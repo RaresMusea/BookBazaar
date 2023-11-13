@@ -67,9 +67,9 @@ public class HomeController : Controller
         }
 
         InventoryItem inventoryItem = await _workUnit.InventoryRepo.GetAsync(i => i.BookId == id);
-        IEnumerable<Book> similarBooks = await _workUnit.BookRepo.RetrieveAllAsync(
+        List<Book> similarBooks = (await _workUnit.BookRepo.RetrieveAllAsync(
             b => b.CategoryId == book.CategoryId && b.Id != book.Id,
-            "Category");
+            "Category")).ToList();
 
         OrderBasket basket = new()
         {
